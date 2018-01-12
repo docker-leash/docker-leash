@@ -1,0 +1,21 @@
+language: python
+sudo: required
+group: edge
+addons:
+  apt:
+    packages:
+      - gcc
+      - python-dev
+cache:
+  pip: true
+python:
+  - 2.7
+install:
+  - pip install -r requirements.txt
+env:
+  - DEBUG=false
+script:
+  - nosetests tests/ -v --with-coverage --cover-xml --cover-package=app
+after_success:
+  - 'bash <(curl -s https://codecov.io/bash)'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then python-codacy-coverage -r coverage.xml; fi'
