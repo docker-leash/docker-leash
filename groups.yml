@@ -1,0 +1,23 @@
+---
+
+admins:
+  policies:
+    - openbar
+  members:
+    - rda
+    - mal
+
+developpers:
+  policies:
+    - restricted
+    - personnal
+  members:
+    - jre
+
+all:
+  policies:
+    - readonly
+  members:
+    - "*"
+
+...

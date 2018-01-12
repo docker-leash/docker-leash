@@ -1,0 +1,35 @@
+---
+
+openbar:
+  containersCreate:
+    Allow:
+  containersWait:
+    Allow:
+  containersStart:
+    Allow:
+  containersAttach:
+    Allow:
+
+personnal:
+  containersCreate:
+    containerNameCheck:
+      startwith:
+        - foo
+        - bar
+
+restricted:
+  containersCreate:
+    pathCheck:
+      - "-/"
+      - "+/home/$USER"
+      - "+/0"
+  containersDelete:
+    Deny:
+
+readonly:
+  ping:
+    Allow:
+  containersList:
+    Allow:
+
+...
