@@ -10,6 +10,9 @@ from flask import jsonify, request
 sys.dont_write_bytecode = True
 
 
+__version__ = '0.0.1dev'
+
+
 @app.route('/')
 def index():
     return "Docker Leash Plugin"
