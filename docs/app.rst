@@ -18,6 +18,7 @@ app\.action\_mapper module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.checks\_list module
 ------------------------
@@ -26,6 +27,7 @@ app\.checks\_list module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.config module
 ------------------
@@ -34,6 +36,7 @@ app\.config module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.exceptions module
 ----------------------
@@ -42,6 +45,7 @@ app\.exceptions module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.leash\_server module
 -------------------------
@@ -50,6 +54,7 @@ app\.leash\_server module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.payload module
 -------------------
@@ -58,6 +63,7 @@ app\.payload module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 app\.processor module
 ---------------------
@@ -66,6 +72,7 @@ app\.processor module
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:
 
 
 Module contents
@@ -75,3 +82,4 @@ Module contents
     :members:
     :undoc-members:
     :show-inheritance:
+    :private-members:

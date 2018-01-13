@@ -4,6 +4,12 @@ import re
 
 
 class ActionMapper():
+    """The :class:`app.action_mapper.ActionMapper` class is responsible for mapping `RequestMethod` and `RequestUri` to
+    a keyword usable in the application configured rules.
+
+    :var _MAP: Internal structure to map API actions to keyword.
+    :vartype _MAP: dict
+    """
 
     _MAP = {
         'GET': {
@@ -45,6 +51,13 @@ class ActionMapper():
     }
 
     def get_action_name(self, method=None, uri=None):
+        """Return the keyword for a `RequestMethod` and `RequestUri` tuple.
+
+        :param string method: The method.
+        :param string method: The uri.
+        :return: The keyword for the action
+        :rtype: string or None
+        """
         if not method or not uri:
             return None
 
