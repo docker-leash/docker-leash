@@ -8,6 +8,7 @@ Welcome to Docker Leash Server's documentation!
    intro
    examples
    modules
+   api_documentation
 
 Indices and tables
 ==================

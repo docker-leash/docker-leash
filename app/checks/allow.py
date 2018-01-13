@@ -4,6 +4,16 @@ from .base import BaseCheck
 
 
 class Allow(BaseCheck):
+    """A simple module that say `yes`."""
 
     def run(self, config, payload):
+        """Run the module checks.
+
+        Say yes is easy, just dont raise any exception ;)
+
+        :param config: The currently loaded configuration
+        :type config: :class:`app.config.Config`
+        :param payload: The payload of the current request.
+        :type payload: :class:`app.payload.Payload`
+        """
         pass

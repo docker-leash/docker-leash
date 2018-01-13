@@ -2,17 +2,35 @@
 
 
 class Checks():
+    """The :class:`app.checks_list.Checks` class is responsible for storing and deduplicating the checks to be launched.
 
+    :var `app.checks_list.Checks.checks`: The check list.
+    :vartype `app.checks_list.Checks.checks`: list
+    """
+
+    #:list: Internal storage of the checks to be applied.
     checks = None
 
     def __init__(self):
         self.checks = []
 
     def add(self, data):
+        """Add a check to the list.
+
+        If the same check is already in the list, it will silently be discarded.
+
+        :param dict data: The check to append.
+        """
         if data not in self:
             self.checks.append(self._structure_convert(data))
 
     def _structure_convert(self, data):
+        """An internal helper that will convert structure from the configuration to a better internal format.
+
+        :param dict data: The check to append.
+        :return: The reformatted test and arguments.
+        :rtype: dict
+        """
         for k, v in data.iteritems():
             return {'name': k, 'args': v}
 
