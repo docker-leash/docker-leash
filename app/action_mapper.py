@@ -5,7 +5,7 @@ import re
 
 class ActionMapper():
 
-    MAP = {
+    _MAP = {
         'GET': {
             r'^/_ping$': 'ping',
             r'^/v\d.\d{2}/containers/json(\?.*)?(#.*)?$': 'containersList',
@@ -48,9 +48,9 @@ class ActionMapper():
         if not method or not uri:
             return None
 
-        if method not in self.MAP:
+        if method not in self._MAP:
             return None
 
-        for reg, name in self.MAP[method].iteritems():
+        for reg, name in self._MAP[method].iteritems():
             if re.match(reg, uri):
                 return name
