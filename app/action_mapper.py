@@ -58,7 +58,6 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/version(#.*)?$': 'systemVersion',
             r'^/v\d.\d{2}/events(\?.*)?(#.*)?$': 'systemEvents',
             r'^/v\d.\d{2}/df(#.*)?$': 'systemDataUsage',
-            r'^/v\d.\d{2}/session(#.*)?$': 'systemInteractiveSessions',
             r'^/v\d.\d{2}/distribution/[a-zA-Z0-9_-]+/json(#.*)?$': 'distributionImageInfo',
         },
         'POST': {
@@ -111,6 +110,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/plugins/create(\?.*)?(#.*)?$': 'pluginsCreate',
             r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/push(\?.*)?(#.*)?$': 'pluginsPush',
             r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/set(\?.*)?(#.*)?$': 'pluginsConfigure',
+            r'^/v\d.\d{2}/session(#.*)?$': 'sessionInteractive',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',

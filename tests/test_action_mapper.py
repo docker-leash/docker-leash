@@ -214,7 +214,9 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/events', 'systemEvents'),
             ('GET', '/v1.35/events?filter=foo', 'systemEvents'),
             ('GET', '/v1.35/df', 'systemDataUsage'),
-            ('GET', '/v1.35/session', 'systemInteractiveSessions'),
+
+            # Ssession
+            ('POST', '/v1.35/session', 'sessionInteractive'),
 
             # Distribution
             ('GET', '/v1.35/distribution/85f05633ddc1c5/json', 'distributionImageInfo'),
