@@ -59,6 +59,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/events(\?.*)?(#.*)?$': 'systemEvents',
             r'^/v\d.\d{2}/df(#.*)?$': 'systemDataUsage',
             r'^/v\d.\d{2}/session(#.*)?$': 'systemInteractiveSessions',
+            r'^/v\d.\d{2}/distribution/[a-zA-Z0-9_-]+/json(#.*)?$': 'distributionImageInfo',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
