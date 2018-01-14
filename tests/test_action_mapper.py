@@ -163,6 +163,11 @@ class ActionMapperTests(unittest.TestCase):
             ('POST', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/update?version=1234', 'servicesUpdate'),
             ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/logs', 'servicesLogs'),
             ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/logs?details=true', 'servicesLogs'),
+
+            # Tasks
+            ('GET', '/v1.35/tasks', 'tasksList'),
+            ('GET', '/v1.35/tasks?filters=foo', 'tasksList'),
+            ('GET', '/v1.35/tasks/0kzzo1i0y4jz6027t0k7aezc7', 'tasksInspect'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
