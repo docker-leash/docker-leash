@@ -11,7 +11,7 @@ class ActionMapper(object):
     :vartype _MAP: dict
 
     ..todo::
-      The images regex need to be reviewed
+      The regex need to be reviewed
     """
 
     _MAP = {
@@ -32,6 +32,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/images/search(\?.*)?(#.*)?$': 'imagesSearch',
             r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/get$': 'imagesExport',
             r'^/v\d.\d{2}/images/get(\?.*)?(#.*)?$': 'imagesExportMultiple',
+            r'^/v\d.\d{2}/networks(\?.*)?(#.*)?$': 'networksList',
+            r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'networksInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -55,10 +57,15 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/images/prune(\?.*)?(#.*)?$': 'imagesPrune',
             r'^/v\d.\d{2}/commit(\?.*)?(#.*)?$': 'imagesCommit',
             r'^/v\d.\d{2}/images/load(\?.*)?(#.*)?$': 'imagesImport',
+            r'^/v\d.\d{2}/networks/create(#.*)?$': 'networksCreate',
+            r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+/connect(#.*)?$': 'networksConnect',
+            r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+/disconnect(#.*)?$': 'networksDisconnect',
+            r'^/v\d.\d{2}/networks/prune(\?.*)?(#.*)?$': 'networksPrune',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
             r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'imagesRemove',
+            r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(#.*)?$': 'networksRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',
