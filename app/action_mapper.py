@@ -36,6 +36,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'networksInspect',
             r'^/v\d.\d{2}/volumes(\?.*)?(#.*)?$': 'volumesList',
             r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesInspect',
+            r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/json(#.*)?$': 'execInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -65,6 +66,9 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/networks/prune(\?.*)?(#.*)?$': 'networksPrune',
             r'^/v\d.\d{2}/volumes/create(#.*)?$': 'volumesCreate',
             r'^/v\d.\d{2}/volumes/prune(\?.*)?(#.*)?$': 'volumesPrune',
+            r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/exec(#.*)?$': 'execCreate',
+            r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/start(#.*)?$': 'execStart',
+            r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/resize(\?.*)?(#.*)?$': 'execResize',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
