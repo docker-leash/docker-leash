@@ -18,6 +18,8 @@ class ActionMapperTests(unittest.TestCase):
             (None, None, None),
             ('', '', None),
             ('GET', '/_ping', 'ping'),
+
+            # Containers
             ('GET', '/v1.32/containers/json', 'containersList'),
             ('GET', '/v1.35/containers/json', 'containersList'),
             ('GET', '/v1.35/containers/json/', None),
@@ -78,6 +80,32 @@ class ActionMapperTests(unittest.TestCase):
             ('PUT', '/v1.35/containers/ff7291fe9e13b4b417/archive?path=/etc', 'containersExtractArchiveToDirectory'),
             ('POST', '/v1.35/containers/ff7291fe9e13b4b417/prune', 'containersPrune'),
             ('POST', '/v1.35/containers/ff7291fe9e13b4b417/prune?filters=until=10m', 'containersPrune'),
+
+            # Images
+            ('GET', '/v1.35/images/json', 'imagesList'),
+            ('POST', '/v1.35/build', 'imagesBuild'),
+            ('POST', '/v1.35/build?dockerfile=Dockerfile', 'imagesBuild'),
+            ('POST', '/v1.35/build/prune', 'imagesDeleteBuilderCache'),
+            ('POST', '/v1.35/images/create', 'imagesCreate'),
+            ('POST', '/v1.35/images/create?tag=latest', 'imagesCreate'),
+            ('GET', '/v1.35/images/85f05633ddc1c5/json', 'imagesInspect'),
+            ('GET', '/v1.35/images/85f05633ddc1c5/history', 'imagesHistory'),
+            ('POST', '/v1.35/images/85f05633ddc1c5/push', 'imagesPush'),
+            ('POST', '/v1.35/images/85f05633ddc1c5/tag', 'imagesTag'),
+            ('POST', '/v1.35/images/85f05633ddc1c5/tag?tag=latest', 'imagesTag'),
+            ('DELETE', '/v1.35/images/85f05633ddc1c5', 'imagesRemove'),
+            ('DELETE', '/v1.35/images/85f05633ddc1c5?force=true', 'imagesRemove'),
+            ('GET', '/v1.35/images/search', 'imagesSearch'),
+            ('GET', '/v1.35/images/search?term=geokrety', 'imagesSearch'),
+            ('POST', '/v1.35/images/prune', 'imagesPrune'),
+            ('POST', '/v1.35/images/prune?filters=foo', 'imagesPrune'),
+            ('POST', '/v1.35/commit', 'imagesCommit'),
+            ('POST', '/v1.35/commit?container=ff7291fe9e13b4b417', 'imagesCommit'),
+            ('GET', '/v1.35/images/85f05633ddc1c5/get', 'imagesExport'),
+            ('GET', '/v1.35/images/get', 'imagesExportMultiple'),
+            ('GET', '/v1.35/images/get?names=foo', 'imagesExportMultiple'),
+            ('POST', '/v1.35/images/load', 'imagesImport'),
+            ('POST', '/v1.35/images/load?quiet=true', 'imagesImport'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])

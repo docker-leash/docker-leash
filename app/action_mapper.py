@@ -9,6 +9,9 @@ class ActionMapper(object):
 
     :var _MAP: Internal structure to map API actions to keyword.
     :vartype _MAP: dict
+
+    ..todo::
+      The images regex need to be reviewed
     """
 
     _MAP = {
@@ -23,6 +26,12 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/stats(\?.*)?(#.*)?$': 'containersStats',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/attach/ws(\?.*)?(#.*)?$': 'containersAttachWebsocket',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetFilesystemArchive',
+            r'^/v\d.\d{2}/images/json(\?.*)?(#.*)?$': 'imagesList',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/json$': 'imagesInspect',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/history$': 'imagesHistory',
+            r'^/v\d.\d{2}/images/search(\?.*)?(#.*)?$': 'imagesSearch',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/get$': 'imagesExport',
+            r'^/v\d.\d{2}/images/get(\?.*)?(#.*)?$': 'imagesExportMultiple',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -38,9 +47,18 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/attach(\?.*)?(#.*)?$': 'containersAttach',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/wait(\?.*)?(#.*)?$': 'containersWait',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/prune(\?.*)?(#.*)?$': 'containersPrune',
+            r'^/v\d.\d{2}/build(\?.*)?(#.*)?$': 'imagesBuild',
+            r'^/v\d.\d{2}/build/prune$': 'imagesDeleteBuilderCache',
+            r'^/v\d.\d{2}/images/create(\?.*)?(#.*)?$': 'imagesCreate',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/push(\?.*)?(#.*)?$': 'imagesPush',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+/tag(\?.*)?(#.*)?$': 'imagesTag',
+            r'^/v\d.\d{2}/images/prune(\?.*)?(#.*)?$': 'imagesPrune',
+            r'^/v\d.\d{2}/commit(\?.*)?(#.*)?$': 'imagesCommit',
+            r'^/v\d.\d{2}/images/load(\?.*)?(#.*)?$': 'imagesImport',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
+            r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'imagesRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',
