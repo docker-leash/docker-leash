@@ -273,7 +273,8 @@ class ActionMapper(object):
         """
         return action in self._actions.keys() and self._actions[action] in ('GET', 'HEAD')
 
-    def action_is_about(self, action_name, action_parent):
+    @classmethod
+    def action_is_about(cls, action_name, action_parent):
         """Check if an action name is action parent category.
 
         :param string action_name: The action name to check
