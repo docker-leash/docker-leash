@@ -17,7 +17,6 @@ class ActionMapperTests(unittest.TestCase):
         checks = [
             (None, None, None),
             ('', '', None),
-            ('GET', '/_ping', 'ping'),
 
             # Containers
             ('GET', '/v1.32/containers/json', 'containersList'),
@@ -206,6 +205,16 @@ class ActionMapperTests(unittest.TestCase):
             ('POST', '/v1.35/plugins/create?name=foo', 'pluginsCreate'),
             ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/push', 'pluginsPush'),
             ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/set', 'pluginsConfigure'),
+
+            # System
+            ('GET', '/_ping', 'systemPing'),
+            ('GET', '/v1.35/auth', 'systemRegistryAuth'),
+            ('GET', '/v1.35/info', 'systemInfo'),
+            ('GET', '/v1.35/version', 'systemVersion'),
+            ('GET', '/v1.35/events', 'systemEvents'),
+            ('GET', '/v1.35/events?filter=foo', 'systemEvents'),
+            ('GET', '/v1.35/df', 'systemDataUsage'),
+            ('GET', '/v1.35/session', 'systemInteractiveSessions'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])

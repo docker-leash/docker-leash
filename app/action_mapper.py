@@ -16,7 +16,7 @@ class ActionMapper(object):
 
     _MAP = {
         'GET': {
-            r'^/_ping$': 'ping',
+            r'^/_ping$': 'systemPing',
             r'^/v\d.\d{2}/containers/json(\?.*)?(#.*)?$': 'containersList',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/json(\?.*)?(#.*)?$': 'containersInspect',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/top(\?.*)?(#.*)?$': 'containersListProcess',
@@ -53,6 +53,12 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/plugins(\?.*)?(#.*)?$': 'pluginsList',
             r'^/v\d.\d{2}/plugins/privileges(\?.*)?(#.*)?$': 'pluginsPrivileges',
             r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/json(#.*)?$': 'pluginsInspect',
+            r'^/v\d.\d{2}/auth(#.*)?$': 'systemRegistryAuth',
+            r'^/v\d.\d{2}/info(#.*)?$': 'systemInfo',
+            r'^/v\d.\d{2}/version(#.*)?$': 'systemVersion',
+            r'^/v\d.\d{2}/events(\?.*)?(#.*)?$': 'systemEvents',
+            r'^/v\d.\d{2}/df(#.*)?$': 'systemDataUsage',
+            r'^/v\d.\d{2}/session(#.*)?$': 'systemInteractiveSessions',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
