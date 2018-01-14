@@ -1,7 +1,7 @@
 # vim:set ts=4 sw=4 et:
 
 
-class BaseCheck():
+class BaseCheck(object):
     """The :class:`app.action_mapper.BaseCheck` class is the base class for all the checks."""
 
     def run(self, config, payload):

@@ -4,7 +4,7 @@ import base64
 import json
 
 
-class Payload():
+class Payload(object):
     """The :class:`Payload` class is responsible for decoding and storing the current analyzed request.
 
     :var data: The full request payload.
