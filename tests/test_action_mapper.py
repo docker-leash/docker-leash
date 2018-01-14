@@ -125,6 +125,13 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/volumes/foo', 'volumesInspect'),
             ('DELETE', '/v1.35/volumes/foo', 'volumesRemove'),
             ('POST', '/v1.35/volumes/prune', 'volumesPrune'),
+
+            # Exec
+            ('POST', '/v1.35/containers/ff7291fe9e13b4b417/exec', 'execCreate'),
+            ('POST', '/v1.35/exec/ff7291fe9e13b4b417/start', 'execStart'),
+            ('POST', '/v1.35/exec/ff7291fe9e13b4b417/resize', 'execResize'),
+            ('POST', '/v1.35/exec/ff7291fe9e13b4b417/resize?h=25&w=80', 'execResize'),
+            ('GET', '/v1.35/exec/ff7291fe9e13b4b417/json', 'execInspect'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
