@@ -37,6 +37,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/volumes(\?.*)?(#.*)?$': 'volumesList',
             r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesInspect',
             r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/json(#.*)?$': 'execInspect',
+            r'^/v\d.\d{2}/swarm(#.*)?$': 'swarmInspect',
+            r'^/v\d.\d{2}/swarm/unlockkey(#.*)?$': 'swarmUnlockKey',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -69,6 +71,11 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/exec(#.*)?$': 'execCreate',
             r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/start(#.*)?$': 'execStart',
             r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/resize(\?.*)?(#.*)?$': 'execResize',
+            r'^/v\d.\d{2}/swarm/init(#.*)?$': 'swarmInitialize',
+            r'^/v\d.\d{2}/swarm/join(#.*)?$': 'swarmJoin',
+            r'^/v\d.\d{2}/swarm/leave(\?.*)?(#.*)?$': 'swarmLeave',
+            r'^/v\d.\d{2}/swarm/update(\?.*)?(#.*)?$': 'swarmUpdate',
+            r'^/v\d.\d{2}/swarm/unlock(#.*)?$': 'swarmUnlock',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
