@@ -45,7 +45,8 @@ class Payload(object):
         print "PAYLOAD AUTHENTICATED URI: %s" % self.uri
         print "PAYLOAD AUTHENTICATED METHOD: %s" % self.method
 
-    def _decode_base64(self, payload):
+    @classmethod
+    def _decode_base64(cls, payload):
         """Decode some parts of the payload from base64 to dict.
 
         :param dict payload: The payload to fully base64 decode.
@@ -59,7 +60,8 @@ class Payload(object):
             )
         return data
 
-    def _get_username(self, payload):
+    @classmethod
+    def _get_username(cls, payload):
         """Extract the `User` from the paylaod.
 
         If the user is not connected (ie `anonymous`) the value is an empty string.
@@ -73,7 +75,8 @@ class Payload(object):
         if "User" in payload and payload["User"]:
             return payload["User"]
 
-    def _get_method(self, payload):
+    @classmethod
+    def _get_method(cls, payload):
         """Extract the `Method` from the paylaod.
 
         :param dict payload: The payload to extract method.
@@ -85,7 +88,8 @@ class Payload(object):
         if "RequestMethod" in payload and payload["RequestMethod"]:
             return payload["RequestMethod"]
 
-    def _get_uri(self, payload):
+    @classmethod
+    def _get_uri(cls, payload):
         """Extract the `Uri` from the paylaod.
 
         :param dict payload: The payload to extract Uri.

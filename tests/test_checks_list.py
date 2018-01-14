@@ -7,7 +7,8 @@ from app.checks_list import Checks
 
 class ChecksTests(unittest.TestCase):
 
-    def test_init(self):
+    @classmethod
+    def test_init(cls):
         Checks()
 
     def test_contains(self):
