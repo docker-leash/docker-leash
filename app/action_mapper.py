@@ -41,6 +41,9 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/swarm/unlockkey(#.*)?$': 'swarmUnlockKey',
             r'^/v\d.\d{2}/nodes(\?.*)?(#.*)?$': 'nodesList',
             r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+(#.*)?$': 'nodesInspect',
+            r'^/v\d.\d{2}/services(\?.*)?(#.*)?$': 'servicesList',
+            r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'servicesInspect',
+            r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+/logs(\?.*)?(#.*)?$': 'servicesLogs',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -79,6 +82,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/swarm/update(\?.*)?(#.*)?$': 'swarmUpdate',
             r'^/v\d.\d{2}/swarm/unlock(#.*)?$': 'swarmUnlock',
             r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'nodesUpdate',
+            r'^/v\d.\d{2}/services/create(#.*)?$': 'servicesCreate',
+            r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'servicesUpdate',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
@@ -86,6 +91,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(#.*)?$': 'networksRemove',
             r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesRemove',
             r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'nodesRemove',
+            r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+(#.*)?$': 'servicesRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',
