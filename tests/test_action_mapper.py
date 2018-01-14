@@ -177,6 +177,15 @@ class ActionMapperTests(unittest.TestCase):
             ('DELETE', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h', 'secretsRemove'),
             ('POST', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h/update', 'secretsUpdate'),
             ('POST', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h/update?version=1234', 'secretsUpdate'),
+
+            # Configs
+            ('GET', '/v1.35/configs', 'configsList'),
+            ('GET', '/v1.35/configs?filters=foo', 'configsList'),
+            ('POST', '/v1.35/configs/create', 'configsCreate'),
+            ('GET', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h', 'configsInspect'),
+            ('DELETE', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h', 'configsRemove'),
+            ('POST', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h/update', 'configsUpdate'),
+            ('POST', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h/update?version=1234', 'configsUpdate'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])

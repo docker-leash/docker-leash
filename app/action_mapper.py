@@ -48,6 +48,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/tasks/[a-zA-Z0-9_-]+(#.*)?$': 'tasksInspect',
             r'^/v\d.\d{2}/secrets(\?.*)?(#.*)?$': 'secretsList',
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+(#.*)?$': 'secretsInspect',
+            r'^/v\d.\d{2}/configs(\?.*)?(#.*)?$': 'configsList',
+            r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+(#.*)?$': 'configsInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -90,6 +92,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'servicesUpdate',
             r'^/v\d.\d{2}/secrets/create(#.*)?$': 'secretsCreate',
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'secretsUpdate',
+            r'^/v\d.\d{2}/configs/create(#.*)?$': 'configsCreate',
+            r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'configsUpdate',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
@@ -99,6 +103,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'nodesRemove',
             r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+(#.*)?$': 'servicesRemove',
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+(#.*)?$': 'secretsRemove',
+            r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+(#.*)?$': 'configsRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',
