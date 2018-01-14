@@ -132,6 +132,16 @@ class ActionMapperTests(unittest.TestCase):
             ('POST', '/v1.35/exec/ff7291fe9e13b4b417/resize', 'execResize'),
             ('POST', '/v1.35/exec/ff7291fe9e13b4b417/resize?h=25&w=80', 'execResize'),
             ('GET', '/v1.35/exec/ff7291fe9e13b4b417/json', 'execInspect'),
+
+            # Swarm
+            ('GET', '/v1.35/swarm', 'swarmInspect'),
+            ('POST', '/v1.35/swarm/init', 'swarmInitialize'),
+            ('POST', '/v1.35/swarm/join', 'swarmJoin'),
+            ('POST', '/v1.35/swarm/leave', 'swarmLeave'),
+            ('POST', '/v1.35/swarm/leave?force=true', 'swarmLeave'),
+            ('POST', '/v1.35/swarm/update?version=1234', 'swarmUpdate'),
+            ('GET', '/v1.35/swarm/unlockkey', 'swarmUnlockKey'),
+            ('POST', '/v1.35/swarm/unlock', 'swarmUnlock'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
