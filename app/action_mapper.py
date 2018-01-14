@@ -39,6 +39,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/exec/[a-zA-Z0-9_-]+/json(#.*)?$': 'execInspect',
             r'^/v\d.\d{2}/swarm(#.*)?$': 'swarmInspect',
             r'^/v\d.\d{2}/swarm/unlockkey(#.*)?$': 'swarmUnlockKey',
+            r'^/v\d.\d{2}/nodes(\?.*)?(#.*)?$': 'nodesList',
+            r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+(#.*)?$': 'nodesInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -76,12 +78,14 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/swarm/leave(\?.*)?(#.*)?$': 'swarmLeave',
             r'^/v\d.\d{2}/swarm/update(\?.*)?(#.*)?$': 'swarmUpdate',
             r'^/v\d.\d{2}/swarm/unlock(#.*)?$': 'swarmUnlock',
+            r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'nodesUpdate',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
             r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'imagesRemove',
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(#.*)?$': 'networksRemove',
             r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesRemove',
+            r'^/v\d.\d{2}/nodes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'nodesRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',

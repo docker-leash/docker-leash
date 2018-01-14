@@ -142,6 +142,15 @@ class ActionMapperTests(unittest.TestCase):
             ('POST', '/v1.35/swarm/update?version=1234', 'swarmUpdate'),
             ('GET', '/v1.35/swarm/unlockkey', 'swarmUnlockKey'),
             ('POST', '/v1.35/swarm/unlock', 'swarmUnlock'),
+
+            # Nodes
+            ('GET', '/v1.35/nodes', 'nodesList'),
+            ('GET', '/v1.35/nodes?filters=foo', 'nodesList'),
+            ('GET', '/v1.35/nodes/24ifsmvkjbyhk', 'nodesInspect'),
+            ('DELETE', '/v1.35/nodes/24ifsmvkjbyhk', 'nodesRemove'),
+            ('DELETE', '/v1.35/nodes/24ifsmvkjbyhk?force=true', 'nodesRemove'),
+            ('POST', '/v1.35/nodes/24ifsmvkjbyhk/update', 'nodesUpdate'),
+            ('POST', '/v1.35/nodes/24ifsmvkjbyhk/update?version=1234', 'nodesUpdate'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
