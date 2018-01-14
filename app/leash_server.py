@@ -135,7 +135,7 @@ def authz_request():
             "Allow": False,
             "Msg": str(e)
         })
-    except BaseException as e:
+    except BaseException as e: # pragma: no cover
         print "REQUEST DENIED: %s\n" % str(e)
         return jsonify({
             "Allow": False,

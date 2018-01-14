@@ -16,6 +16,11 @@ class ChecksTests(unittest.TestCase):
         checks.add(item)
         self.assertTrue(item in checks)
 
+    def test_repr(self):
+        checks = Checks()
+        checks.add({'Allow': None})
+        self.assertEqual(checks.__repr__(), "[{'args': None, 'name': 'Allow'}]")
+
     def test_equal(self):
         checks = Checks()
         checks.add({'Allow': None})
