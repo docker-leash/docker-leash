@@ -111,4 +111,10 @@ class Config(object):
                         for k, v in self.policies[policy]['readOnly'].iteritems():
                             checks.add({k: v})
 
+                # Look for "readwrite" Actions
+                elif 'readWrite' in self.policies[policy].keys():
+                        if not mapper.is_readonly(action):
+                            for k, v in self.policies[policy]['readWrite'].iteritems():
+                                checks.add({k: v})
+
         return checks
