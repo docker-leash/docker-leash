@@ -382,3 +382,29 @@ class ActionMapperTests(unittest.TestCase):
 
         self.assertFalse(mapper.is_readonly('containersCreate'))
         self.assertFalse(mapper.is_readonly('esotericAction'))
+
+    def test_action_is_about(self):
+        mapper = ActionMapper()
+
+        self.assertTrue(mapper.action_is_about('containersCreate', 'containers'))
+        self.assertFalse(mapper.action_is_about('containersCreate', 'volumes'))
+        self.assertTrue(mapper.action_is_about('containersList', 'containers'))
+        self.assertFalse(mapper.action_is_about('containersList', 'images'))
+        self.assertTrue(mapper.action_is_about('esotericAction', 'esoteric'))
+        self.assertFalse(mapper.action_is_about('esotericAction', 'containers'))
+        self.assertFalse(mapper.action_is_about('esotericAction', 'volumes'))
+        self.assertEqual(mapper.action_is_about('esotericAction', 'containers'), None)
+
+    def test_action_is_about_arrays(self):
+        mapper = ActionMapper()
+
+        self.assertEqual(mapper.action_is_about('volumesCreate', ['containers', 'volumes']), 'volumes')
+        self.assertTrue(mapper.action_is_about('volumesCreate', ['containers', 'volumes']))
+        self.assertEqual(mapper.action_is_about('containersCreate', ['containers', 'volumes']), 'containers')
+        self.assertTrue(mapper.action_is_about('containersCreate', ['containers', 'volumes']))
+        self.assertEqual(mapper.action_is_about('containersCreate', ['containers']), 'containers')
+        self.assertTrue(mapper.action_is_about('containersCreate', ['containers']))
+        self.assertTrue(mapper.action_is_about('containersCreate', 'containers'))
+        self.assertEqual(mapper.action_is_about('containersCreate', 'containers'), 'containers')
+        self.assertEqual(mapper.action_is_about('volumesCreate', 'volumes'), 'volumes')
+        self.assertTrue(mapper.action_is_about('volumesCreate', 'volumes'))

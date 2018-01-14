@@ -113,8 +113,15 @@ class Config(object):
 
                 # Look for "readwrite" Actions
                 elif 'readWrite' in self.policies[policy].keys():
-                        if not mapper.is_readonly(action):
-                            for k, v in self.policies[policy]['readWrite'].iteritems():
-                                checks.add({k: v})
+                    if not mapper.is_readonly(action):
+                        for k, v in self.policies[policy]['readWrite'].iteritems():
+                            checks.add({k: v})
+
+                else:
+                    # Look for "parents" Actions
+                    parent = mapper.action_is_about(action, self.policies[policy].keys())
+                    if parent:
+                        for k, v in self.policies[policy][parent].iteritems():
+                            checks.add({k: v})
 
         return checks
