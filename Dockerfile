@@ -2,7 +2,7 @@
 FROM fedora:26
 
 COPY requirements.txt /srv/docker-leash/
-RUN dnf makecache fast \
+RUN dnf makecache \
     && dnf install -y \
         gcc \
         redhat-rpm-config \
