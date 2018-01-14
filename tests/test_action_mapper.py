@@ -153,7 +153,7 @@ class ActionMapperTests(unittest.TestCase):
 
             # Services
             ('GET', '/v1.35/services', 'servicesList'),
-            ('GET', '/v1.35/services?filters=foo', 'servicesList'), # Header Parameters: X-Registry-Auth
+            ('GET', '/v1.35/services?filters=foo', 'servicesList'),  # Header Parameters: X-Registry-Auth
             ('POST', '/v1.35/services/create', 'servicesCreate'),
             ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz', 'servicesInspect'),
             ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz?insertDefaults=true', 'servicesInspect'),
@@ -215,7 +215,7 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/events?filter=foo', 'systemEvents'),
             ('GET', '/v1.35/df', 'systemDataUsage'),
 
-            # Ssession
+            # Session
             ('POST', '/v1.35/session', 'sessionInteractive'),
 
             # Distribution
@@ -241,18 +241,7 @@ class ActionMapperTests(unittest.TestCase):
             'containersChanges',
             'containersExport',
             'containersStats',
-            'containersResizeTTY',
-            'containersStart',
-            'containersStop',
-            'containersRestart',
-            'containersUpdate',
-            'containersRename',
-            'containersPause',
-            'containersUnpause',
-            'containersAttach',
             'containersAttachWebsocket',
-            'containersWait',
-            'containersRemove',
             'containersGetInfoAboutFiles',
             'containersGetFilesystemArchive',
             'containersExtractArchiveToDirectory',
@@ -286,7 +275,6 @@ class ActionMapperTests(unittest.TestCase):
             'volumesPrune',
             'execCreate',
             'execStart',
-            'execResize',
             'execResize',
             'execInspect',
             'swarmInspect',
@@ -331,10 +319,80 @@ class ActionMapperTests(unittest.TestCase):
             'systemInfo',
             'systemVersion',
             'systemEvents',
-            'systemEvents',
             'systemDataUsage',
+            'sessionInteractive',
+            'distributionImageInfo',
         ]
         for check in checks:
             self.assertTrue(mapper.is_action(check))
 
         self.assertFalse(mapper.is_action('esotericAction'))
+
+        def test_is_action_readonly(self):
+            mapper = ActionMapper()
+
+            checks = [
+                'containersList',
+                'containersInspect',
+                'containersListProcess',
+                'containersLogs',
+                'containersChanges',
+                'containersExport',
+                'containersStats',
+                'containersResizeTTY',
+                'containersStart',
+                'containersStop',
+                'containersRestart',
+                'containersUpdate',
+                'containersRename',
+                'containersPause',
+                'containersUnpause',
+                'containersAttach',
+                'containersAttachWebsocket',
+                'containersWait',
+                'containersRemove',
+                'containersGetInfoAboutFiles',
+                'containersGetFilesystemArchive',
+                'containersExtractArchiveToDirectory',
+                'imagesList',
+                'imagesInspect',
+                'imagesHistory',
+                'imagesSearch',
+                'imagesExport',
+                'imagesExportMultiple',
+                'networksList',
+                'networksInspect',
+                'volumesList',
+                'volumesInspect',
+                'execResize',
+                'execInspect',
+                'swarmInspect',
+                'swarmUnlockKey',
+                'nodesList',
+                'nodesInspect',
+                'servicesList',
+                'servicesInspect',
+                'servicesLogs',
+                'tasksList',
+                'tasksInspect',
+                'secretsList',
+                'secretsInspect',
+                'configsList',
+                'configsInspect',
+                'pluginsList',
+                'pluginsPrivileges',
+                'pluginsInspect',
+                'systemPing',
+                'systemRegistryAuth',
+                'systemInfo',
+                'systemVersion',
+                'systemEvents',
+                'systemEvents',
+                'systemDataUsage',
+            ]
+
+            for check in checks:
+                self.assertTrue(mapper.is_readonly(check))
+
+            self.assertFalse(mapper.is_readonly('containersCreate'))
+            self.assertFalse(mapper.is_readonly('esotericAction'))

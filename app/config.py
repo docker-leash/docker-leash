@@ -1,7 +1,7 @@
 # vim:set ts=4 sw=4 et:
 
-from app.checks_list import Checks
 from app.action_mapper import ActionMapper
+from app.checks_list import Checks
 
 
 class Config(object):
@@ -95,14 +95,20 @@ class Config(object):
         if mapper.is_action(action):
             for policy in policies:
 
-                # Look for normal Actions
+                # Look for "normal" Actions
                 if action in self.policies[policy]:
                     for k, v in self.policies[policy][action].iteritems():
                         checks.add({k: v})
 
-                # Look for combined Actions
+                # Look for "any" Actions
                 elif 'any' in self.policies[policy].keys():
                     for k, v in self.policies[policy]['any'].iteritems():
                         checks.add({k: v})
+
+                # Look for "readonly" Actions
+                elif 'readOnly' in self.policies[policy].keys():
+                    if mapper.is_readonly(action):
+                        for k, v in self.policies[policy]['readOnly'].iteritems():
+                            checks.add({k: v})
 
         return checks
