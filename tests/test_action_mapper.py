@@ -186,6 +186,26 @@ class ActionMapperTests(unittest.TestCase):
             ('DELETE', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h', 'configsRemove'),
             ('POST', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h/update', 'configsUpdate'),
             ('POST', '/v1.35/configs/ktnbjxoalbkvbvedmg1urrz8h/update?version=1234', 'configsUpdate'),
+
+            # Plugins
+            ('GET', '/v1.35/plugins', 'pluginsList'),
+            ('GET', '/v1.35/plugins?filters=foo', 'pluginsList'),
+            ('GET', '/v1.35/plugins/privileges', 'pluginsPrivileges'),
+            ('GET', '/v1.35/plugins/privileges?remote=foo', 'pluginsPrivileges'),
+            ('POST', '/v1.35/plugins/pull', 'pluginsInstall'),
+            ('POST', '/v1.35/plugins/pull?remote=foo', 'pluginsInstall'),
+            ('GET', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/json', 'pluginsInspect'),
+            ('DELETE', '/v1.35/plugins/5724e2c8652da337ab2eedd19f', 'pluginsRemove'),
+            ('DELETE', '/v1.35/plugins/5724e2c8652da337ab2eedd19f?force=true', 'pluginsRemove'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/enable', 'pluginsEnable'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/enable?timeout=0', 'pluginsEnable'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/disable', 'pluginsDisable'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/upgrade', 'pluginsUpgrade'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/upgrade?remote=foo', 'pluginsUpgrade'),
+            ('POST', '/v1.35/plugins/create', 'pluginsCreate'),
+            ('POST', '/v1.35/plugins/create?name=foo', 'pluginsCreate'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/push', 'pluginsPush'),
+            ('POST', '/v1.35/plugins/5724e2c8652da337ab2eedd19f/set', 'pluginsConfigure'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
