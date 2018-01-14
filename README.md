@@ -3,6 +3,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/444467f3204246318ddc8a1af5af89bc)](https://www.codacy.com/app/docker-leash/leash-server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=docker-leash/leash-server&amp;utm_campaign=Badge_Grade)
 [![Documentation Status](https://readthedocs.org/projects/docker-leash/badge/?version=latest)](http://docker-leash.readthedocs.io/en/latest/?badge=latest)
 
+**Warning: This is still a work in progress. Things are not yet stable and are subject to change without notice.**
+
 # docker-leash
 A remote AuthZ plugin to enforce granular rules for a Docker multiuser environment.
 
