@@ -1,0 +1,7 @@
+[report]
+omit =
+    */site-packages/*
+    */site-packages/*
+exclude_lines =
+    if __name__ == .__main__.:
+    pragma: no cover
