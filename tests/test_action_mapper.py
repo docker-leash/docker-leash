@@ -106,6 +106,17 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/images/get?names=foo', 'imagesExportMultiple'),
             ('POST', '/v1.35/images/load', 'imagesImport'),
             ('POST', '/v1.35/images/load?quiet=true', 'imagesImport'),
+
+            # Networks
+            ('GET', '/v1.35/networks', 'networksList'),
+            ('GET', '/v1.35/networks?filters=foo', 'networksList'),
+            ('GET', '/v1.35/networks/7d86d31b1478e7cc', 'networksInspect'),
+            ('GET', '/v1.35/networks/7d86d31b1478e7cc?verbose=false', 'networksInspect'),
+            ('DELETE', '/v1.35/networks/7d86d31b1478e7cc', 'networksRemove'),
+            ('POST', '/v1.35/networks/create', 'networksCreate'),
+            ('POST', '/v1.35/networks/7d86d31b1478e7cc/connect', 'networksConnect'),
+            ('POST', '/v1.35/networks/7d86d31b1478e7cc/disconnect', 'networksDisconnect'),
+            ('POST', '/v1.35/networks/prune', 'networksPrune'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
