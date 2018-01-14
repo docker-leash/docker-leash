@@ -1,6 +1,7 @@
 # vim:set ts=4 sw=4 et:
 
 from app.checks_list import Checks
+from app.action_mapper import ActionMapper
 
 
 class Config(object):
@@ -70,7 +71,7 @@ class Config(object):
         """Return the policies to be applied for a user.
 
         :param string user: The username to get policies.
-        :return: The polcies list to be applied.
+        :return: The policies list to be applied.
         :rtype: list
         """
         groups = self._get_groups_for_user(user)
@@ -82,16 +83,26 @@ class Config(object):
     def get_checks_for_user(self, user, action):
         """Return the :mod:`app.checks` to be applied for an user and an action.
 
-        :param string user: The username to get :mod:`app.checks`.
-        :param string action: The action to extract :mod:`app.checks`.
+        :param string user: The username.
+        :param string action: The action to compare.
         :return: The :mod:`app.checks` list to be verified against a payload.
         :rtype: list
         """
         policies = self._get_policies_for_user(user)
         checks = Checks()
+        mapper = ActionMapper()
 
-        for policy in policies:
-            if action in self.policies[policy]:
-                for k, v in self.policies[policy][action].iteritems():
-                    checks.add({k: v})
+        if mapper.is_action(action):
+            for policy in policies:
+
+                # Look for normal Actions
+                if action in self.policies[policy]:
+                    for k, v in self.policies[policy][action].iteritems():
+                        checks.add({k: v})
+
+                # Look for combined Actions
+                elif 'any' in self.policies[policy].keys():
+                    for k, v in self.policies[policy]['any'].iteritems():
+                        checks.add({k: v})
+
         return checks
