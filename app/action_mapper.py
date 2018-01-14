@@ -34,6 +34,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/images/get(\?.*)?(#.*)?$': 'imagesExportMultiple',
             r'^/v\d.\d{2}/networks(\?.*)?(#.*)?$': 'networksList',
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'networksInspect',
+            r'^/v\d.\d{2}/volumes(\?.*)?(#.*)?$': 'volumesList',
+            r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -61,11 +63,14 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+/connect(#.*)?$': 'networksConnect',
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+/disconnect(#.*)?$': 'networksDisconnect',
             r'^/v\d.\d{2}/networks/prune(\?.*)?(#.*)?$': 'networksPrune',
+            r'^/v\d.\d{2}/volumes/create(#.*)?$': 'volumesCreate',
+            r'^/v\d.\d{2}/volumes/prune(\?.*)?(#.*)?$': 'volumesPrune',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
             r'^/v\d.\d{2}/images/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'imagesRemove',
             r'^/v\d.\d{2}/networks/[a-zA-Z0-9_-]+(#.*)?$': 'networksRemove',
+            r'^/v\d.\d{2}/volumes/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'volumesRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',

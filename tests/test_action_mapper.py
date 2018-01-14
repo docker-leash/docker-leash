@@ -117,6 +117,14 @@ class ActionMapperTests(unittest.TestCase):
             ('POST', '/v1.35/networks/7d86d31b1478e7cc/connect', 'networksConnect'),
             ('POST', '/v1.35/networks/7d86d31b1478e7cc/disconnect', 'networksDisconnect'),
             ('POST', '/v1.35/networks/prune', 'networksPrune'),
+
+            # Volumes
+            ('GET', '/v1.35/volumes', 'volumesList'),
+            ('GET', '/v1.35/volumes?filters=foo', 'volumesList'),
+            ('POST', '/v1.35/volumes/create', 'volumesCreate'),
+            ('GET', '/v1.35/volumes/foo', 'volumesInspect'),
+            ('DELETE', '/v1.35/volumes/foo', 'volumesRemove'),
+            ('POST', '/v1.35/volumes/prune', 'volumesPrune'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
