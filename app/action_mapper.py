@@ -44,6 +44,8 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/services(\?.*)?(#.*)?$': 'servicesList',
             r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'servicesInspect',
             r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+/logs(\?.*)?(#.*)?$': 'servicesLogs',
+            r'^/v\d.\d{2}/tasks(\?.*)?(#.*)?$': 'tasksList',
+            r'^/v\d.\d{2}/tasks/[a-zA-Z0-9_-]+(#.*)?$': 'tasksInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
