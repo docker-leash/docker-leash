@@ -50,6 +50,9 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+(#.*)?$': 'secretsInspect',
             r'^/v\d.\d{2}/configs(\?.*)?(#.*)?$': 'configsList',
             r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+(#.*)?$': 'configsInspect',
+            r'^/v\d.\d{2}/plugins(\?.*)?(#.*)?$': 'pluginsList',
+            r'^/v\d.\d{2}/plugins/privileges(\?.*)?(#.*)?$': 'pluginsPrivileges',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/json(#.*)?$': 'pluginsInspect',
         },
         'POST': {
             r'^/v\d.\d{2}/containers/create(\?.*)?(#.*)?$': 'containersCreate',
@@ -94,6 +97,13 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'secretsUpdate',
             r'^/v\d.\d{2}/configs/create(#.*)?$': 'configsCreate',
             r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+/update(\?.*)?(#.*)?$': 'configsUpdate',
+            r'^/v\d.\d{2}/plugins/pull(\?.*)?(#.*)?$': 'pluginsInstall',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/enable(\?.*)?(#.*)?$': 'pluginsEnable',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/disable(#.*)?$': 'pluginsDisable',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/upgrade(\?.*)?(#.*)?$': 'pluginsUpgrade',
+            r'^/v\d.\d{2}/plugins/create(\?.*)?(#.*)?$': 'pluginsCreate',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/push(\?.*)?(#.*)?$': 'pluginsPush',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+/set(\?.*)?(#.*)?$': 'pluginsConfigure',
         },
         'DELETE': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'containersRemove',
@@ -104,6 +114,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/services/[a-zA-Z0-9_-]+(#.*)?$': 'servicesRemove',
             r'^/v\d.\d{2}/secrets/[a-zA-Z0-9_-]+(#.*)?$': 'secretsRemove',
             r'^/v\d.\d{2}/configs/[a-zA-Z0-9_-]+(#.*)?$': 'configsRemove',
+            r'^/v\d.\d{2}/plugins/[a-zA-Z0-9_-]+(\?.*)?(#.*)?$': 'pluginsRemove',
         },
         'HEAD': {
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/archive(\?.*)?(#.*)?$': 'containersGetInfoAboutFiles',
