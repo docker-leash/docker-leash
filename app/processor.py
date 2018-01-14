@@ -40,7 +40,7 @@ class Processor(object):
         :type body: string or dict or None
         :raises UnauthorizedException: if no rule is defined, or if the check deny the request.
         """
-        data = json.loads(body) if type(body) is str else body
+        data = json.loads(body) if isinstance(body, str) else body
 
         payload = Payload(data)
         action = ActionMapper().get_action_name(method=payload.method, uri=payload.uri)
