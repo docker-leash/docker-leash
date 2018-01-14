@@ -152,7 +152,6 @@ class ConfigTests(unittest.TestCase):
         policies = config._get_policies_for_user(None)
         self.assertEqual(len(policies), 1)
         self.assertTrue('readonly' in policies)
-        self.assertTrue(policies, 2)
 
     def test_get_policies_for_user(self):
         config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
@@ -197,7 +196,6 @@ class ConfigTests(unittest.TestCase):
 
         self.assertEqual(len(checks), 4)
         self.assertEqual(checks, attended_result)
-
 
     def test_get_policies_for_user_manual_config(self):
         groups = {
