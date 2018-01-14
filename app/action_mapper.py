@@ -3,7 +3,7 @@
 import re
 
 
-class ActionMapper():
+class ActionMapper(object):
     """The :class:`app.action_mapper.ActionMapper` class is responsible for mapping `RequestMethod` and `RequestUri` to
     a keyword usable in the application configured rules.
 

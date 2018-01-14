@@ -13,7 +13,7 @@ from app.leash_server import app
 from app.payload import Payload
 
 
-class Processor():
+class Processor(object):
     """The :class:`Processor` class is responsible for launching all the :mod:`app.checks` defined in the configuration for
     the triplet `User`, `RequestMethod` and `RequestUri`.
     """
