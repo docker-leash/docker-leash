@@ -8,7 +8,7 @@ from app.checks_list import Checks
 class ChecksTests(unittest.TestCase):
 
     def test_init(self):
-        checks = Checks()
+        Checks()
 
     def test_contains(self):
         item = {'Allow': None}

@@ -215,13 +215,6 @@ class ConfigTests(unittest.TestCase):
             }
         }
 
-        body = {
-            "User": "someone",
-            "RequestMethod": "POST",
-            "RequestUri": "/v1.32/containers/create",
-            "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
-        }
-
         config = Config(groups, policies)
 
         policies = config._get_policies_for_user('rda')
