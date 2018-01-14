@@ -46,7 +46,8 @@ mocked_body = {
 
 class ProcessorTests(unittest.TestCase):
 
-    def test_init(self):
+    @classmethod
+    def test_init(cls):
         Processor()
 
     def test_config_is_shared(self):
@@ -81,12 +82,14 @@ class ProcessorTests(unittest.TestCase):
         self.assertEqual(len(processor.config.groups), 1)
         self.assertEqual(len(processor.config.policies), 2)
 
-    def test_run_without_exception(self):
+    @classmethod
+    def test_run_without_exception(cls):
         processor = Processor()
         processor.config = Config(groups_allow, policies)
         processor.run(body=mocked_body)
 
-    def test_run_simple_allow(self):
+    @classmethod
+    def test_run_simple_allow(cls):
         processor = Processor()
         processor.config = Config(groups_allow, policies)
         processor.run(body=mocked_body)
@@ -97,7 +100,8 @@ class ProcessorTests(unittest.TestCase):
         with self.assertRaises(UnauthorizedException):
             processor.run(body=mocked_body)
 
-    def test_run_simple_allow_as_string(self):
+    @classmethod
+    def test_run_simple_allow_as_string(cls):
         processor = Processor()
         processor.config = Config(groups_allow, policies)
         processor.run(body=json.dumps(mocked_body))
@@ -108,7 +112,8 @@ class ProcessorTests(unittest.TestCase):
         with self.assertRaises(UnauthorizedException):
             processor.run(body=json.dumps(mocked_body))
 
-    def test_process_simple_allow(self):
+    @classmethod
+    def test_process_simple_allow(cls):
         payload = Payload(mocked_body)
         check = Checks()._structure_convert({"Allow": None})
 

@@ -8,6 +8,7 @@ from app.config import Config
 
 class CheckAllowTests(unittest.TestCase):
 
-    def test_init(self):
+    @classmethod
+    def test_init(cls):
         allow = Allow()
         allow.run(Config(), {})
