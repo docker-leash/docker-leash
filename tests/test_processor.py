@@ -47,7 +47,7 @@ mocked_body = {
 class ProcessorTests(unittest.TestCase):
 
     def test_init(self):
-        processor = Processor()
+        Processor()
 
     def test_config_is_shared(self):
         processor1 = Processor()

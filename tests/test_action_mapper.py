@@ -8,7 +8,7 @@ from app.action_mapper import ActionMapper
 class ActionMapperTests(unittest.TestCase):
 
     def test_init(self):
-        mapper = ActionMapper()
+        ActionMapper()
 
     def test_get_action_name(self):
         mapper = ActionMapper()

@@ -27,7 +27,7 @@ mocked_body_anonymous_2 = {
 class payloadTests(unittest.TestCase):
 
     def test_init(self):
-        payload = Payload()
+        Payload()
 
     def test_payload_is_not_shared(self):
         payload1 = Payload()
