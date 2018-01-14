@@ -8,7 +8,7 @@
 # docker-leash
 A remote AuthZ plugin to enforce granular rules for a Docker multiuser environment.
 
-Have you ever wanted to restrict users on your system to manage only certain containers? Did you ever wanted to restrict witch path can be bind mounted? Did you ever wanted to log every commands run by your users? If 'yes', then `docker-leash` is for you.
+Have you ever wanted to restrict users on your system to manage only certain containers? Did you ever wanted to restrict witch path can be bind mounted? Did you ever wanted to log every commands run by your users? Did you ever need to restrict where images can pushed or pulled? If 'yes', then `docker-leash` is for you.
 
 Docker Leash is a centralized point for managing authorization for your docker daemon. It is distributed as a web application backed by `Flask`.
 
