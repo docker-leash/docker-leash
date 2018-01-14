@@ -151,6 +151,18 @@ class ActionMapperTests(unittest.TestCase):
             ('DELETE', '/v1.35/nodes/24ifsmvkjbyhk?force=true', 'nodesRemove'),
             ('POST', '/v1.35/nodes/24ifsmvkjbyhk/update', 'nodesUpdate'),
             ('POST', '/v1.35/nodes/24ifsmvkjbyhk/update?version=1234', 'nodesUpdate'),
+
+            # Services
+            ('GET', '/v1.35/services', 'servicesList'),
+            ('GET', '/v1.35/services?filters=foo', 'servicesList'), # Header Parameters: X-Registry-Auth
+            ('POST', '/v1.35/services/create', 'servicesCreate'),
+            ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz', 'servicesInspect'),
+            ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz?insertDefaults=true', 'servicesInspect'),
+            ('DELETE', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz', 'servicesRemove'),
+            ('POST', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/update', 'servicesUpdate'),
+            ('POST', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/update?version=1234', 'servicesUpdate'),
+            ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/logs', 'servicesLogs'),
+            ('GET', '/v1.35/services/9mnpnzenvg8p8tdbtq4wvbkcz/logs?details=true', 'servicesLogs'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
