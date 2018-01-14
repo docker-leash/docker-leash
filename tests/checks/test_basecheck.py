@@ -4,7 +4,6 @@ import unittest
 
 from app.checks.base import BaseCheck
 from app.config import Config
-from app.exceptions import UnauthorizedException
 
 
 class BaseCheckTests(unittest.TestCase):

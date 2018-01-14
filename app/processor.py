@@ -1,6 +1,5 @@
 # vim:set ts=4 sw=4 et:
 
-import base64
 import json
 
 import yaml
