@@ -168,6 +168,15 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/tasks', 'tasksList'),
             ('GET', '/v1.35/tasks?filters=foo', 'tasksList'),
             ('GET', '/v1.35/tasks/0kzzo1i0y4jz6027t0k7aezc7', 'tasksInspect'),
+
+            # Secrets
+            ('GET', '/v1.35/secrets', 'secretsList'),
+            ('GET', '/v1.35/secrets?filters=foo', 'secretsList'),
+            ('POST', '/v1.35/secrets/create', 'secretsCreate'),
+            ('GET', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h', 'secretsInspect'),
+            ('DELETE', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h', 'secretsRemove'),
+            ('POST', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h/update', 'secretsUpdate'),
+            ('POST', '/v1.35/secrets/ktnbjxoalbkvbvedmg1urrz8h/update?version=1234', 'secretsUpdate'),
         ]
         for check in checks:
             action = mapper.get_action_name(method=check[0], uri=check[1])
