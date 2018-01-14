@@ -272,3 +272,17 @@ class ActionMapper(object):
         :rtype: bool
         """
         return action in self._actions.keys() and self._actions[action] in ('GET', 'HEAD')
+
+    def action_is_about(self, action_name, action_parent):
+        """Check if an action name is action parent category.
+
+        :param string action_name: The action name to check
+        :param string or list action_parent: The action parent to check against
+        :return: The parent if found
+        :rtype: string
+        """
+        parents = action_parent if isinstance(action_parent, list) else [action_parent]
+        for parent in parents:
+            if action_name and parent and action_name.startswith(parent):
+                return parent
+        return None

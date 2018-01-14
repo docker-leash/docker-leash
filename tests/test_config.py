@@ -324,3 +324,28 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
         self.assertEqual(len(config.get_checks_for_user('mal', 'networksPrune')), 1)
         self.assertEqual(len(config.get_checks_for_user('mal', 'pluginsInstall')), 1)
+
+    def test_validate_action_parent(self):
+
+        groups = {
+            "everyone": {
+                "policies": ["check_containers"],
+                "members": ["*"]
+            },
+        }
+
+        policies = {
+            "check_containers": {
+                "containers": {
+                    "Allow": None
+                }
+            },
+        }
+        config = Config(groups, policies)
+
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersList')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 0)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'systemPing')), 0)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'volumesList')), 0)
