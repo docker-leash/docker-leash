@@ -27,7 +27,7 @@ restricted:
     Deny:
 
 readonly:
-  ping:
+  systemPing:
     Allow:
   containersList:
     Allow:
