@@ -10,6 +10,9 @@ class ActionMapper(object):
     :var _MAP: Internal structure to map API actions to keyword.
     :vartype _MAP: dict
 
+    :var _actions: Internal structure to store actions to keywords.
+    :vartype _actions: list
+
     ..todo::
       The regex need to be reviewed
     """
@@ -131,6 +134,109 @@ class ActionMapper(object):
         },
     }
 
+    _actions = [
+        'containersList',
+        'containersCreate',
+        'containersInspect',
+        'containersListProcess',
+        'containersLogs',
+        'containersChanges',
+        'containersExport',
+        'containersStats',
+        'containersResizeTTY',
+        'containersStart',
+        'containersStop',
+        'containersRestart',
+        'containersUpdate',
+        'containersRename',
+        'containersPause',
+        'containersUnpause',
+        'containersAttach',
+        'containersAttachWebsocket',
+        'containersWait',
+        'containersRemove',
+        'containersGetInfoAboutFiles',
+        'containersGetFilesystemArchive',
+        'containersExtractArchiveToDirectory',
+        'containersPrune',
+        'imagesList',
+        'imagesBuild',
+        'imagesDeleteBuilderCache',
+        'imagesCreate',
+        'imagesInspect',
+        'imagesHistory',
+        'imagesPush',
+        'imagesTag',
+        'imagesRemove',
+        'imagesSearch',
+        'imagesPrune',
+        'imagesCommit',
+        'imagesExport',
+        'imagesExportMultiple',
+        'imagesImport',
+        'networksList',
+        'networksInspect',
+        'networksRemove',
+        'networksCreate',
+        'networksConnect',
+        'networksDisconnect',
+        'networksPrune',
+        'volumesList',
+        'volumesCreate',
+        'volumesInspect',
+        'volumesRemove',
+        'volumesPrune',
+        'execCreate',
+        'execStart',
+        'execResize',
+        'execResize',
+        'execInspect',
+        'swarmInspect',
+        'swarmInitialize',
+        'swarmJoin',
+        'swarmLeave',
+        'swarmUpdate',
+        'swarmUnlockKey',
+        'swarmUnlock',
+        'nodesList',
+        'nodesInspect',
+        'nodesRemove',
+        'nodesUpdate',
+        'servicesList',
+        'servicesCreate',
+        'servicesInspect',
+        'servicesRemove',
+        'servicesUpdate',
+        'servicesLogs',
+        'tasksList',
+        'tasksInspect',
+        'secretsList',
+        'secretsCreate',
+        'secretsInspect',
+        'secretsRemove',
+        'secretsUpdate',
+        'configsList',
+        'configsCreate',
+        'configsInspect',
+        'configsRemove',
+        'configsUpdate',
+        'pluginsList',
+        'pluginsPrivileges',
+        'pluginsInstall',
+        'pluginsInspect',
+        'pluginsRemove',
+        'pluginsEnable',
+        'pluginsDisable',
+        'pluginsUpgrade',
+        'systemPing',
+        'systemRegistryAuth',
+        'systemInfo',
+        'systemVersion',
+        'systemEvents',
+        'systemEvents',
+        'systemDataUsage',
+    ]
+
     def get_action_name(self, method=None, uri=None):
         """Return the keyword for a `RequestMethod` and `RequestUri` tuple.
 
@@ -148,3 +254,12 @@ class ActionMapper(object):
         for reg, name in self._MAP[method].iteritems():
             if re.match(reg, uri):
                 return name
+
+    def is_action(self, action=None):
+        """Check if an action is recognized.
+
+        :param string action: The action name to check
+        :return: True if the action is recognized
+        :rtype: bool
+        """
+        return action in self._actions

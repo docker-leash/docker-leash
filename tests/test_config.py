@@ -218,3 +218,53 @@ class ConfigTests(unittest.TestCase):
         policies = config._get_policies_for_user('rda')
         self.assertEqual(len(policies), 1)
         self.assertTrue('allow_all' in policies)
+
+    def test_validate_action_name_exists(self):
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        self.assertEqual(len(config.get_checks_for_user('mal', 'someUnexistentAction')), 0)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
+
+    def test_validate_action_name_exists_with_the_any_action(self):
+
+        groups = {
+            "everyone": {
+                "policies": ["openbar"],
+                "members": ["*"]
+            },
+        }
+
+        policies = {
+            "openbar": {
+                "any": {
+                    "Allow": None
+                }
+            },
+        }
+        config = Config(groups, policies)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'any')), 0)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'someUnexistentAction')), 0)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
+
+    def test_validate_the_any_action(self):
+
+        groups = {
+            "everyone": {
+                "policies": ["openbar"],
+                "members": ["*"]
+            },
+        }
+
+        policies = {
+            "openbar": {
+                "any": {
+                    "Allow": None
+                }
+            },
+        }
+        config = Config(groups, policies)
+
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 1)
+        self.assertEqual(len(config.get_checks_for_user('mal', 'networksPrune')), 1)
