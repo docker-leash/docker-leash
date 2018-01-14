@@ -139,7 +139,7 @@ def authz_request():
         print "REQUEST DENIED: %s\n" % str(e)
         return jsonify({
             "Allow": False,
-            "Msg": e.trace
+            "Msg": str(e)
         })
 
     print "REQUEST ALLOWED\n"
