@@ -4,11 +4,11 @@ API Documentation
 Summary
 -------
 
-.. .. qrefflask:: app.leash_server:main()
+.. .. qrefflask:: docker_leash.leash_server:main()
 ..   :undoc-static:
 
 API Details
 -----------
 
-.. autoflask:: app.leash_server:app
+.. autoflask:: docker_leash.leash_server:app
   :undoc-static:

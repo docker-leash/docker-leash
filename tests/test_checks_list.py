@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.checks_list import Checks
+from docker_leash.checks_list import Checks
 
 
 class ChecksTests(unittest.TestCase):

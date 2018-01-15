@@ -15,7 +15,7 @@ install:
 env:
   - DEBUG=false
 script:
-  - nosetests tests/ -v --with-coverage --cover-xml --cover-package=app
+  - nosetests tests/ -v --with-coverage --cover-xml --cover-package=docker_leash
 after_success:
   - 'bash <(curl -s https://codecov.io/bash)'
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then python-codacy-coverage -r coverage.xml; fi'

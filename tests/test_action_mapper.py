@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.action_mapper import ActionMapper
+from docker_leash.action_mapper import ActionMapper
 
 
 class ActionMapperTests(unittest.TestCase):

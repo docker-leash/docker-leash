@@ -2,8 +2,8 @@
 
 import unittest
 
-from app.checks.allow import Allow
-from app.config import Config
+from docker_leash.checks.allow import Allow
+from docker_leash.config import Config
 
 
 class CheckAllowTests(unittest.TestCase):

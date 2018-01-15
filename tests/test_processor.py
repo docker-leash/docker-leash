@@ -3,11 +3,11 @@
 import json
 import unittest
 
-from app.checks_list import Checks
-from app.config import Config
-from app.exceptions import UnauthorizedException
-from app.payload import Payload
-from app.processor import Processor
+from docker_leash.checks_list import Checks
+from docker_leash.config import Config
+from docker_leash.exceptions import UnauthorizedException
+from docker_leash.payload import Payload
+from docker_leash.processor import Processor
 
 groups_allow = {
     'all': {

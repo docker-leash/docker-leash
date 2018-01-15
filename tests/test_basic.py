@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.leash_server import app
+from docker_leash.leash_server import app
 
 class BasicTests(unittest.TestCase):
 

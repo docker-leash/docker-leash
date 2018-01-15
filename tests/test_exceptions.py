@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.exceptions import NotForMeException, UnauthorizedException
+from docker_leash.exceptions import NotForMeException, UnauthorizedException
 
 
 class ExceptionsTests(unittest.TestCase):

@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.config import Config
+from docker_leash.config import Config
 
 MOCKED_GROUPS = {
     "admins": {

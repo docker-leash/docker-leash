@@ -4,7 +4,7 @@ import base64
 import json
 import unittest
 
-from app.leash_server import app
+from docker_leash.leash_server import app
 
 
 def is_success(response):

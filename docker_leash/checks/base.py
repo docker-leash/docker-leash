@@ -2,7 +2,7 @@
 
 
 class BaseCheck(object):
-    """The :class:`app.action_mapper.BaseCheck` class is the base class for all the checks."""
+    """The :class:`docker_leash.action_mapper.BaseCheck` class is the base class for all the checks."""
 
     def run(self, config, payload):
         """Run the module checks.
@@ -16,9 +16,9 @@ class BaseCheck(object):
            This function *must* be overrided in each check modules.
 
         :param config: The currently loaded configuration
-        :type config: :class:`app.config.Config`
+        :type config: :class:`docker_leash.config.Config`
         :param payload: The payload of the current request.
-        :type payload: :class:`app.payload.Payload`
+        :type payload: :class:`docker_leash.payload.Payload`
         """
         raise NotImplementedError(
             "'run' mot implemented in module `%s`" % self.__class__.__name__

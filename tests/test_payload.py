@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.payload import Payload
+from docker_leash.payload import Payload
 
 mocked_body = {
     "User": "someone",

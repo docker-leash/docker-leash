@@ -4,7 +4,7 @@ import re
 
 
 class ActionMapper(object):
-    """The :class:`app.action_mapper.ActionMapper` class is responsible for mapping `RequestMethod` and `RequestUri` to
+    """The :class:`docker_leash.action_mapper.ActionMapper` class is responsible for mapping `RequestMethod` and `RequestUri` to
     a keyword usable in the application configured rules.
 
     :var _MAP: Internal structure to map API actions to keyword.
