@@ -12,8 +12,8 @@ class Allow(BaseCheck):
         Say yes is easy, just dont raise any exception ;)
 
         :param config: The currently loaded configuration
-        :type config: :class:`app.config.Config`
+        :type config: :class:`docker_leash.config.Config`
         :param payload: The payload of the current request.
-        :type payload: :class:`app.payload.Payload`
+        :type payload: :class:`docker_leash.payload.Payload`
         """
         pass

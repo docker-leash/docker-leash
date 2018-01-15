@@ -10,7 +10,7 @@ class DockerLeashException(BaseException):
 class UnauthorizedException(DockerLeashException):
     """Exception for unauthorized action.
 
-    All :mod:`app.checks` modules must return this exception in order to deny the action to the user.
+    All :mod:`docker_leash.checks` modules must return this exception in order to deny the action to the user.
     """
 
     def __init__(self, value):

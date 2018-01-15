@@ -1,7 +1,7 @@
 # vim:set ts=4 sw=4 et:
 
-from app.action_mapper import ActionMapper
-from app.checks_list import Checks
+from .action_mapper import ActionMapper
+from .checks_list import Checks
 
 
 class Config(object):
@@ -81,11 +81,11 @@ class Config(object):
         return policies
 
     def get_checks_for_user(self, user, action):
-        """Return the :mod:`app.checks` to be applied for an user and an action.
+        """Return the :mod:`docker_leash.checks` to be applied for an user and an action.
 
         :param string user: The username.
         :param string action: The action to compare.
-        :return: The :mod:`app.checks` list to be verified against a payload.
+        :return: The :mod:`docker_leash.checks` list to be verified against a payload.
         :rtype: list
         """
         policies = self._get_policies_for_user(user)

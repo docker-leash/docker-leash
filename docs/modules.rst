@@ -1,7 +1,7 @@
-app
-===
+docker_leash
+============
 
 .. toctree::
    :maxdepth: 4
 
-   app
+   docker_leash

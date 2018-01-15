@@ -7,9 +7,9 @@ This module is responsible for dispatching HTTP requests.
 
 import sys
 
-from app import app
-from app.exceptions import UnauthorizedException
-from app.processor import Processor
+from . import app
+from .exceptions import UnauthorizedException
+from .processor import Processor
 from flask import jsonify, request
 
 sys.dont_write_bytecode = True

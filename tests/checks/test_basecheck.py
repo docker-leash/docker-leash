@@ -2,8 +2,8 @@
 
 import unittest
 
-from app.checks.base import BaseCheck
-from app.config import Config
+from docker_leash.checks.base import BaseCheck
+from docker_leash.config import Config
 
 
 class BaseCheckTests(unittest.TestCase):

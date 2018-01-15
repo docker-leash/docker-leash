@@ -2,10 +2,10 @@
 
 
 class Checks(object):
-    """The :class:`app.checks_list.Checks` class is responsible for storing and deduplicating the checks to be launched.
+    """The :class:`docker_leash.checks_list.Checks` class is responsible for storing and deduplicating the checks to be launched.
 
-    :var `app.checks_list.Checks.checks`: The check list.
-    :vartype `app.checks_list.Checks.checks`: list
+    :var `docker_leash.checks_list.Checks.checks`: The check list.
+    :vartype `docker_leash.checks_list.Checks.checks`: list
     """
 
     #:list: Internal storage of the checks to be applied.

@@ -1,6 +1,6 @@
 # vim:set ts=4 sw=4 et:
 
-from app.exceptions import UnauthorizedException
+from ..exceptions import UnauthorizedException
 
 from .base import BaseCheck
 
@@ -14,8 +14,8 @@ class Deny(BaseCheck):
         Say no is easy, just raise an :class:`UnauthorizedException` ;)
 
         :param config: The currently loaded configuration
-        :type config: :class:`app.config.Config`
+        :type config: :class:`docker_leash.config.Config`
         :param payload: The payload of the current request.
-        :type payload: :class:`app.payload.Payload`
+        :type payload: :class:`docker_leash.payload.Payload`
         """
         raise UnauthorizedException("Operation denied by configuration.")
