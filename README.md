@@ -3,14 +3,38 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/444467f3204246318ddc8a1af5af89bc)](https://www.codacy.com/app/docker-leash/leash-server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=docker-leash/leash-server&amp;utm_campaign=Badge_Grade)
 [![Documentation Status](https://readthedocs.org/projects/docker-leash/badge/?version=latest)](http://docker-leash.readthedocs.io/en/latest/?badge=latest)
 
-**Warning: This is still a work in progress. Things are not yet stable and are subject to change without notice.**
-
 # docker-leash
 A remote AuthZ plugin to enforce granular rules for a Docker multiuser environment.
 
 Have you ever wanted to restrict users on your system to manage only certain containers? Did you ever wanted to restrict witch path can be bind mounted? Did you ever wanted to log every commands run by your users? Did you ever need to restrict where images can pushed or pulled? If 'yes', then `docker-leash` is for you.
 
 Docker Leash is a centralized point for managing authorization for your docker daemon. It is distributed as a web application backed by `Flask`.
+
+**Warning: This is still a work in progress. Things are not yet stable and are subject to change without notice.**
+
+* [Installation](#installation)
+  * [Install the server](#install-the-server)
+    * [Using virtualenv](#using-virtualenv)
+      * [Running the service](#running-the-service)
+        * [Using flask internal webserver](#using-flask-internal-webserver)
+        * [Using gunicorn](#using-gunicorn)
+    * [Using Docker container](#using-docker-container)
+      * [Building the image](#building-the-image)
+      * [Running the service](#running-the-service)
+  * [Install local docker plugin](#install-local-docker-plugin)
+    * [Create your docker plugin](#create-your-docker-plugin)
+    * [Install your docker plugin](#install-your-docker-plugin)
+  * [Authenticating to the daemon](#authenticating-to-the-daemon)
+* [Configure the rules](#configure-the-rules)
+  * [Policies configuration file format](#policies-configuration-file-format)
+    * [Docker actions list](#docker-actions-list)
+    * [Checks list](#checks-list)
+  * [Groups configuration file format](#groups-configuration-file-format)
+  * [Examples](#examples)
+    * [Everything is possible (as without the plugin)](#everything-is-possible-as-without-the-plugin)
+    * [Read only / write](#read-only--write)
+    * [Restrict by container name](#restrict-by-container-name)
+* [Contribute](#contribute)
 
 # Installation
 The server could be launched from a `virtualenv` or a `docker container`. Even if it is not mandatory, we recommend to run the service over TLS, so use any reverse proxy you are used to. Also, `Flask` ship an internal webserver, it should be avoided on production, just use a dedicated WSGI HTTP Server like `gunicorn` or `wsgi`.
@@ -112,7 +136,7 @@ If no matching `docker action` are defined for a specific action, then the defau
 On `docker action` we can attach some `checks`. When a request is received, all `checks` are passed over the payload for the `docker action`.
 If one of the check fail, then the whole request is refused. If no `check` fail then the action is authorized.
 
-## policies configuration file format
+## Policies configuration file format
 
 ```
 ---
@@ -219,7 +243,7 @@ deny | Just say no
 
 Note: More checks to come. See the issues on our [repository](https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Amodule).
 
-## groups configuration file format
+## Groups configuration file format
 Here is a sample `groups.yml` file.
 ```
 ---
