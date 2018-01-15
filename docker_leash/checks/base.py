@@ -4,7 +4,7 @@
 class BaseCheck(object):
     """The :class:`docker_leash.action_mapper.BaseCheck` class is the base class for all the checks."""
 
-    def run(self, config, payload):
+    def run(self, args, payload):
         """Run the module checks.
 
         The implemented check module receive the global configuration and the current payload. It is autonomous in how
@@ -15,8 +15,8 @@ class BaseCheck(object):
         .. warning::
            This function *must* be overrided in each check modules.
 
-        :param config: The currently loaded configuration
-        :type config: :class:`docker_leash.config.Config`
+        :param args: The module arguments from the config
+        :type args: list or dict or string or None
         :param payload: The payload of the current request.
         :type payload: :class:`docker_leash.payload.Payload`
         """

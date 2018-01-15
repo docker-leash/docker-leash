@@ -65,4 +65,4 @@ class Processor(object):
         :raises UnauthorizedException: if the check deny the request.
         """
         check_action = getattr(checks, check['name'])()
-        check_action.run(self.config, payload)
+        check_action.run(check['args'], payload)
