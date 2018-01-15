@@ -15,7 +15,7 @@ from flask import jsonify, request
 sys.dont_write_bytecode = True
 
 
-__version__ = '0.0.1dev'
+__version__ = '0.0.1.dev0'
 
 
 @app.route('/')
