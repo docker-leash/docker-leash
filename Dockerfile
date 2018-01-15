@@ -13,6 +13,4 @@ RUN dnf makecache \
 COPY . /srv/docker-leash
 
 WORKDIR /srv/docker-leash
-CMD ["--workers=1", "--bind=0.0.0.0:65000", "--chdir=/srv/docker-leash", "--reload", "app:app"]
-
-# gunicorn --workers=1 --bind=0.0.0.0:65000 --chdir=/srv/docker-leash --reload app:app
+CMD ["gunicorn", "--workers=5", "--bind=0.0.0.0:80", "--chdir=/srv/docker-leash", "app.leash_server:app"]
