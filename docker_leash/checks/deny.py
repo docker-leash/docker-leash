@@ -8,13 +8,13 @@ from .base import BaseCheck
 class Deny(BaseCheck):
     """A simple module that say `no`."""
 
-    def run(self, config, payload):
+    def run(self, args, payload):
         """Run the module checks.
 
         Say no is easy, just raise an :class:`UnauthorizedException` ;)
 
-        :param config: The currently loaded configuration
-        :type config: :class:`docker_leash.config.Config`
+        :param args: The module arguments from the config
+        :type args: list or dict or string or None
         :param payload: The payload of the current request.
         :type payload: :class:`docker_leash.payload.Payload`
         """
