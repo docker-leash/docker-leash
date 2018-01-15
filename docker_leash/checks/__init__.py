@@ -6,4 +6,6 @@ __all__ = [
 ]
 
 from .allow import Allow
+from .allow import Allow as ContainerName
 from .deny import Deny
+from .bind_volumes import BindVolumes
