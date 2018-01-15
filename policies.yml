@@ -12,14 +12,14 @@ openbar:
 
 personnal:
   containersCreate:
-    containerNameCheck:
+    ContainerName:
       startwith:
         - foo
         - bar
 
 restricted:
   containersCreate:
-    pathCheck:
+    BindVolumes:
       - "-/"
       - "+/home/$USER"
       - "+/0"
