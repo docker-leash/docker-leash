@@ -30,12 +30,13 @@ class Checks(object):
         if data not in self:
             self.checks.append(self._structure_convert(data))
 
-    @classmethod
-    def _structure_convert(cls, data):
+    @staticmethod
+    def _structure_convert(data):
         """An internal helper that will convert structure
         from the configuration to a better internal format.
 
         :param dict data: The check to append.
+                          It is a dictionary with a single key / value.
         :return: The reformatted test and arguments.
         :rtype: dict
         """
