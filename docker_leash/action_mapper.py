@@ -1,10 +1,15 @@
 # vim:set ts=4 sw=4 et:
+'''
+ActionMapper
+============
+'''
 
 import re
 
 
 class ActionMapper(object):
-    """The :class:`docker_leash.action_mapper.ActionMapper` class is responsible for mapping `RequestMethod` and `RequestUri` to
+    """The :class:`ActionMapper` class is responsible for mapping
+    `RequestMethod` and `RequestUri` to
     a keyword usable in the application configured rules.
 
     :var _MAP: Internal structure to map API actions to keyword.
@@ -13,8 +18,8 @@ class ActionMapper(object):
     :var _actions: Internal structure to store actions to keywords.
     :vartype _actions: list
 
-    ..todo::
-      The regex need to be reviewed
+    .. todo::
+       The regex need to be reviewed.
     """
 
     _MAP = {
@@ -254,6 +259,8 @@ class ActionMapper(object):
         for reg, name in self._MAP[method].iteritems():
             if re.match(reg, uri):
                 return name
+
+        return None
 
     def is_action(self, action=None):
         """Check if an action is recognized.

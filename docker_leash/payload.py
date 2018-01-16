@@ -1,11 +1,16 @@
 # vim:set ts=4 sw=4 et:
+'''
+Payload
+=======
+'''
 
 import base64
 import json
 
 
 class Payload(object):
-    """The :class:`Payload` class is responsible for decoding and storing the current analyzed request.
+    """The :class:`Payload` class is responsible for decoding and storing
+    the current analyzed request.
 
     :var data: The full request payload.
     :vartype data: dict or None
@@ -73,10 +78,10 @@ class Payload(object):
         :return: The username.
         :rtype: string or None
         """
-        if payload is None:
-            return
-        if "User" in payload and payload["User"]:
+        if payload and "User" in payload and payload["User"]:
             return payload["User"]
+
+        return None
 
     @classmethod
     def _get_method(cls, payload):
@@ -86,10 +91,10 @@ class Payload(object):
         :return: The method name.
         :rtype: string or None
         """
-        if payload is None:
-            return
-        if "RequestMethod" in payload and payload["RequestMethod"]:
+        if payload and "RequestMethod" in payload and payload["RequestMethod"]:
             return payload["RequestMethod"]
+
+        return None
 
     @classmethod
     def _get_uri(cls, payload):
@@ -99,7 +104,7 @@ class Payload(object):
         :return: The Uri.
         :rtype: string or None
         """
-        if payload is None:
-            return
-        if "RequestUri" in payload and payload["RequestUri"]:
+        if payload and "RequestUri" in payload and payload["RequestUri"]:
             return payload["RequestUri"]
+
+        return None

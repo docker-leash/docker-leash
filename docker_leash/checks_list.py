@@ -1,8 +1,13 @@
 # vim:set ts=4 sw=4 et:
+'''
+Checks
+======
+'''
 
 
 class Checks(object):
-    """The :class:`docker_leash.checks_list.Checks` class is responsible for storing and deduplicating the checks to be launched.
+    """The :class:`Checks` class is responsible for storing
+    and deduplicating the checks to be launched.
 
     :var `docker_leash.checks_list.Checks.checks`: The check list.
     :vartype `docker_leash.checks_list.Checks.checks`: list
@@ -17,7 +22,8 @@ class Checks(object):
     def add(self, data):
         """Add a check to the list.
 
-        If the same check is already in the list, it will silently be discarded.
+        If the same check is already in the list,
+        it will silently be discarded.
 
         :param dict data: The check to append.
         """
@@ -26,14 +32,15 @@ class Checks(object):
 
     @classmethod
     def _structure_convert(cls, data):
-        """An internal helper that will convert structure from the configuration to a better internal format.
+        """An internal helper that will convert structure
+        from the configuration to a better internal format.
 
         :param dict data: The check to append.
         :return: The reformatted test and arguments.
         :rtype: dict
         """
-        for k, v in data.iteritems():
-            return {'name': k, 'args': v}
+        for key, val in data.iteritems():
+            return {'name': key, 'args': val}
 
     def __contains__(self, data):
         _data = self._structure_convert(data)

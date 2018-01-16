@@ -1,4 +1,9 @@
 # vim:set ts=4 sw=4 et:
+'''
+A remote AuthZ plugin to enforce granular rules \
+for a Docker multiuser environment
+
+'''
 
 import sys
 sys.dont_write_bytecode = True

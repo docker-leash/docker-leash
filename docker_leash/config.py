@@ -1,14 +1,23 @@
 # vim:set ts=4 sw=4 et:
+'''
+Config
+======
+'''
 
 from .action_mapper import ActionMapper
 from .checks_list import Checks
 
 
 class Config(object):
-    """The :class:`Config` class is responsible for storing application groups and polcies read from the datastore.
+    """The :class:`Config` class is responsible for storing application groups
+    and polcies read from the datastore.
 
-    It has some handy functions to extract values from the configuration. It can respond to questions such as:
-    "Which are the groups for a user?", "Which policies user belong to?", "Which tests are enabled for a user?".
+    It has some handy functions to extract values from the configuration.
+    It can respond to questions such as:
+
+    * "Which are the groups for a user?"
+    * "Which policies user belong to?"
+    * "Which tests are enabled for a user?"
 
     :var groups: The groups.
     :vartype groups: dict or None
@@ -81,11 +90,13 @@ class Config(object):
         return policies
 
     def get_checks_for_user(self, user, action):
-        """Return the :mod:`docker_leash.checks` to be applied for an user and an action.
+        """Return the :mod:`docker_leash.checks` to be applied for an user
+        and an action.
 
         :param string user: The username.
         :param string action: The action to compare.
-        :return: The :mod:`docker_leash.checks` list to be verified against a payload.
+        :return: The :mod:`docker_leash.checks` list to be verified against
+                 a payload.
         :rtype: list
         """
         policies = self._get_policies_for_user(user)
@@ -97,31 +108,31 @@ class Config(object):
 
                 # Look for "normal" Actions
                 if action in self.policies[policy]:
-                    for k, v in self.policies[policy][action].iteritems():
-                        checks.add({k: v})
+                    for key, val in self.policies[policy][action].iteritems():
+                        checks.add({key: val})
 
                 # Look for "any" Actions
                 elif 'any' in self.policies[policy].keys():
-                    for k, v in self.policies[policy]['any'].iteritems():
-                        checks.add({k: v})
+                    for key, val in self.policies[policy]['any'].iteritems():
+                        checks.add({key: val})
 
                 # Look for "readonly" Actions
                 elif 'readOnly' in self.policies[policy].keys():
                     if mapper.is_readonly(action):
-                        for k, v in self.policies[policy]['readOnly'].iteritems():
-                            checks.add({k: v})
+                        for key, val in self.policies[policy]['readOnly'].iteritems():
+                            checks.add({key: val})
 
                 # Look for "readwrite" Actions
                 elif 'readWrite' in self.policies[policy].keys():
                     if not mapper.is_readonly(action):
-                        for k, v in self.policies[policy]['readWrite'].iteritems():
-                            checks.add({k: v})
+                        for key, val in self.policies[policy]['readWrite'].iteritems():
+                            checks.add({key: val})
 
                 else:
                     # Look for "parents" Actions
                     parent = mapper.action_is_about(action, self.policies[policy].keys())
                     if parent:
-                        for k, v in self.policies[policy][parent].iteritems():
-                            checks.add({k: v})
+                        for key, val in self.policies[policy][parent].iteritems():
+                            checks.add({key: val})
 
         return checks
