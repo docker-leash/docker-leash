@@ -24,8 +24,8 @@ class Processor(object):
     def load_config(self):
         """Load rules from defined files in the global configuration."""
         with open(app.config['GROUPS_FILE']) as g, open(app.config['POLICIES_FILE']) as p:
-            groups = yaml.load(g)
-            policies = yaml.load(p)
+            groups = yaml.safe_load(g)
+            policies = yaml.safe_load(p)
 
         self.config.update(groups, policies)
 
