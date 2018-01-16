@@ -1,24 +1,15 @@
 ---
 
 openbar:
-  containersCreate:
-    Allow:
-  containersWait:
-    Allow:
-  containersStart:
-    Allow:
-  containersAttach:
+  any:
     Allow:
 
 personnal:
   containersCreate:
-    ContainerName:
-      startwith:
-        - foo
-        - bar
+    ContainerName: "^foo-"
 
 restricted:
-  containersCreate:
+  containers:
     BindVolumes:
       - "-/"
       - "+/home/$USER"
