@@ -72,9 +72,9 @@ class BindVolumesTests(unittest.TestCase):
     @classmethod
     def test_init(cls):
         args = [
-            '-/*',
+            '-/.*',
             '+/foo',
-            '-/foo/*',
+            '-/foo/.*',
             '+/foo/bar',
         ]
 
@@ -86,9 +86,9 @@ class BindVolumesTests(unittest.TestCase):
     @classmethod
     def test_valid_paths(cls):
         args = [
-            '-/*',
+            '-/.*',
             '+/foo',
-            '-/foo/*',
+            '-/foo/.*',
             '+/foo/bar',
         ]
 
@@ -96,9 +96,9 @@ class BindVolumesTests(unittest.TestCase):
 
     def test_invalid_paths(self):
         args = [
-            '-/*',
+            '-/.*',
             '+/foo',
-            '-/foo/*',
+            '-/foo/.*',
             '+/foo/bar',
         ]
 
@@ -108,9 +108,9 @@ class BindVolumesTests(unittest.TestCase):
     @classmethod
     def test_invalid_rules_should_be_ignored(cls):
         args = [
-            '*/*',
+            '.*/.*',
             '%-/foo',
-            '/foo/*',
+            '/foo/.*',
             '+/foo',
         ]
 
@@ -119,7 +119,7 @@ class BindVolumesTests(unittest.TestCase):
     @classmethod
     def test_directoy_names_starting_with(cls):
         args = [
-            '-/*',
+            '-/.*',
             '+/foo',
         ]
 
@@ -127,7 +127,7 @@ class BindVolumesTests(unittest.TestCase):
 
     def test_directoy_names_exact_match(self):
         args = [
-            '-/*',
+            '-/.*',
             '+/foo/',
         ]
 
