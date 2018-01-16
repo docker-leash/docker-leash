@@ -2,7 +2,7 @@
 
 import unittest
 
-from docker_leash.checks.bind_volumes import BindVolumes, Rules
+from docker_leash.checks.bind_volumes import BindVolumes
 from docker_leash.exceptions import UnauthorizedException
 from docker_leash.payload import Payload
 
@@ -105,7 +105,8 @@ class BindVolumesTests(unittest.TestCase):
         with self.assertRaises(UnauthorizedException):
             BindVolumes().run(args, Payload(payload_many))
 
-    def test_invalid_rules_should_be_ignored(self):
+    @classmethod
+    def test_invalid_rules_should_be_ignored(cls):
         args = [
             '*/*',
             '%-/foo',
@@ -115,7 +116,8 @@ class BindVolumesTests(unittest.TestCase):
 
         BindVolumes().run(args, Payload(payload_foo))
 
-    def test_directoy_names_starting_with(self):
+    @classmethod
+    def test_directoy_names_starting_with(cls):
         args = [
             '-/*',
             '+/foo',

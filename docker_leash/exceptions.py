@@ -4,7 +4,6 @@
 
 class DockerLeashException(BaseException):
     """Base for all Leash Server Errors."""
-    pass
 
     def __init__(self, value=None):
         """Construct the exception

@@ -56,7 +56,8 @@ class Processor(object):
         for check in checks:
             self._process(payload, check)
 
-    def _process(self, payload, check):
+    @classmethod
+    def _process(cls, payload, check):
         """Instanciate the requested action and launch the :class:`docker_leash.checks.base.run()` method.
 
         :param payload: The request payload object.
@@ -66,6 +67,6 @@ class Processor(object):
         """
         try:
             check_action = getattr(checks, check['name'])()
-        except AttributeError as e:
+        except AttributeError:
             raise NoSuchCheckModuleException("Check module '%s' does not exists or not autoloadable." % check['name'])
         check_action.run(check['args'], payload)
