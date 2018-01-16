@@ -1,24 +1,4 @@
 #!/usr/bin/env python
-'''
-Description
------------
-
-A remote AuthZ_ plugin to enforce granular rules for a Docker multiuser
-environment.
-
-Have you ever wanted to restrict users on your system to manage
-only certain containers?
-Did you ever wanted to restrict witch path can be bind mounted?
-Did you ever wanted to log every commands run by your users?
-If 'yes', then ``docker-leash`` is for you.
-
-Docker Leash is a centralized point for managing authorization
-for your docker daemon.
-It is distributed as a web application backed by Flask_.
-
-.. _AuthZ: https://docs.docker.com/engine/extend/plugins_authorization/
-.. _Flask: http://flask.pocoo.org/
-'''
 
 # stdlib
 import io
@@ -37,6 +17,10 @@ with io.open('docker_leash/leash_server.py', 'rt', encoding='utf8') as fobj:
 
 _github_path = 'docker-leash/leash-server'
 
+with io.open('README.rst', 'rt', encoding='utf8') as fobj:
+    README = fobj.read()
+    a, b = README.index('Introduction'), README.index('.. ')
+    long_description = README[a:b].lstrip()
 
 
 setup(
@@ -45,7 +29,7 @@ setup(
     author='Mathieu Alorent',
     author_email='docker-leash@kumy.net',
     description='Docker authorization plugin',
-    long_description=__doc__,
+    long_description=long_description,
     license='MIT',
     keywords=['docker', 'authz', 'authorization'],
     url='https://github.com/{}'.format(_github_path),

@@ -3,6 +3,9 @@ docker-leash
 
 |codecov|_ |travis|_ |codacy|_ |rtd|_
 
+Introduction
+============
+
 A remote AuthZ plugin to enforce granular rules
 for a Docker multiuser environment.
 
@@ -18,9 +21,8 @@ for your Docker daemon.
 It is distributed as a web application backed by Flask_
 and distributed in a friendly `MIT license`_.
 
-For more information, we encourage you the read the documentation,
-either `locally in this repository <./docs/>`_,
-or `hosted at ReadTheDocs.org <http://docker-leash.readthedocs.io/>`_.
+For more information, we encourage you the read the documentation
+online `hosted at ReadTheDocs.org <http://docker-leash.readthedocs.io/>`_.
 
 .. Warning::
    This is a work in progress.
