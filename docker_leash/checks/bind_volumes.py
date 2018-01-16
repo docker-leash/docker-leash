@@ -17,14 +17,6 @@ logging.basicConfig(
 )
 
 
-# class UnauthorizedException(ValueError):
-#     trace = None
-#
-#     def __init__(self, message, trace=None):
-#         ValueError.__init__(self, message)
-#         self.trace = trace
-
-
 class BindVolumes(BaseCheck):
     """A simple module that say `no`."""
 
@@ -190,5 +182,4 @@ class Proto(object):
         ]
 
         if not c_rules or denied:
-            # raise UnauthorizedException('unauthorized volume', denied)
-            raise UnauthorizedException('unauthorized volume: %s' % denied)
+            raise UnauthorizedException('unauthorized volumes: %s' % denied)
