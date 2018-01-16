@@ -18,17 +18,10 @@ logging.basicConfig(
 
 
 class BindVolumes(BaseCheck):
-    """A simple module that say `no`."""
+    """A module that checks mount binds from host filesystem"""
 
     def run(self, args, payload):
         """Run the module checks.
-
-        Say no is easy, just raise an :class:`UnauthorizedException` ;)
-
-        :param config: The currently loaded configuration
-        :type config: :class:`docker_leash.config.Config`
-        :param payload: The payload of the current request.
-        :type payload: :class:`docker_leash.payload.Payload`
 
         Validate `volumes` against defined rules.
         Raise :exc:`UnauthorizedException` when one volume doesn't respect the rules.
@@ -38,12 +31,12 @@ class BindVolumes(BaseCheck):
         .. code-block:: yaml
 
             rules:
-              - -/
-              - -/etc
-              - +/0
-              - -/home
-              - +/home/$USER
-              - +/home/devdata
+              - "-/"
+              - "-/etc"
+              - "+/0"
+              - "-/home"
+              - "+/home/$USER"
+              - "+/home/devdata"
 
         :param args: The module arguments from the config
         :type args: list or dict or string or None
