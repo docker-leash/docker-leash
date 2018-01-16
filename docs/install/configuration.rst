@@ -7,7 +7,7 @@ Configure the rules
 ===================
 
 The users authorizations are defined on `leash-server` side.
-Configurations are stored as a Yaml file.
+Configurations are stored as a YAML file.
 We have one file to defining groups of users, and one for the rules.
 If no matching `docker action` are defined for a specific action, then the default is to **deny** the request.
 On `docker action` we can attach some `checks`.
@@ -73,8 +73,8 @@ Policies configuration file format
 
 We can break down the sections as follow.
 You can define `policy name` should match `policy name` they will be matched in `groups.yml` file.
-The `docker action` is a name of an action (see bellow for the list).
-The `check name` is the internal name of the check to apply on the command, and `check argument` are the arguments for the check (see bellow for the list).
+The `docker action` is a name of an action (see `Docker actions list`_ below for the list).
+The `check name` is the internal name of the check to apply on the command, and `check argument` are the arguments for the check (see `Docker actions list`_ below for the list).
 
 .. code-block:: yaml
 
@@ -88,7 +88,7 @@ Docker actions list
 -------------------
 
 Docker action names are a mapping to the internal actions from the
-`Docker API <https://docs.docker.com/engine/api/version-history/>`_.
+`Docker API <https://docs.docker.com/engine/api/version-history/>`__.
 
 +--------------------------------------+-------------------------------------+
 | action name                          | API description                     |
@@ -179,9 +179,10 @@ They permit to verify/filter the access to one or more resources.
 Groups configuration file format
 ================================
 
-Here is a sample `groups.yml`:
+Here is a groups policies configuration sample:
 
 .. code-block:: yaml
+   :caption: groups.yml
 
    ---
 
@@ -226,15 +227,14 @@ Finally, `username` should match the `CN` field from the user `ssl client certif
 Examples
 ========
 
-Everything is possible (as without the plugin)
-++++++++++++++++++++++++++++++++++++++++++++++
+Everything is allowed (as without the plugin)
++++++++++++++++++++++++++++++++++++++++++++++
 
 You can have all permission using this configuration.
-This is the same as running docker daemon without  this plugin.
-
-`policies.yml`:
+This is the same as running docker daemon without this plugin.
 
 .. code-block:: yaml
+   :caption: policies.yml
 
    ---
    masteroftheuniverse:
@@ -242,9 +242,8 @@ This is the same as running docker daemon without  this plugin.
        Allow:
    ...
 
-`groups.yml`:
-
 .. code-block:: yaml
+   :caption: groups.yml
 
    ---
    all:
@@ -257,11 +256,10 @@ This is the same as running docker daemon without  this plugin.
 Read only / write
 -----------------
 
-Here we want all users to have only the possibility to execute read only commands whereas the administrators will have access the the write commands.
-
-`policies.yml`:
+Here we want all users to have only the possibility to execute read only commands whereas the administrators will have access the write commands.
 
 .. code-block:: yaml
+   :caption: policies.yml
 
    ---
    readonly:
@@ -273,9 +271,8 @@ Here we want all users to have only the possibility to execute read only command
        ReadWrite:
    ...
 
-`groups.yml`:
-
 .. code-block:: yaml
+   :caption: groups.yml
 
    ---
    all:
@@ -298,9 +295,8 @@ Restrict by container name
 Here we want all users to have a limitation by the container name.
 All administrators are allowed to manage all containers.
 
-`policies.yml`:
-
 .. code-block:: yaml
+   :caption: policies.yml
 
    ---
    containers_name_must_match_username:
@@ -314,9 +310,8 @@ All administrators are allowed to manage all containers.
        ReadWrite:
    ...
 
-`groups.yml`:
-
 .. code-block:: yaml
+   :caption: groups.yml
 
    ---
    all:

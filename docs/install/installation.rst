@@ -120,7 +120,7 @@ Then build and push the plugin to your local registry.
 Install your docker plugin
 ++++++++++++++++++++++++++
 
-Now that you have your json file deployed, you can install it on your docker hosts:
+Now that you have your JSON file deployed, you can install it on your docker hosts:
 
 .. code-block:: console
 
@@ -133,5 +133,4 @@ Authenticating to the daemon
 Please note that this plugin do **authorization** and **not authentication**.
 You don't have many choices on the method to authenticate from the `docker client` to the `docker daemon`.
 The current - and only - method is to use SSL client certificates.
-We gently redirect you to the `official docker documentation <https://docs.docker.com/engine/security/https/>`_.
-
+We redirect you to the `official docker documentation <https://docs.docker.com/engine/security/https/>`_.
