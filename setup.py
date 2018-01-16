@@ -43,7 +43,7 @@ setup(
     name='docker-leash',
     version=version,
     author='Mathieu Alorent',
-    author_email='docker-leash@kumy.org',
+    author_email='docker-leash@kumy.net',
     description='Docker authorization plugin',
     long_description=__doc__,
     license='MIT',
