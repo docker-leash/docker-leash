@@ -58,6 +58,26 @@ class payloadTests(unittest.TestCase):
 
         self.assertEqual(attended_response, decoded["RequestBody"])
 
+    def test_receive_already_decoded_base64(self):
+        body = {
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
+        }
+        body_decoded = {
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestBody": {"foo": "bar"}
+        }
+
+        payload = Payload(payload=body)
+        attended_response = {'foo': 'bar'}
+        self.assertEqual(attended_response, payload.data["RequestBody"])
+
+        payload = Payload(payload=body_decoded)
+        attended_response = {'foo': 'bar'}
+        self.assertEqual(attended_response, payload.data["RequestBody"])
+
     def test_get_username(self):
         payload = Payload()
 
