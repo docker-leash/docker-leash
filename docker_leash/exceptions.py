@@ -1,6 +1,6 @@
 # vim:set ts=4 sw=4 et:
-
-"""Exceptions used in Docker Leash Server"""
+"""Exceptions used in Docker Leash Server
+"""
 
 class DockerLeashException(BaseException):
     """Base for all Leash Server Errors."""
@@ -30,7 +30,8 @@ class DockerLeashException(BaseException):
 class UnauthorizedException(DockerLeashException):
     """Exception for unauthorized action.
 
-    All :mod:`docker_leash.checks` modules must return this exception in order to deny the action to the user.
+    All :mod:`docker_leash.checks` modules must return this exception
+    in order to deny the action to the user.
     """
     pass
 
