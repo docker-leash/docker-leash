@@ -57,6 +57,7 @@ class BindVolumes(BaseCheck):
 
 class Rules(object):
     __slots__ = ('rules', '__rules')
+    suffix = r'(?:[\\/]|$)'
 
     def __init__(self, rules):
         self.rules = rules
@@ -73,61 +74,24 @@ class Rules(object):
             raise TypeError('Rules must be a list')
 
         result = []
+        rules = []
         for rule in self.rules:
-            if not rule or rule[0] not in set('+-'):
+            if not rule or rule[0] not in set('+-') or not rule[1:]:
                 logging.warning('invalid rule: %r', rule)
                 continue
-            result += [(
-                rule[0] == '+',
-                re.compile(
-                    r'^%s(%s|$)' % (
-                        self.translate(rule[1:]),
-                        os.path.sep,
+            try:
+                result += [(
+                    rule[0] == '+',
+                    re.compile(
+                        rule[1:] + self.suffix,
                     ),
-                ),
-                rule
-            )]
+                    rule
+                )]
+                rules+= [rule]
+            except re.error as error:
+                logging.warning('invalid rule: %r (%s)', rule, error)
         self.__rules = result
-
-    @staticmethod
-    def translate(pat):
-        """Translate a shell PATTERN to a regular expression.
-
-        There is no way to quote meta-characters.
-
-        Copied and slightly modified from: :func:`fnmatch.translate`.
-        """
-
-        i, n = 0, len(pat)
-        res = ''
-        while i < n:
-            c = pat[i]
-            i = i + 1
-            if c == '*':
-                res = res + '.*'
-            elif c == '?':
-                res = res + '.'
-            elif c == '[':
-                j = i
-                if j < n and pat[j] == '!':
-                    j = j + 1
-                if j < n and pat[j] == ']':
-                    j = j + 1
-                while j < n and pat[j] != ']':
-                    j = j + 1
-                if j >= n:
-                    res = res + '\\['
-                else:
-                    stuff = pat[i:j].replace('\\', '\\\\')
-                    i = j + 1
-                    if stuff[0] == '!':
-                        stuff = '^' + stuff[1:]
-                    elif stuff[0] == '^':
-                        stuff = '\\' + stuff
-                    res = '%s[%s]' % (res, stuff)
-            else:
-                res = res + re.escape(c)
-        return res
+        self.rules = rules
 
     def match(self, value):
         result = None

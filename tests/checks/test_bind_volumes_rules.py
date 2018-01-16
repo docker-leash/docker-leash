@@ -12,7 +12,7 @@ class BindVolumesRulesTests(unittest.TestCase):
             Rules(None)
 
         with self.assertRaises(TypeError):
-            Rules("-/*")
+            Rules("-/.*")
 
         with self.assertRaises(TypeError):
             Rules("")
@@ -21,13 +21,20 @@ class BindVolumesRulesTests(unittest.TestCase):
 
     def test_rules_to_str(self):
         args = [
-            '-/*',
-            '+/foo/',
-            '-/proc/[0-9]*',
-            '-/proc/[!a-z]*',
-            '-*/.???*',
-            '-[]^] [',
-            '-/[^foo',
+            r'-/.*',
+            r'+/foo/',
+            r'-/proc/[0-9]*',
+            r'-/proc/[^a-z]*',
+            r'-.*/\..+',
         ]
         rules = Rules(args)
-        self.assertEqual(str(rules), "Rules({})".format(args))
+        self.assertEqual(str(rules), "Rules({!r})".format(args))
+
+    def test_invalid_rules_to_str(self):
+        args = [
+            r'-',
+            r'-[]^] [',
+            r'-/[^foo',
+        ]
+        rules = Rules(args)
+        self.assertEqual(str(rules), "Rules([])".format())
