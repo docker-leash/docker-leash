@@ -136,7 +136,7 @@ def authz_request():
             "Allow": False,
             "Msg": str(e)
         })
-    except NoSuchCheckModuleException as e:
+    except NoSuchCheckModuleException as e:  # pragma: no cover
         print "CRITICAL: REQUEST DENIED: %s\n" % str(e)
         return jsonify({
             "Allow": False,
