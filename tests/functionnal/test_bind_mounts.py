@@ -7,16 +7,10 @@ import unittest
 from docker_leash.leash_server import app
 
 from . import is_success, post
+from .test_base import LeashServerFunctionnalBaseTests
 
 
-class BindVolumesTestsFunctionnal(unittest.TestCase):
-
-    def setUp(self):
-        app.config['DEBUG'] = False
-        self.app = app.test_client()
-
-    def tearDown(self):
-        pass
+class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
 
     def test_create_authenticated_valid(self):
         request = {
