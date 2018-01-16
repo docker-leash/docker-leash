@@ -5,7 +5,7 @@ Welcome to Docker Leash Server's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   intro
+   install/index
    examples
    modules
    api_documentation
