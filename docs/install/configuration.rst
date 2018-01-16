@@ -155,7 +155,7 @@ Docker action names are a mapping to the internal actions from the
 .. Note::
    More actions to come.
    See the `related issues on our repository
-   <https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Aaction>`_.
+   <https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Aaction>`__.
 
 Checks list
 -----------
@@ -174,7 +174,7 @@ They permit to verify/filter the access to one or more resources.
 .. Note::
    More checks to come.
    See the `related issues on our repository
-   <https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Amodule>`_.
+   <https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Amodule>`__.
 
 Groups configuration file format
 ================================
