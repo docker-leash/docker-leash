@@ -7,10 +7,11 @@ This module is responsible for dispatching HTTP requests.
 
 import sys
 
-from . import app
-from .exceptions import UnauthorizedException
-from .processor import Processor
 from flask import jsonify, request
+
+from . import app
+from .exceptions import NoSuchCheckModuleException, UnauthorizedException
+from .processor import Processor
 
 sys.dont_write_bytecode = True
 
@@ -135,12 +136,18 @@ def authz_request():
             "Allow": False,
             "Msg": str(e)
         })
-    except BaseException as e: # pragma: no cover
-        print "REQUEST DENIED: %s\n" % str(e)
+    except NoSuchCheckModuleException as e:
+        print "CRITICAL: REQUEST DENIED: %s\n" % str(e)
         return jsonify({
             "Allow": False,
             "Msg": str(e)
         })
+    # except BaseException as e: # pragma: no cover
+    #     print "CRITICAL: REQUEST DENIED: %s\n" % str(e)
+    #     return jsonify({
+    #         "Allow": False,
+    #         "Msg": str(e)
+    #     })
 
     print "REQUEST ALLOWED\n"
     return jsonify({

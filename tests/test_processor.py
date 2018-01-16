@@ -5,7 +5,8 @@ import unittest
 
 from docker_leash.checks_list import Checks
 from docker_leash.config import Config
-from docker_leash.exceptions import UnauthorizedException
+from docker_leash.exceptions import (NoSuchCheckModuleException,
+                                     UnauthorizedException)
 from docker_leash.payload import Payload
 from docker_leash.processor import Processor
 
@@ -126,4 +127,12 @@ class ProcessorTests(unittest.TestCase):
 
         processor = Processor()
         with self.assertRaises(UnauthorizedException):
+            processor._process(payload=payload, check=check)
+
+    def test_process_unexistent_check_action(self):
+        payload = Payload(mocked_body)
+        check = Checks()._structure_convert({"SomethingThatIsnotDefied": None})
+
+        processor = Processor()
+        with self.assertRaises(NoSuchCheckModuleException):
             processor._process(payload=payload, check=check)
