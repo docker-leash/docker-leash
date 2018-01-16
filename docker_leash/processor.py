@@ -7,7 +7,7 @@ import yaml
 from . import checks
 from .action_mapper import ActionMapper
 from .config import Config
-from .exceptions import UnauthorizedException
+from .exceptions import NoSuchCheckModuleException, UnauthorizedException
 from .leash_server import app
 from .payload import Payload
 
@@ -64,5 +64,8 @@ class Processor(object):
         :param string check: The check name to run.
         :raises UnauthorizedException: if the check deny the request.
         """
-        check_action = getattr(checks, check['name'])()
+        try:
+            check_action = getattr(checks, check['name'])()
+        except AttributeError as e:
+            raise NoSuchCheckModuleException("Check module '%s' does not exists or not autoloadable." % check['name'])
         check_action.run(check['args'], payload)

@@ -6,14 +6,7 @@ class DockerLeashException(BaseException):
     """Base for all Leash Server Errors."""
     pass
 
-
-class UnauthorizedException(DockerLeashException):
-    """Exception for unauthorized action.
-
-    All :mod:`docker_leash.checks` modules must return this exception in order to deny the action to the user.
-    """
-
-    def __init__(self, value):
+    def __init__(self, value=None):
         """Construct the exception
 
         :param string value: The human readable cause of the deny.
@@ -35,5 +28,17 @@ class UnauthorizedException(DockerLeashException):
         return self.value
 
 
-class NotForMeException(DockerLeashException):
+class UnauthorizedException(DockerLeashException):
+    """Exception for unauthorized action.
+
+    All :mod:`docker_leash.checks` modules must return this exception in order to deny the action to the user.
+    """
+    pass
+
+
+class NoSuchCheckModuleException(DockerLeashException):
+    """Exception for non existent check module.
+
+    Used when a check is configured by not existent or loadable.
+    """
     pass
