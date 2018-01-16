@@ -55,6 +55,9 @@ class Payload(object):
         """
         data = payload.copy()
         if "RequestBody" in data:
+            if isinstance(data["RequestBody"], dict):
+                return data
+
             data["RequestBody"] = json.loads(
                 base64.b64decode(data["RequestBody"])
             )
