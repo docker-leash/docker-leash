@@ -68,14 +68,15 @@ Running the service
 -------------------
 
 You can simply launch the service using `docker cli` or `docker-compose`.
-Don't forget to mount the configuration in the `/conf` directory.
+Don't forget to mount the configuration over the respective files.
 
 .. code-block:: console
 
    $ docker run \
      -d \
      -p 80:80 \
-     -v /path/to/your/conf:/configuration:ro \
+     -v /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro \
+     -v /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro \
      dockerleash/leash-server:latest \
      gunicorn --workers=5 --bind=0.0.0.0:80 app.leash_server:app
 
@@ -88,7 +89,8 @@ Don't forget to mount the configuration in the `/conf` directory.
      leashserver:
        image: dockerleash/leash-server:latest
        volumes:
-         - /path/to/your/conf:/configuration:ro
+         - /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro
+         - /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro
        ports:
          - "80:80"
        restart: always
