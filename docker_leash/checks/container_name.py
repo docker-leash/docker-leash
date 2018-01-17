@@ -22,6 +22,11 @@ class ContainerName(BaseCheck):
         Raise :exc:`UnauthorizedException` when the container name doesn't
         respect the rules.
 
+        When a list is given, Exception is raised only if all rules fails.
+
+        If no name was forced for the container creation, then Exception is
+        raised.
+
         Rules examples:
 
         .. code-block:: yaml
@@ -35,6 +40,12 @@ class ContainerName(BaseCheck):
         .. code-block:: yaml
 
             rules: "^only_this_container_name$"
+
+        Or a list:
+
+        .. code-block:: yaml
+
+            rules: ["^only_this_container_name$", "^$USER-.*$"]
 
         The container name used on Request is contained in the uri query
         parameters as 'name'.
@@ -59,8 +70,19 @@ class ContainerName(BaseCheck):
                 'Container name verification failed: container name not found'
             )
 
+        found = False
+        rules = args if isinstance(args, list) else [args]
+        rules = self.replace_user(rules, payload)
+
         for name in query['name']:
-            if not re.match(args, name):
-                raise UnauthorizedException(
-                    'Container name verification failed: container name breaks the rules'
-                )
+            print "NAME: %s" % name
+            for rule in rules:
+                print "RULE: %s" % rule
+                if re.match(rule, name):
+                    print "FOUND!"
+                    found = True
+
+        if not found:
+            raise UnauthorizedException(
+                'Container name verification failed: container name breaks the rules'
+            )

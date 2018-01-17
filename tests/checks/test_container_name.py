@@ -29,13 +29,25 @@ payload_something = {
     "RequestUri": "/v1.32/containers/create?name=hard-biture"
 }
 
+payload_user = {
+    "User": "someone",
+    "RequestMethod": "POST",
+    "RequestUri": "/v1.32/containers/create?name=someone-love-me"
+}
+
+payload_username = {
+    "User": "someone",
+    "RequestMethod": "POST",
+    "RequestUri": "/v1.32/containers/create?name=someoneNAME-love-me"
+}
+
 
 class ContainerNameTests(unittest.TestCase):
-    """ Validate :class:`docker_leash.checks.ContainerName` without context
+    """Validate :class:`docker_leash.checks.ContainerName` without context
     """
 
     def test_empty_payload(self):
-        """ Empty payload should return :exc:`UnauthorizedException`
+        """Empty payload should return :exc:`UnauthorizedException`
         """
         with self.assertRaises(UnauthorizedException):
             ContainerName().run(None, Payload({}))
@@ -45,7 +57,7 @@ class ContainerNameTests(unittest.TestCase):
 
     @staticmethod
     def test_basics():
-        """ Validate wildcards cases
+        """Validate wildcards cases
         """
         ContainerName().run(None, Payload(payload_something))
         ContainerName().run(None, Payload(payload_foobar))
@@ -56,7 +68,7 @@ class ContainerNameTests(unittest.TestCase):
 
     @staticmethod
     def test_valid_names():
-        """ Valid cases
+        """Valid cases
         """
         ContainerName().run("^foo-.*", Payload(payload_foobar))
         ContainerName().run(".*oo.*", Payload(payload_foobar))
@@ -66,8 +78,19 @@ class ContainerNameTests(unittest.TestCase):
         ContainerName().run("hard-biture", Payload(payload_something))
         ContainerName().run("hard-bitur", Payload(payload_something))
 
+    def test_name_can_be_a_list(self):
+        """names could be presented as a list
+
+        In such case, entries are compared with a 'or'.
+        """
+        ContainerName().run(["^foo-.*", "^$USER-.*"], Payload(payload_foobar))
+        ContainerName().run(["^foo-.*", "^$USER-.*"], Payload(payload_user))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run(["^foo-.*", "^\$USER-.*"], Payload(payload_user))
+
     def test_invalid_names(self):
-        """ Invalid cases
+        """Invalid cases
         """
         with self.assertRaises(UnauthorizedException):
             ContainerName().run("^foobar.*", Payload(payload_foobar))
@@ -83,3 +106,24 @@ class ContainerNameTests(unittest.TestCase):
 
         with self.assertRaises(UnauthorizedException):
             ContainerName().run("ard-bitur", Payload(payload_something))
+
+    def test_username_in_image_name(self):
+        """Replace $USER by connected username
+        """
+        ContainerName().run("^$USER-.*", Payload(payload_user))
+        ContainerName().run("^$USERNAME-.*", Payload(payload_username))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run("^$USER-.*", Payload(payload_something))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run(r"^\$USER-.*", Payload(payload_user))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run(r"^\$USER-.*", Payload(payload_something))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run("^$USER-.*", Payload(payload_username))
+
+        with self.assertRaises(UnauthorizedException):
+            ContainerName().run(r"^\$USER-.*", Payload(payload_username))

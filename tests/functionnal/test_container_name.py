@@ -10,11 +10,11 @@ from .test_base import LeashServerFunctionnalBaseTests
 
 
 class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
-    """ Test :class:`docker_leash.checks.ContainerName` using main entrypoint
+    """Test :class:`docker_leash.checks.ContainerName` using main entrypoint
     """
 
     def test_create_authenticated_valid(self):
-        """ A valid container create request as authenticated user
+        """A valid container create request as authenticated user
         """
         payload = {
             "RequestMethod": "POST",
@@ -28,7 +28,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertTrue(is_success(response))
 
     def test_create_authenticated_invalid(self):
-        """ An invalid container create request as authenticated user
+        """An invalid container create request as authenticated user
         """
         payload = {
             "RequestMethod": "POST",
@@ -42,7 +42,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_unauthenticated_valid(self):
-        """ A valid container create request as anonymous user
+        """A valid container create request as anonymous user
         """
         payload = {
             "RequestMethod": "POST",
@@ -54,7 +54,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_unauthenticated_invalid(self):
-        """ An invalid container create request as anonymous user
+        """An invalid container create request as anonymous user
         """
         payload = {
             "RequestMethod": "POST",
@@ -66,7 +66,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_authenticated_without_static_name(self):
-        """ No container name specified as authenticated
+        """No container name specified as authenticated
         """
         payload = {
             "RequestMethod": "POST",
@@ -80,7 +80,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_anonymous_without_static_name(self):
-        """ No container name specified as anonynous
+        """No container name specified as anonynous
         """
         payload = {
             "RequestMethod": "POST",
