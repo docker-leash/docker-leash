@@ -11,7 +11,7 @@ for a Docker multiuser environment.
 
 Have you ever wanted to restrict users on your system to manage
 only certain containers?
-Did you ever wanted to restrict witch path can be bind mounted?
+Did you ever wanted to restrict which path can be bind mounted?
 Did you ever wanted to log every commands run by your users?
 Did you ever need to restrict where images can pushed or pulled?
 If you though *yes*, then ``docker-leash`` is for you.
