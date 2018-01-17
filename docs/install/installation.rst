@@ -21,6 +21,7 @@ Using virtualenv
 
    $ virtualenv venv
    $ source ./venv/bin/activate
+   $ pip install docker-leash
    $ pip install -r requirements.txt
 
 Running the service
@@ -31,17 +32,17 @@ Using flask internal webserver
 
 .. code-block:: console
 
-   $ export FLASK_APP=app.leash_server.py
-   $ python -m flask run --host 127.0.0.1 --port 65000
-    * Running on http://127.0.0.1:65000/
+   $ export FLASK_APP=docker_leash.leash_server.py
+   $ python -m flask run --host 0.0.0.0 --port 80
+    * Running on http://0.0.0.0:80/
 
 Using gunicorn
 ''''''''''''''
 
 .. code-block:: console
 
-   $ gunicorn --workers=5 --bind=0.0.0.0:65000 --reload \
-     app.leash_server:app
+   $ gunicorn --workers=5 --bind=0.0.0.0:80 --reload \
+     docker_leash.leash_server:app
 
 Using Docker container
 ++++++++++++++++++++++
@@ -51,7 +52,7 @@ but be careful to don't brick yourself by running the container
 on the same host as the one you want to secure.
 
 We publish ready to use container images on Docker Hub,
-please have at our `docker repository <https://hub.docker.com/r/dockerleash/leash-server/>`_.
+please have a look at our `docker repository <https://hub.docker.com/r/dockerleash/leash-server/>`_.
 
 Building the image
 ------------------
@@ -100,39 +101,104 @@ Alternatively, you can build a child image including your configuration.
 .. code-block:: dockerfile
 
    FROM dockerleash/leash-server:latest
-   COPY configuration /configuration
+   COPY configuration/*.yml /srv/docker-leash/
 
-Install local docker plugin
-===========================
+Configure docker leash client (Your docker daemon)
+==================================================
 
-Create your docker plugin
-+++++++++++++++++++++++++
+On `docker daemon` side (the client in our case), the plugin configuration
+consist of a simple `.json` file. Copy our sample file located in `plugin/leash.json`
+to `/etc/docker/plugins/leash.json` or `/usr/lib/docker/plugins/leash.json`.
 
-As the configuration depends on your local configuration, we don't provide a `docker plugin` directly from the docker hub.
-However, you could build your personalized plugin by editing files from directory `plugin` according to your environment.
-Then build and push the plugin to your local registry.
+Configure the plugin
+++++++++++++++++++++
 
-.. code-block:: console
+The `leash.json` file need to be configured according to your local environment.
 
-   $ cd plugin
-   $ vim leash-client.json
-   $ docker plugin create leash-client .
-   $ docker plugin push leash-client
+.. code-block:: json
+   :caption: /etc/docker/plugins/leash.json
 
-Install your docker plugin
-++++++++++++++++++++++++++
+   {
+     "Name": "leash",
+     "Addr": "https://leash-server.organization.yours",
+     "TLSConfig": {
+       "InsecureSkipVerify": false,
+       "CAFile": "/etc/pki/CA/certs/company.crt"
+     }
+   }
 
-Now that you have your JSON file deployed, you can install it on your docker hosts:
+Replace the `Addr` field with the full url of your `leash server` instance.
+If you secured the server part with `TLS`, declare the `CA` in the `CAFile`
+field.
 
-.. code-block:: console
+.. Note::
+   The fields `CertFile` and `KeyFile` are present in the
+   `docker documentation <https://docs.docker.com/engine/extend/plugin_api/#json-specification>`_,
+   but unfortunately they are not documented...
 
-   $ docker plugin install leash-client
-   $ docker plugin ls
+Even if - on a security point of view - this is not recommended, you can also
+choose to not verify the authenticity of the connection, by setting field
+`InsecureSkipVerify` to `true`.
 
-Authenticating to the daemon
-============================
+.. code-block:: json
+   :caption: /etc/docker/plugins/leash.json
 
-Please note that this plugin do **authorization** and **not authentication**.
-You don't have many choices on the method to authenticate from the `docker client` to the `docker daemon`.
-The current - and only - method is to use SSL client certificates.
-We redirect you to the `official docker documentation <https://docs.docker.com/engine/security/https/>`_.
+   {
+     "Name": "leash",
+     "Addr": "https://leash-server.organization.yours",
+     "TLSConfig": {
+       "InsecureSkipVerify": true,
+     }
+   }
+
+Load the plugin on docker daemon start
+++++++++++++++++++++++++++++++++++++++
+
+The `docker daemon` need to start the plugin on boot. You have many
+possibilities depending on how you launch the docker daemon (ex: `systemd`), but
+the simplest way seems to configure it directly in the `/etc/docker/daemon.json`.
+
+Add the `authorization-plugins` and the `tcp socket` (`"0.0.0.0:2376"`) entry as:
+
+.. code-block:: json
+   :caption: /etc/docker/daemon.json
+
+   {
+	   "authorization-plugins": ["leash"],
+	   "hosts": ["unix:///var/run/docker.sock", "0.0.0.0:2376"],
+	   "tls": true,
+	   "tlsverify": true,
+	   "tlscacert": "/etc/pki/CA/certs/company.crt",
+	   "tlscert": "/etc/pki/tls/certs/dockerhost.crt",
+	   "tlskey": "/etc/pki/tls/private/dockerhost.key"
+   }
+
+We will generate `tlscacert`, `tlscert` and `tlskey` later.
+
+By default, access to the docker daemon is restricted by the permissions set on the unix
+socket (generally `unix:///var/run/docker.sock`). If your planned policies don't need to
+know users identity (only anonymous rules), then you can skip the TLS configuration.
+
+.. code-block:: json
+   :caption: /etc/docker/daemon.json
+
+   {
+	   "authorization-plugins": ["leash"],
+	   "hosts": ["unix:///var/run/docker.sock"]
+   }
+
+
+Users authentication via TLS
+++++++++++++++++++++++++++++
+
+For advanced features, users need to authenticate with the `docker daemon`. The current way is
+use `clients certificates`.
+
+`The official docker documentation <https://docs.docker.com/engine/security/https/#create-a-ca-server-and-client-keys-with-openssl>`_
+has a nice tutorial to manage a `Certificate Authority`, `Server` and `Client` certificates. We'll
+try to provide explanations to manage your CA using EasyRSA.
+
+Manage your CA using EasyRSA
+++++++++++++++++++++++++++++
+
+TBD

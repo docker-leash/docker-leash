@@ -6,3 +6,5 @@ Installation and configuration
 
    installation
    configuration
+   
+   docker-actions-list
