@@ -82,11 +82,10 @@ class BaseCheck(object):
 
         def replace(value, new):
             return re.sub(
-                r"(?<!\\)(?:\\\\)?\$USER",
-                new,
+                r'((?<!\\)(?:\\\\)*)\$USER',
+                r'\1' + new,
                 value
             )
-            # return value.replace('$USER', new)
 
         if isinstance(value, str):
             if payload.user is None:
