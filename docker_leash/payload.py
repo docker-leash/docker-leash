@@ -7,6 +7,8 @@ Payload
 import base64
 import json
 
+from . import app
+
 
 class Payload(object):
     """The :class:`Payload` class is responsible for decoding and storing
@@ -46,9 +48,12 @@ class Payload(object):
             self.user = self._get_username(payload)
             self.method = self._get_method(payload)
             self.uri = self._get_uri(payload)
-        print "PAYLOAD AUTHENTICATED USER: %s" % self.user
-        print "PAYLOAD AUTHENTICATED URI: %s" % self.uri
-        print "PAYLOAD AUTHENTICATED METHOD: %s" % self.method
+        app.logger.info(
+            "PAYLOAD AUTHENTICATED USER=%r URI=%r METHOD=%r",
+            self.user,
+            self.uri,
+            self.method,
+        )
 
     @classmethod
     def _decode_base64(cls, payload):

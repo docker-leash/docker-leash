@@ -143,25 +143,25 @@ def authz_request():
     try:
         processor.run(request.data or {})
     except UnauthorizedException as error:
-        print "REQUEST DENIED: %s\n" % str(error)
+        app.logger.error("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     except NoSuchCheckModuleException as error:  # pragma: no cover
-        print "CRITICAL: REQUEST DENIED: %s\n" % str(error)
+        app.logger.critical("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     # except BaseException as error: # pragma: no cover
-    #     print "CRITICAL: REQUEST DENIED: %s\n" % str(error)
+    #     app.logger.critical("REQUEST DENIED: %s", error)
     #     return jsonify({
     #         "Allow": False,
     #         "Msg": str(error)
     #     })
 
-    print "REQUEST ALLOWED\n"
+    app.logger.info("REQUEST ALLOWED")
     return jsonify({
         "Allow": True,
         "Msg": "The authorization succeeded."
