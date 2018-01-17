@@ -17,11 +17,11 @@ class Payload(object):
     :var data: The full request payload.
     :vartype data: dict or None
     :var user: The connected user.
-    :vartype user: string or None
+    :vartype user: str or None
     :var method: The request HTTP method.
-    :vartype method: string or None
+    :vartype method: str or None
     :var uri: The request URI.
-    :vartype uri: strnig or None
+    :vartype uri: str or None
 
     :param payload: The paylaod to analyze and store.
     :type payload: dict or None
@@ -77,11 +77,11 @@ class Payload(object):
     def _get_username(cls, payload):
         """Extract the `User` from the paylaod.
 
-        If the user is not connected (ie `anonymous`) the value is an empty string.
+        If the user is not connected (i.e.: `anonymous`), the value is an empty string.
 
         :param dict payload: The payload to extract username.
         :return: The username.
-        :rtype: string or None
+        :rtype: str or None
         """
         if payload and "User" in payload and payload["User"]:
             return payload["User"]
@@ -94,7 +94,7 @@ class Payload(object):
 
         :param dict payload: The payload to extract method.
         :return: The method name.
-        :rtype: string or None
+        :rtype: str or None
         """
         if payload and "RequestMethod" in payload and payload["RequestMethod"]:
             return payload["RequestMethod"]
@@ -103,11 +103,11 @@ class Payload(object):
 
     @classmethod
     def _get_uri(cls, payload):
-        """Extract the `Uri` from the paylaod.
+        """Extract the `URI` from the paylaod.
 
-        :param dict payload: The payload to extract Uri.
-        :return: The Uri.
-        :rtype: string or None
+        :param dict payload: The payload to extract URI.
+        :return: The URI.
+        :rtype: str or None
         """
         if payload and "RequestUri" in payload and payload["RequestUri"]:
             return payload["RequestUri"]

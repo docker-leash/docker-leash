@@ -51,7 +51,7 @@ class ContainerName(BaseCheck):
         parameters as 'name'.
 
         :param args: The module arguments from the config
-        :type args: list or dict or string or None
+        :type args: list or dict or str or None
         :param payload: The payload of the current request.
         :type payload: :class:`docker_leash.payload.Payload`
         """

@@ -59,7 +59,7 @@ def activate():
 
     :resheader Content-Type: application/json
     :status 200: valid response
-    :rtype: :class:`flask.Response()`
+    :rtype: :class:`flask.Response`
     """
     return jsonify({'Implements': ['authz']})
 
@@ -135,7 +135,7 @@ def authz_request():
     :status 200: valid response
     :status 400: malformed request
     :status 422: invalid parameters
-    :rtype: :class:`flask.Response()`
+    :rtype: :class:`flask.Response`
     """
     processor = Processor()
     processor.load_config()
@@ -249,7 +249,7 @@ def authz_response():
     :status 200: valid response
     :status 400: malformed request
     :status 422: invalid parameters
-    :rtype: :class:`flask.Response()`
+    :rtype: :class:`flask.Response`
     """
     response = {"Allow": True}
     return jsonify(**response)

@@ -62,7 +62,7 @@ class Config(object):
     def _get_groups_for_user(self, user):
         """Return the groups a user belongs to.
 
-        :param string user: The username to get groups.
+        :param str user: The username to get groups.
         :return: The groups list the user belongs to.
         :rtype: list
         """
@@ -79,7 +79,7 @@ class Config(object):
     def _get_policies_for_user(self, user):
         """Return the policies to be applied for a user.
 
-        :param string user: The username to get policies.
+        :param str user: The username to get policies.
         :return: The policies list to be applied.
         :rtype: list
         """
@@ -93,8 +93,8 @@ class Config(object):
         """Return the :mod:`docker_leash.checks` to be applied for an user
         and an action.
 
-        :param string user: The username.
-        :param string action: The action to compare.
+        :param str user: The username.
+        :param str action: The action to compare.
         :return: The :mod:`docker_leash.checks` list to be verified against
                  a payload.
         :rtype: list

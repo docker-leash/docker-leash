@@ -245,10 +245,10 @@ class ActionMapper(object):
     def get_action_name(self, method=None, uri=None):
         """Return the keyword for a `RequestMethod` and `RequestUri` tuple.
 
-        :param string method: The method.
-        :param string method: The uri.
+        :param str method: The method.
+        :param str method: The uri.
         :return: The keyword for the action
-        :rtype: string or None
+        :rtype: str or None
         """
         if not method or not uri:
             return None
@@ -265,7 +265,7 @@ class ActionMapper(object):
     def is_action(self, action=None):
         """Check if an action is recognized.
 
-        :param string action: The action name to check
+        :param str action: The action name to check
         :return: True if the action is recognized
         :rtype: bool
         """
@@ -274,7 +274,7 @@ class ActionMapper(object):
     def is_readonly(self, action=None):
         """Check if an action is recognized.
 
-        :param string action: The action name to check
+        :param str action: The action name to check
         :return: True if the action is recognized
         :rtype: bool
         """
@@ -284,10 +284,10 @@ class ActionMapper(object):
     def action_is_about(cls, action_name, action_parent):
         """Check if an action name is action parent category.
 
-        :param string action_name: The action name to check
-        :param string or list action_parent: The action parent to check against
+        :param str action_name: The action name to check
+        :param str or list action_parent: The action parent to check against
         :return: The parent if found
-        :rtype: string
+        :rtype: str
         """
         parents = action_parent if isinstance(action_parent, list) else [action_parent]
         for parent in parents:

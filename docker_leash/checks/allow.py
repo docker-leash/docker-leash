@@ -9,10 +9,10 @@ class Allow(BaseCheck):
     def run(self, args, payload):
         """Run the module checks.
 
-        Say yes is easy, just dont raise any exception ;)
+        Saying *yes* is easy: just dont raise any exception ;^)
 
         :param args: The module arguments from the config
-        :type args: list or dict or string or None
+        :type args: list or dict or str or None
         :param payload: The payload of the current request.
         :type payload: :class:`docker_leash.payload.Payload`
         """

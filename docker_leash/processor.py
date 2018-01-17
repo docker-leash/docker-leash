@@ -39,13 +39,14 @@ class Processor(object):
         """Check if the request is `accepted` or `denied`.
 
         The request will be passed to all configured :mod:`docker_leash.checks`
-        for the triplet :class:`Payload.user` +
-        :class:`Payload.method` + :class:`Payload.uri`.
-        If one :mod:`docker_leash.checks` deny the action,
+        for the triplet :attr:`docker_leash.payload.Payload.user` +
+        :attr:`docker_leash.payload.Payload.method` +
+        :attr:`docker_leash.payload.Payload.uri`.
+        If one :mod:`docker_leash.checks` sub-modules deny the action,
         then the whole request is declared as `denied`.
 
-        :param body: The http request body
-        :type body: string or dict or None
+        :param body: The HTTP request body
+        :type body: str or dict or None
         :raises UnauthorizedException: if no rule is defined,
                                        or if the check deny the request.
         """
@@ -72,11 +73,10 @@ class Processor(object):
     @staticmethod
     def _process(payload, check):
         """Instanciate the requested action and launch
-        :method:`docker_leash.checks.base.run`
+        :meth:`docker_leash.checks.base.BaseCheck.run`
 
-        :param payload: The request payload object.
-        :type payload: :class:`Payload`
-        :param string check: The check name to run.
+        :param Paylod payload: The request payload object.
+        :param str check: The check name to run.
         :raises UnauthorizedException: if the check deny the request.
         """
         try:

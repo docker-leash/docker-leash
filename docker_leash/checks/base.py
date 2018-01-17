@@ -19,15 +19,14 @@ class BaseCheck(object):
         It is autonomous in how the checks are implemented.
 
         If the requested action shoudl be forbiddenm then the module must raise
-        a :exception:`UnauthorizedException`.
+        an :exc:`docker_leash.exceptions.UnauthorizedException`.
 
         .. Warning::
            This function *must* be overrided in each check modules.
 
         :param args: The module arguments from the config
-        :type args: list or dict or string or None
-        :param payload: The payload of the current request.
-        :type payload: :class:`docker_leash.payload.Payload`
+        :type args: list or dict or str or None
+        :param docker_leash.payload.Payload payload: payload of the current request
         """
         raise NotImplementedError(
             "'run' mot implemented in module `%s`" % self.__class__.__name__

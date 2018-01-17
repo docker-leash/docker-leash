@@ -8,7 +8,7 @@ class DockerLeashException(BaseException):
     def __init__(self, value=None):
         """Construct the exception
 
-        :param string value: The human readable cause of the deny.
+        :param str value: The human readable cause of the deny.
         """
         self.value = value
 
