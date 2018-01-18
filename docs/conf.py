@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
     'sphinxcontrib.httpdomain',
     'sphinxcontrib.autohttp.flask',
@@ -180,3 +181,8 @@ texinfo_documents = [
      author, 'DockerLeashServer', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/', None),
+    'flask': ('http://flask.pocoo.org/docs/', None),
+}
