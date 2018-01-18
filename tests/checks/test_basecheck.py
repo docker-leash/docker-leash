@@ -104,7 +104,7 @@ class BaseCheckTests(unittest.TestCase):
 
         payload = Payload({"User": None})
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
-        self.assertEqual(result, r"\$USER-loves-me")
+        self.assertIsNone(result)
 
         result = BaseCheck.replace_user([r"\$USER-loves-me"], payload)
-        self.assertEqual(result, [r"\$USER-loves-me"])
+        self.assertEqual(result, [])
