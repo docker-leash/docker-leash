@@ -1,3 +1,5 @@
+.. _docker-actions-list:
+
 Docker actions list
 ###################
 

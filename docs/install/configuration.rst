@@ -14,7 +14,8 @@ We have one file to define `groups of users`, and one for the `rules`.
 The `rules` permit to attach `checks` on `docker action`.
 
 .. Important::
-   If no matching `docker action` is defined for a specific action, then the default is to **deny** the request.
+   If no matching `docker action` is defined for a specific action,
+   then the default is to **deny** the request.
 
 Policies configuration file format
 ++++++++++++++++++++++++++++++++++
@@ -61,7 +62,7 @@ We can break down the sections as follow.
 "Docker actions" list
 ---------------------
 
-As the list is quite long, please see the `dedicated page <docker-actions-list.html>`_.
+As the list is quite long, please refer to the :ref:`docker-actions-list` page.
 
 "Checks" list
 -------------
