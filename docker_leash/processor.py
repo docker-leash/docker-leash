@@ -8,11 +8,10 @@ import json
 
 import yaml
 
-from . import checks
+from . import app, checks
 from .action_mapper import ActionMapper
 from .config import Config
 from .exceptions import NoSuchCheckModuleException, UnauthorizedException
-from .leash_server import app
 from .payload import Payload
 
 
