@@ -34,14 +34,14 @@ Using flask internal webserver
 
    $ export FLASK_APP=docker_leash.leash_server.py
    $ python -m flask run --host 0.0.0.0 --port 80
-    * Running on http://0.0.0.0:80/
+    * Running on http://[::]:80/
 
 Using gunicorn
 ''''''''''''''
 
 .. code-block:: console
 
-   $ gunicorn --workers=5 --bind=0.0.0.0:80 --reload \
+   $ gunicorn --workers=5 --bind=[::]:80 --reload \
      docker_leash.leash_server:app
 
 Using Docker container
@@ -79,7 +79,7 @@ Don't forget to mount the configuration over the respective files.
      -v /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro \
      -v /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro \
      dockerleash/leash-server:latest \
-     gunicorn --workers=5 --bind=0.0.0.0:80 app.leash_server:app
+     gunicorn --workers=5 --bind=[::]:80 app.leash_server:app
 
 .. code-block:: yaml
    :caption: docker-compose.yml
