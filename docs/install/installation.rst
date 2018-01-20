@@ -2,8 +2,14 @@ Installation
 ############
 
 The server can be launched from a `virtualenv` or a `docker container`.
-Even if it is not mandatory, we recommend to run the service over TLS, so use any reverse proxy you are used to.
-Also, `Flask` ship an internal webserver, it should be avoided on production, just use a dedicated WSGI HTTP Server like `gunicorn` or `wsgi`.
+
+Even if it is not mandatory, we recommend to run the service over TLS,
+`gunicorn` can do it since version 17.0. Alternativelly, you can use any reverse
+proxy you are used to.
+
+Also, `Flask` ship an internal webserver, it should be
+avoided on production, just use a dedicated WSGI HTTP Server like `gunicorn` or
+`wsgi`.
 
 .. contents:: Table of Contents
 
@@ -44,6 +50,15 @@ Using gunicorn
    $ gunicorn --workers=5 --bind=[::]:80 --reload \
      docker_leash.leash_server:app
 
+If you choose to support TLS directly with `gunicorn`, just add options
+`certfile`, `keyfile` and change port listen port to `443`:
+
+.. code-block:: console
+
+   $ gunicorn --workers=5 --bind=[::]:443 --reload \
+     --certfile=/certs/server.crt --keyfile=/certs/server.key \
+     docker_leash.leash_server:app
+
 Using Docker container
 ++++++++++++++++++++++
 
@@ -75,11 +90,13 @@ Don't forget to mount the configuration over the respective files.
 
    $ docker run \
      -d \
-     -p 80:80 \
+     -p 443:443 \
+     -v /path/to/your/certs/:/certs:ro \
      -v /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro \
      -v /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro \
+     --certfile=/certs/server.crt --keyfile=/certs/server.key \
      dockerleash/leash-server:latest \
-     gunicorn --workers=5 --bind=[::]:80 app.leash_server:app
+     gunicorn --workers=5 --bind=[::]:443 app.leash_server:app
 
 .. code-block:: yaml
    :caption: docker-compose.yml
@@ -89,11 +106,15 @@ Don't forget to mount the configuration over the respective files.
    services:
      leashserver:
        image: dockerleash/leash-server:latest
+       command: gunicorn --workers=5 --bind=[::]:443 --chdir=/srv/docker-leash \
+         --certfile=/certs/server.crt --keyfile=/certs/server.key \
+         docker_leash.leash_server:app
        volumes:
+         - /path/to/your/certs/:/certs:ro
          - /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro
          - /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro
        ports:
-         - "80:80"
+         - "443:443"
        restart: always
 
 Alternatively, you can build a child image including your configuration.
@@ -102,6 +123,12 @@ Alternatively, you can build a child image including your configuration.
 
    FROM dockerleash/leash-server:latest
    COPY configuration/*.yml /srv/docker-leash/
+   COPY certs/* /certs/
+
+.. note::
+   The current `command` launched from the image doesn't include TLS options,
+   and listen by default on port `80`. Indeed, the bind mount of `/certs`, is
+   optionnal.
 
 Configure docker leash client (Your docker daemon)
 ==================================================
