@@ -67,9 +67,10 @@ If you choose to support TLS directly with `gunicorn`, just add options
 Using Docker container
 ++++++++++++++++++++++
 
-Of course, the `docker-leash` server could be deployed as a Docker container,
-but be careful to don't brick yourself by running the container
-on the same host as the one you want to secure.
+.. Warning::
+   Of course, the `docker-leash` server could be deployed as a Docker container,
+   but be careful to don't brick yourself by running the container
+   on the same host as the one you want to secure.
 
 We publish ready to use container images on Docker Hub,
 please have a look at our `docker repository <https://hub.docker.com/r/dockerleash/leash-server/>`_.
