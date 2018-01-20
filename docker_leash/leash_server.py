@@ -18,6 +18,9 @@ sys.dont_write_bytecode = True
 
 __version__ = '0.0.1.dev0'
 
+PROCESSOR = Processor()
+PROCESSOR.load_config()
+
 
 @app.route('/')
 def index():
@@ -137,11 +140,9 @@ def authz_request():
     :status 422: invalid parameters
     :rtype: :class:`flask.Response`
     """
-    processor = Processor()
-    processor.load_config()
 
     try:
-        processor.run(request.data or {})
+        PROCESSOR.run(request.data or {})
     except UnauthorizedException as error:
         app.logger.error("REQUEST DENIED: %s", error)
         return jsonify({
