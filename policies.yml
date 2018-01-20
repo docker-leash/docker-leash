@@ -1,26 +1,110 @@
 ---
 
-openbar:
-  any:
-    Allow:
+## General file format:
+# - description: <Optionnal: Human description of the ruleset>
+#   hosts:
+#     - <server name regexp>
+#     - ...
+#   default: <Default action if no rule match> (Deny, Allow, ReadOnly)
+#   policies:
+#     - members:
+#         - <group name>
+#         - ...
+#       rules:
+#         <action 1>:
+#           <check>:
+#         <action 2>:
+#           <check>:
+#             - <arg1>
+#             - <arg2>
+#             - ...
+#         <action 3>:
+#           <check>:
+#             <arg1>: value
+#             <arg1>: value
+#             ...: ...
+#
+#     - ...:
+#         - <group name>
+#         - ...
+#       rules:
+#         ...:
 
-personnal:
-  containersCreate:
-    ContainerName: "^foo-"
+## Rules are matched as:
+## * find first ruleset the match hostname
+## * find first policy the current user is in
+## * apply rules (without specific order)
+## ** if no rule match, fallback to default.
 
-restricted:
-  containers:
-    BindMounts:
-      - "-/"
-      - "+/home/$USER"
-      - "+/0"
-  containersDelete:
-    Deny:
 
-readonly:
-  systemPing:
-    Allow:
-  containersList:
-    Allow:
+- description: Servers are fully accessible to Admins.
+               Monitoring group can only list containers.
+               Default policy is Deny.
+  hosts:
+    - +^srv\d\d.*
+  default: Deny
+  policies:
+    - members:
+        - admins
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - monitoring
+      rules:
+        containersList:
+          Allow:
+
+
+- description: Users have access to containers and images starting by their name.
+               Admin have full access to the host.
+               Default policy is ReadOnly.
+  hosts:
+    - +^wks\d\d.*
+  default: ReadOnly
+  policies:
+    - members:
+        - admins
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - users
+      rules:
+        containersLogs:
+          ContainerName:
+            - ^bar-
+            - ^foo-
+            - ^$USER-
+        containers:
+          ContainerName:
+            - ^foo-
+            - ^$USER-
+          BindMounts:
+            - -/
+            - +/home/$USER
+            - +/0
+
+
+- description: For all other hosts,
+               Admin have full access to the host.
+               Deny access to Anonymous users.
+               Default policy is ReadOnly.
+  hosts:
+    - +.*
+  default: ReadOnly
+  policies:
+    - members:
+        - admins
+      rules:
+        any:
+          Allow:
+    - members:
+        - Anonymous
+      rules:
+        any:
+          Deny:
 
 ...

@@ -1,24 +1,21 @@
 ---
 
 admins:
-  policies:
-    - openbar
-  members:
-    - rda
-    - mal
+  - rda
+  - mal
 
-developpers:
-  policies:
-    - restricted
-    - personnal
-  members:
-    - jre
-    - malorent
+users:
+  - jre
+  - lgh
+  - dga
+  - ore
+  - pyr
+
+monitoring:
+  - xymon_1
+  - xymon_2
 
 all:
-  policies:
-    - readonly
-  members:
-    - "*"
+  - "*"
 
 ...
