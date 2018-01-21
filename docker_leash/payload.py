@@ -49,6 +49,8 @@ class Payload(object):
 
     def __init__(self, payload=None):
         """Initialize the object.
+
+        :raises InvalidRequestException: if the payload is empty or incomplete.
         """
         if not payload:
             raise InvalidRequestException("Payload is empty")
@@ -111,6 +113,7 @@ class Payload(object):
         :param dict payload: The payload to extract method.
         :return: The method name.
         :rtype: str or None
+        :raises InvalidRequestException: if the payload is missing RequestMethod.
         """
         if payload and "RequestMethod" in payload and payload["RequestMethod"]:
             return payload["RequestMethod"]
@@ -137,6 +140,7 @@ class Payload(object):
         :param dict payload: The payload to extract URI.
         :return: The Headers.
         :rtype: dict or None
+        :raises InvalidRequestException: if the payload is missing Headers.
         """
         if payload and "RequestHeaders" in payload and payload["RequestHeaders"]:
             return payload["RequestHeaders"]

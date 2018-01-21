@@ -2,6 +2,7 @@
 """Exceptions used in Docker Leash Server
 """
 
+
 class DockerLeashException(BaseException):
     """Base for all Leash Server Errors."""
 
@@ -40,6 +41,14 @@ class NoSuchCheckModuleException(DockerLeashException):
     """Exception for non existent check module.
 
     Used when a check is configured by not existent or loadable.
+    """
+    pass
+
+
+class ConfigurationException(DockerLeashException):
+    """Exception for configuration errors.
+
+    Used when configuration files are invalid.
     """
     pass
 

@@ -392,11 +392,14 @@ class ActionMapperTests(unittest.TestCase):
             'systemEvents',
             'systemEvents',
             'systemDataUsage',
+            'containersGetInfoAboutFiles',
         ]
         for check in checks:
             self.assertTrue(mapper.is_readonly(check))
 
         self.assertFalse(mapper.is_readonly('containersCreate'))
+        self.assertFalse(mapper.is_readonly('containersDelete'))
+        self.assertFalse(mapper.is_readonly('containersExtractArchiveToDirectory'))
         self.assertFalse(mapper.is_readonly('esotericAction'))
 
     def test_action_is_about(self):

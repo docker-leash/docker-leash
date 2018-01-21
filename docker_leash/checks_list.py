@@ -40,10 +40,24 @@ class Checks(object):
         :return: The reformatted test and arguments.
         :rtype: dict
         """
+        if isinstance(data, str):
+            return {'name': data, 'args': None}
+
         for key, val in data.iteritems():
             return {'name': key, 'args': val}
 
     def __contains__(self, data):
+        """Validate presence of `data` in `self.checks`
+
+        If data is `str` then check only the key.
+        If data is `dict` then check the whole dict.
+        """
+        if isinstance(data, str):
+            for item in self.checks:
+                if data == item['name']:
+                    return True
+            return False
+
         _data = self._structure_convert(data)
         for item in self.checks:
             if _data == item:

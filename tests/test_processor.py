@@ -15,32 +15,41 @@ from docker_leash.exceptions import (InvalidRequestException,
 from docker_leash.payload import Payload
 from docker_leash.processor import Processor
 
-groups_allow = {
-    'all': {
-        'policies': ['allow'],
-        'members': ['*']
-    }
+GROUPS = {
+    "users": ["someone"]
 }
 
-groups_deny = {
-    'all': {
-        'policies': ['deny'],
-        'members': ['*']
+POLICIES_ALLOW = [
+    {
+        "hosts": ["+.*"],
+        "default": "Deny",
+        "policies": [
+            {
+                "members": ["users"],
+                "rules": {
+                    "containersCreate": {"Allow": None}
+                }
+            }
+        ]
     }
-}
+]
 
-policies = {
-    'allow': {
-        'containersCreate': {
-            'Allow': None
-        }
-    },
-    'deny': {
-        'containersCreate': {
-            'Deny': None
-        }
+POLICIES_DENY = [
+    {
+        "hosts": ["+.*"],
+        "default": "Allow",
+        "policies": [
+            {
+                "members": ["users"],
+                "rules": {
+                    "containersCreate": {
+                        "Deny": None
+                    }
+                }
+            }
+        ]
     }
-}
+]
 
 mocked_body = {
     "User": "someone",
@@ -103,32 +112,26 @@ class ProcessorTests(unittest.TestCase):
         """Change processor config once for all
         """
         processor = Processor()
-        self.assertEqual(len(processor.config.groups), 3)
-        self.assertEqual(len(processor.config.policies), 4)
+        self.assertEqual(len(processor.config.groups), 4)
+        self.assertEqual(len(processor.config.policies), 3)
 
-        processor.config = Config(groups_allow, policies)
+        processor.config = Config(GROUPS, POLICIES_ALLOW)
         self.assertEqual(len(processor.config.groups), 1)
-        self.assertEqual(len(processor.config.policies), 2)
-
-    @classmethod
-    def test_run_without_exception(cls):
-        processor = Processor()
-        processor.config = Config(groups_allow, policies)
-        processor.run(body=mocked_body)
+        self.assertEqual(len(processor.config.policies), 1)
 
     @classmethod
     def test_run_simple_allow(cls):
         """Validate Allow
         """
         processor = Processor()
-        processor.config = Config(groups_allow, policies)
+        processor.config = Config(GROUPS, POLICIES_ALLOW)
         processor.run(body=mocked_body)
 
     def test_run_simple_deny(self):
         """Validate Deny
         """
         processor = Processor()
-        processor.config = Config(groups_deny, policies)
+        processor.config = Config(GROUPS, POLICIES_DENY)
         with self.assertRaises(UnauthorizedException):
             processor.run(body=mocked_body)
 
@@ -137,14 +140,14 @@ class ProcessorTests(unittest.TestCase):
         """Validate Allow from string
         """
         processor = Processor()
-        processor.config = Config(groups_allow, policies)
+        processor.config = Config(GROUPS, POLICIES_ALLOW)
         processor.run(body=json.dumps(mocked_body))
 
     def test_run_simple_deny_as_string(self):
         """Validate Deny from string
         """
         processor = Processor()
-        processor.config = Config(groups_deny, policies)
+        processor.config = Config(GROUPS, POLICIES_DENY)
         with self.assertRaises(UnauthorizedException):
             processor.run(body=json.dumps(mocked_body))
 

@@ -275,7 +275,7 @@ class ActionMapper(object):
         """Check if an action is recognized.
 
         :param str action: The action name to check
-        :return: True if the action is recognized
+        :return: True if the action is recognized or read-only
         :rtype: bool
         """
         return action in self._actions.keys() and self._actions[action] in ('GET', 'HEAD')

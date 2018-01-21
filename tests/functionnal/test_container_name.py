@@ -21,7 +21,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "User": "jre",
             "UserAuthNMethod": "TLS",
             "RequestHeaders": {
-                "Host": "other01"
+                "Host": "wks01"
             }
         }
 

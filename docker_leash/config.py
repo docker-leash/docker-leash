@@ -4,8 +4,11 @@ Config
 ======
 '''
 
+import re
+
 from .action_mapper import ActionMapper
 from .checks_list import Checks
+from .exceptions import ConfigurationException
 
 
 class Config(object):
@@ -54,85 +57,127 @@ class Config(object):
                 self.groups = groups
 
         if policies:
-            if self.policies:
-                self.policies.update(policies)
-            else:
-                self.policies = policies
+            self.policies = policies
 
-    def _get_groups_for_user(self, user):
-        """Return the groups a user belongs to.
+    def get_rules(self, payload):
+        """Return the rules for a payload.
 
-        :param str user: The username to get groups.
-        :return: The groups list the user belongs to.
+        :param str payload: The current payload.
+        :return: The rules concerned by the payload.
         :rtype: list
         """
-        groups = []
+        username = payload.user
+        action = ActionMapper().get_action_name(method=payload.method, uri=payload.uri)
+        hostname = payload.get_host()
 
-        if not self.groups:
-            return groups
+        for rule in self.policies:
+            if not self._match_host(hostname, rule["hosts"]):
+                continue
 
-        for group_name, group in self.groups.iteritems():
-            if '*' in group['members'] or user in group['members']:
-                groups.append(group_name)
-        return groups
+            policies = self._get_policy_by_member(username, rule["policies"])
+            if policies is None:
+                return self._default_rule(rule)
 
-    def _get_policies_for_user(self, user):
-        """Return the policies to be applied for a user.
+            rules = self._match_rules(action, policies)
+            if not rules:
+                return self._default_rule(rule)
 
-        :param str user: The username to get policies.
-        :return: The policies list to be applied.
-        :rtype: list
+            return rules
+
+    @staticmethod
+    def _default_rule(rule):
+        """Construct a default rule
+
+        :param dict rule: The current parsed rule
+        :return: A :cls:`docker_leash.Check` containing only the default rule
+        :rtype: :cls:`docker_leash.Check`
         """
-        groups = self._get_groups_for_user(user)
-        policies = []
-        for group in groups:
-            policies.extend(self.groups[group]['policies'])
-        return policies
-
-    def get_checks_for_user(self, user, action):
-        """Return the :mod:`docker_leash.checks` to be applied for an user
-        and an action.
-
-        :param str user: The username.
-        :param str action: The action to compare.
-        :return: The :mod:`docker_leash.checks` list to be verified against
-                 a payload.
-        :rtype: list
-        """
-        policies = self._get_policies_for_user(user)
         checks = Checks()
-        mapper = ActionMapper()
+        checks.add(rule["default"])
+        return checks
 
-        if mapper.is_action(action):
-            for policy in policies:
+    @staticmethod
+    def _match_host(hostname, host_rules):
+        """Validate if a hostname match hosts regex list
 
-                # Look for "normal" Actions
-                if action in self.policies[policy]:
-                    for key, val in self.policies[policy][action].iteritems():
-                        checks.add({key: val})
+        :param str hostname: The hostname
+        :param list host_rules: List of hosts regex
+        :return: True if hostname match host rules
+        :rtype: bool
+        :raises ConfigurationException: if the host rules are invalid.
+        """
+        match = False
+        for hosts_reg in host_rules:
+            mode = hosts_reg[0]
+            regex = hosts_reg[1:]
 
-                # Look for "any" Actions
-                elif 'any' in self.policies[policy].keys():
-                    for key, val in self.policies[policy]['any'].iteritems():
-                        checks.add({key: val})
+            if mode == '+':
+                if re.match(regex, hostname):
+                    match = True
+                    continue
+            elif mode == '-':
+                if re.match(regex, hostname):
+                    match = False
+                    continue
+            else:
+                raise ConfigurationException(
+                    "'hosts' regex (%s) is missing '+' or '-'" % hosts_reg
+                )
+        return match
 
-                # Look for "readonly" Actions
-                elif 'readOnly' in self.policies[policy].keys():
-                    if mapper.is_readonly(action):
-                        for key, val in self.policies[policy]['readOnly'].iteritems():
-                            checks.add({key: val})
+    def _get_policy_by_member(self, username, policies):
+        """Extract the policies for a username.
 
-                # Look for "readwrite" Actions
-                elif 'readWrite' in self.policies[policy].keys():
-                    if not mapper.is_readonly(action):
-                        for key, val in self.policies[policy]['readWrite'].iteritems():
-                            checks.add({key: val})
+        Return the concerned policies:
+          * If the user match in a group
+          * If the user is None, and "members" contains "Anonymous"
+          * Else return None
 
-                else:
-                    # Look for "parents" Actions
-                    parent = mapper.action_is_about(action, self.policies[policy].keys())
-                    if parent:
-                        for key, val in self.policies[policy][parent].iteritems():
-                            checks.add({key: val})
+        :param str username: The username
+        :param dict policies: The policies to filter
+        :return: The policies for username
+        :rtype: None or dict
+        """
+        for policy in policies:
+
+            if username is None and "Anonymous" in policy["members"]:
+                return policy["rules"]
+
+            for group in policy["members"]:
+                if group in self.groups:
+                    if username in self.groups[group]:
+                        return policy["rules"]
+        return None
+
+    @staticmethod
+    def _match_rules(action, actions):
+        """Extract the checks for an action.
+
+        First match for exact comparaison, then for the "any" keyword,
+        and finally for "parents" action name.
+
+        :param str action: The current action
+        :param dict actions: The actions from the policies
+        :return: The filtered actions list
+        :rtype: `docker_leash.Checks`
+        """
+        checks = Checks()
+
+        # Look for "normal" Actions
+        if action in actions.keys():
+            for check, args in actions[action].iteritems():
+                checks.add({check: args})
+
+        # Look for "any" Actions
+        elif "any" in actions.keys():
+            for check, args in actions["any"].iteritems():
+                checks.add({check: args})
+
+        else:
+            # Look for "parents" Actions
+            parent = ActionMapper().action_is_about(action, actions.keys())
+            if parent:
+                for check, args in actions[parent].iteritems():
+                    checks.add({check: args})
 
         return checks

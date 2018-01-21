@@ -7,69 +7,121 @@ ConfigTests
 import unittest
 
 from docker_leash.config import Config
+from docker_leash.exceptions import ConfigurationException
+from docker_leash.leash_server import app
+from docker_leash.payload import Payload
 
 MOCKED_GROUPS = {
-    "admins": {
-        "policies": ["openbar"],
-        "members": ["rda", "mal"]
-    },
-    "developpers": {
-        "policies": ["restricted", "personnal"],
-        "members": ["jre"]
-    },
-    "all": {
-        "policies": ["readonly"],
-        "members": ["*"]
-    },
+    "admins": ["rda", "mal"],
+    "users": ["jre", "lgh", "dga", "ore", "pyr"],
+    "monitoring": ["xymon_1", "xymon_2"],
+    "all": ["*"],
 }
 
-MOCKED_POLICIES = {
-    "openbar": {
-        "containersCreate": {
-            "Allow": None
-        }
-    },
-    "personnal": {
-        "containersCreate": {
-            "containerNameCheck": {
-                "startwith": [
-                    'foo',
-                    'bar'
-                ]
+MOCKED_POLICIES = [
+    {
+        "description": "Servers are fully accessible to Admins.",
+        "hosts": [r"+^srv\d\d.*", r"-^srv3\d.*", r"+^srv38.*"],
+        "default": "Deny",
+        "policies": [
+            {
+                "members": ["admins"],
+                "rules": {
+                    "any": {
+                        "Allow": None
+                    }
+                }
             },
-            "pathCheck": [
-                "+/mnt/usbkey"
-            ],
-            "Allow": None
-        }
+            {
+                "members": ["monitoring"],
+                "rules": {
+                    "containersList": {
+                        "Allow": None
+                    }
+                }
+            },
+        ],
     },
-    "restricted": {
-        "containersCreate": {
-            "pathCheck": [
-                "-/",
-                "+/home/$USER",
-                "+/0"
-            ],
-            "Allow": None
-        },
-        "containersDelete": {
-            "Deny": None
-        },
+    {
+        "description": "Users have access to containers and images starting by their name.",
+        "hosts": [r"+^wks\d\d.*"],
+        "default": "ReadOnly",
+        "policies": [
+            {
+                "members": ["admins"],
+                "rules": {
+                    "any": {
+                        "Allow": None
+                    }
+                }
+            },
+            {
+                "members": ["users"],
+                "rules": {
+                    "containersLogs": {
+                        "ContainerName": [
+                            "^bar-",
+                            "^foo-",
+                            "^$USER-"
+                        ]
+                    },
+                    "containers": {
+                        "ContainerName": [
+                            "^foo-",
+                            "^$USER-"
+                        ],
+                        "ImagesName": [
+                            "^foo-",
+                            "^$USER-"
+                        ],
+                        "BindVolumes": [
+                            "-/",
+                            "+/home/$USER",
+                            "+/0"
+                        ],
+                    },
+                    "imagesCreate": {
+                        "ImagesName": [
+                            "^foo-",
+                            "^$USER-"
+                        ],
+                    },
+                },
+            },
+        ],
     },
-    "readonly": {
-        "ping": {
-            "Allow": None
-        },
-        "containersList": {
-            "Allow": None
-        }
+    {
+        "description": "Deny access to Anonymous users.",
+        "hosts": [r"+.*"],
+        "default": "ReadOnly",
+        "policies": [
+            {
+                "members": ["admins"],
+                "rules": {
+                    "any": {
+                        "Allow": None
+                    }
+                }
+            },
+            {
+                "members": ["Anonymous"],
+                "rules": {
+                    "any": {
+                        "Deny": None
+                    }
+                }
+            },
+        ],
     },
-}
+]
 
 
 class ConfigTests(unittest.TestCase):
     """Validation of :cls:`docker_leash.Config`
     """
+
+    def setUp(self):
+        app.config['DEBUG'] = False
 
     def test_init(self):
         """Empty config should not raise any error
@@ -108,262 +160,403 @@ class ConfigTests(unittest.TestCase):
         self.assertNotEqual(policies1, config2.policies)
         self.assertNotEqual(groups1, config2.groups)
 
-    def test_init_with_initial_values(self):
-        policies1 = {"foo": "foo"}
-        policies2 = {"bar": "bar"}
-        groups1 = {"bar": "bar"}
-        groups2 = {"bar": "bar"}
-
-        z_policies = policies1.copy()
-        z_policies.update(policies2)
-
-        z_groups = groups1.copy()
-        z_groups.update(groups2)
-
-        config = Config(policies=policies1, groups=groups1)
-        config.update(policies=policies2, groups=groups2)
-
-        self.assertEqual(config.policies, z_policies)
-        self.assertEqual(config.groups, z_groups)
-
-    def test_get_groups_for_user_none(self):
-        """Anonymous users should fall in "*" members
+    def test_default_rule(self):
+        """Retrieve default rule
         """
-        config = Config(groups=MOCKED_GROUPS)
+        ruleset1 = Config._default_rule({"default": "Deny"})
+        ruleset2 = Config._default_rule({"default": "Allow"})
 
-        groups = config._get_groups_for_user(None)
-        self.assertEqual(len(groups), 1)
-        self.assertTrue('all' in groups)
+        self.assertEqual(ruleset1[0]["name"], "Deny")
+        self.assertEqual(ruleset2[0]["name"], "Allow")
+        self.assertEqual(ruleset1[0]["name"], "Deny")
+        self.assertEqual(ruleset2[0]["name"], "Allow")
 
-    def test_get_groups_for_user_no_groups_defined(self):
-        """User with no group
+    def test_get_policy_by_member(self):
+        """Retrieve policy group by member
         """
-        config = Config(groups=MOCKED_GROUPS)
-        config.groups = None
-
-        groups = config._get_groups_for_user(None)
-        self.assertEqual(len(groups), 0)
-
-    def test_get_groups_for_user(self):
-        """Get groups for a user
-        """
-        config = Config(groups=MOCKED_GROUPS)
-
-        groups = config._get_groups_for_user('rda')
-        self.assertEqual(len(groups), 2)
-        self.assertTrue('all' in groups)
-        self.assertTrue('admins' in groups)
-
-        groups = config._get_groups_for_user('mal')
-        self.assertEqual(len(groups), 2)
-        self.assertTrue('all' in groups)
-        self.assertTrue('admins' in groups)
-
-        groups = config._get_groups_for_user('jre')
-        self.assertEqual(len(groups), 2)
-        self.assertTrue('all' in groups)
-        self.assertTrue('developpers' in groups)
-
-    def test_get_policies_for_user_none(self):
-        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
-
-        policies = config._get_policies_for_user(None)
-        self.assertEqual(len(policies), 1)
-        self.assertTrue('readonly' in policies)
-
-    def test_get_policies_for_user(self):
-        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
-
-        policies = config._get_policies_for_user('rda')
-        self.assertEqual(len(policies), 2)
-        self.assertTrue('readonly' in policies)
-        self.assertTrue('openbar' in policies)
-
-        policies = config._get_policies_for_user('mal')
-        self.assertEqual(len(policies), 2)
-        self.assertTrue('readonly' in policies)
-        self.assertTrue('openbar' in policies)
-
-        policies = config._get_policies_for_user('jre')
-        self.assertEqual(len(policies), 3)
-        self.assertTrue('readonly' in policies)
-        self.assertTrue('restricted' in policies)
-
-    def test_get_checks_for_user(self):
-        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
-        checks = config.get_checks_for_user('jre', 'containersCreate')
-
-        attended_result = [
+        policies = [
             {
-                "name": "containerNameCheck",
-                "args": {'startwith': ['foo', 'bar']}
+                "members": ["admins"],
+                "rules": "administrators"
             },
             {
-                "name": "pathCheck",
-                "args": ["-/", "+/home/$USER", "+/0"]
-            },
-            {
-                "name": "pathCheck",
-                "args": ["+/mnt/usbkey"]
-            },
-            {
-                "name": "Allow",
-                "args": None
+                "members": ["Anonymous"],
+                "rules": "anonymous"
             },
         ]
+        config = Config(groups={"admins": ["rda", "mal"]})
 
-        self.assertEqual(len(checks), 4)
-        self.assertEqual(checks, attended_result)
+        self.assertEqual(config._get_policy_by_member(None, policies), "anonymous")
+        self.assertEqual(config._get_policy_by_member("mal", policies), "administrators")
+        self.assertEqual(config._get_policy_by_member("jre", policies), None)
 
-    def test_get_policies_for_user_manual_config(self):
-        groups = {
-            'all': {
-                'policies': ['allow_all'],
-                'members': ['*']
-            }
+    def test_match_host(self):
+        """Verify host matcher
+        """
+        hosts = [r"+^srv\d\d.*", r"-^srv3\d.*", r"+^srv38.*"]
+        self.assertTrue(Config._match_host("srv01", hosts))
+        self.assertTrue(Config._match_host("srv02", hosts))
+        self.assertFalse(Config._match_host("srv36", hosts))
+        self.assertTrue(Config._match_host("srv38", hosts))
+        self.assertFalse(Config._match_host("wks01", hosts))
+        self.assertFalse(Config._match_host("wks02", hosts))
+        self.assertFalse(Config._match_host("other01", hosts))
+
+        hosts = [r"+^wks\d\d.*"]
+        self.assertFalse(Config._match_host("srv01", hosts))
+        self.assertFalse(Config._match_host("srv02", hosts))
+        self.assertFalse(Config._match_host("srv36", hosts))
+        self.assertTrue(Config._match_host("wks01", hosts))
+        self.assertTrue(Config._match_host("wks02", hosts))
+        self.assertFalse(Config._match_host("other01", hosts))
+
+        hosts = [r"+.*"]
+        self.assertTrue(Config._match_host("srv01", hosts))
+        self.assertTrue(Config._match_host("srv02", hosts))
+        self.assertTrue(Config._match_host("srv36", hosts))
+        self.assertTrue(Config._match_host("wks01", hosts))
+        self.assertTrue(Config._match_host("wks02", hosts))
+        self.assertTrue(Config._match_host("other01", hosts))
+
+        with self.assertRaises(ConfigurationException):
+            self.assertTrue(Config._match_host("srv01", [r".*"]))
+
+    def test_match_rules(self):
+        """Verify rules matcher
+        """
+
+        actions = {
+            "containersLogs": {"ContainerName": "Allow"},
+            "containers": {"ContainerName": "Allow", "ImagesName": "Allow"},
         }
+        self.assertEqual(len(Config._match_rules("containersLogs", actions)), 1)
+        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 2)
+        self.assertEqual(len(Config._match_rules("imagesCreate", actions)), 0)
+        self.assertEqual(len(Config._match_rules("imagesList", actions)), 0)
 
-        policies = {
-            'allow_all': {
-                'containersCreate': {
-                    'allow': None
-                }
-            }
-        }
+        actions["any"] = {"imagesCreate": "Allow"}
+        self.assertEqual(len(Config._match_rules("containersLogs", actions)), 1)
+        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 1)
+        self.assertEqual(len(Config._match_rules("imagesCreate", actions)), 1)
+        self.assertEqual(len(Config._match_rules("imagesList", actions)), 1)
 
-        config = Config(groups, policies)
-
-        policies = config._get_policies_for_user('rda')
-        self.assertEqual(len(policies), 1)
-        self.assertTrue('allow_all' in policies)
-
-    def test_validate_action_name_exists(self):
+    def test_get_rules_for_anonymous_1(self):
+        """An anonymous user cannot create containers on server
+        """
         config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
 
-        self.assertEqual(len(config.get_checks_for_user('mal', 'someUnexistentAction')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
-
-    def test_validate_action_name_exists_with_the_any_action(self):
-
-        groups = {
-            "everyone": {
-                "policies": ["openbar"],
-                "members": ["*"]
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv01"
             },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Deny', rules)
+
+    def test_get_rules_for_anonymous_2(self):
+        """An anonymous user cannot create containers on workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "wks01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
+
+    def test_get_rules_for_anonymous_3(self):
+        """An anonymous user cannot create containers on other hosts
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Deny', rules)
+
+    def test_get_rules_for_admin_1(self):
+        """An admin can create containers on servers
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Allow', rules)
+
+    def test_get_rules_for_admin_2(self):
+        """An admin can create containers on workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "wks01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Allow', rules)
+
+    def test_get_rules_for_admin_3(self):
+        """An admin can create containers on other hosts
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Allow', rules)
+
+    def test_get_rules_for_admin_4(self):
+        """Host srv33 is considered as other
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv33"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Allow', rules)
+
+    def test_get_rules_for_user_1(self):
+        """A normal user cannot create containers on servers
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Deny', rules)
+
+    def test_get_rules_for_user_2(self):
+        """A normal user can create containers on workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "wks01"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 3)
+        self.assertIn('ContainerName', rules)
+        self.assertIn('ImagesName', rules)
+        self.assertIn('BindVolumes', rules)
+
+    def test_get_rules_for_user_3(self):
+        """A normal user can only get logs for certain containers
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "GET",
+            "RequestUri": "/v1.32/containers/123/logs",
+            "RequestHeaders": {
+                "Host": "wks01"
+            },
+        })
+        expected = {
+            "ContainerName": [
+                "^bar-",
+                "^foo-",
+                "^$USER-"
+            ]
         }
 
-        policies = {
-            "openbar": {
-                "any": {
-                    "Allow": None
-                }
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn(expected, rules)
+
+    def test_get_rules_for_user_4(self):
+        """A normal user can create images on workstation only with specific names
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/images/create",
+            "RequestHeaders": {
+                "Host": "wks01"
             },
-        }
-        config = Config(groups, policies)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'any')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'someUnexistentAction')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
-
-    def test_validate_the_any_action(self):
-
-        groups = {
-            "everyone": {
-                "policies": ["openbar"],
-                "members": ["*"]
-            },
-        }
-
-        policies = {
-            "openbar": {
-                "any": {
-                    "Allow": None
-                }
-            },
-        }
-        config = Config(groups, policies)
-
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'networksPrune')), 1)
-
-    def test_validate_the_readonly_action(self):
-
-        groups = {
-            "everyone": {
-                "policies": ["readonly"],
-                "members": ["*"]
-            },
+        })
+        expected = {
+            "ImagesName": [
+                "^foo-",
+                "^$USER-"
+            ]
         }
 
-        policies = {
-            "readonly": {
-                "readOnly": {
-                    "Allow": None
-                }
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn(expected, rules)
+
+    def test_get_rules_for_user_5(self):
+        """A normal user can list images on workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "GET",
+            "RequestUri": "/v1.32/images/json",
+            "RequestHeaders": {
+                "Host": "wks01"
             },
-        }
-        config = Config(groups, policies)
+        })
 
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'systemPing')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'volumesList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'secretsList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'networksPrune')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'pluginsInstall')), 0)
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
 
-    def test_validate_the_readwrite_action(self):
+    def test_get_rules_for_user_6(self):
+        """A normal user cannot delete images on a workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
 
-        groups = {
-            "everyone": {
-                "policies": ["readonly"],
-                "members": ["*"]
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "DELETE",
+            "RequestUri": "/v1.32/images/abc123",
+            "RequestHeaders": {
+                "Host": "wks01"
             },
-        }
+        })
 
-        policies = {
-            "readonly": {
-                "readWrite": {
-                    "Allow": None
-                }
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
+
+    def test_get_rules_for_user_7(self):
+        """A normal user cannot delete images on a workstation
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "DELETE",
+            "RequestUri": "/v1.32/images/abc123",
+            "RequestHeaders": {
+                "Host": "wks01"
             },
-        }
-        config = Config(groups, policies)
+        })
 
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersList')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'systemPing')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'volumesList')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'secretsList')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'networksPrune')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'pluginsInstall')), 1)
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
 
-    def test_validate_action_parent(self):
+    def test_get_rules_for_user_8(self):
+        """A normal user cannot list images on other hosts
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
 
-        groups = {
-            "everyone": {
-                "policies": ["check_containers"],
-                "members": ["*"]
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "GET",
+            "RequestUri": "/v1.32/images/json",
+            "RequestHeaders": {
+                "Host": "other01"
             },
-        }
+        })
 
-        policies = {
-            "check_containers": {
-                "containers": {
-                    "Allow": None
-                }
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
+
+    def test_get_rules_for_user_9(self):
+        """A normal user cannot list images on other hosts
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "DELETE",
+            "RequestUri": "/v1.32/images/abc123",
+            "RequestHeaders": {
+                "Host": "other01"
             },
-        }
-        config = Config(groups, policies)
+        })
 
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersList')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersCreate')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'containersRemove')), 1)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'imagesList')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'systemPing')), 0)
-        self.assertEqual(len(config.get_checks_for_user('mal', 'volumesList')), 0)
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
+
+    def test_get_rules_for_user_10(self):
+        """A normal user can list images on srv33
+        """
+        config = Config(policies=MOCKED_POLICIES, groups=MOCKED_GROUPS)
+
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv33"
+            },
+        })
+
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('ReadOnly', rules)
