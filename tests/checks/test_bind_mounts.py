@@ -1,12 +1,16 @@
 # vim:set ts=4 sw=4 et:
+'''
+BindMountsTests
+----------------
+'''
 
 import unittest
 
-from docker_leash.checks.bind_volumes import BindVolumes
+from docker_leash.checks.bind_mounts import BindMounts
 from docker_leash.exceptions import UnauthorizedException
 from docker_leash.payload import Payload
 
-payload_minimal = {
+PAYLOAD_MINIMAL = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
@@ -14,10 +18,13 @@ payload_minimal = {
         "HostConfig": {
             "Binds": []
         }
-    }
+    },
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-payload_foo = {
+PAYLOAD_FOO = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
@@ -29,10 +36,13 @@ payload_foo = {
                 '/foo/bar/team',
             ]
         }
-    }
+    },
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-payload_foobar = {
+PAYLOAD_FOOBAR = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
@@ -43,10 +53,13 @@ payload_foobar = {
                 '/foobar',
             ]
         }
-    }
+    },
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-payload_many = {
+PAYLOAD_MANY = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
@@ -64,13 +77,20 @@ payload_many = {
                 'foo',
             ]
         }
-    }
+    },
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-class BindVolumesTests(unittest.TestCase):
 
-    @classmethod
-    def test_init(cls):
+class BindMountsTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.checks.BindMounts`
+    """
+
+    def test_init(self):
+        """Try init BindMounts with minimal informations
+        """
         args = [
             '-/.*',
             '+/foo',
@@ -78,13 +98,15 @@ class BindVolumesTests(unittest.TestCase):
             '+/foo/bar',
         ]
 
-        BindVolumes().run(None, Payload({}))
-        BindVolumes().run(args, Payload({}))
-        BindVolumes().run(args, Payload(payload_minimal))
-        BindVolumes().run(None, Payload(payload_minimal))
+        BindMounts().run(None, Payload({}))
+        BindMounts().run(args, Payload({}))
+        BindMounts().run(args, Payload(PAYLOAD_MINIMAL))
+        BindMounts().run(None, Payload(PAYLOAD_MINIMAL))
 
     @classmethod
     def test_valid_paths(cls):
+        """Check valid paths
+        """
         args = [
             '-/.*',
             '+/foo',
@@ -92,9 +114,11 @@ class BindVolumesTests(unittest.TestCase):
             '+/foo/bar',
         ]
 
-        BindVolumes().run(args, Payload(payload_foo))
+        BindMounts().run(args, Payload(PAYLOAD_FOO))
 
     def test_invalid_paths(self):
+        """Check invalid paths
+        """
         args = [
             '-/.*',
             '+/foo',
@@ -103,10 +127,12 @@ class BindVolumesTests(unittest.TestCase):
         ]
 
         with self.assertRaises(UnauthorizedException):
-            BindVolumes().run(args, Payload(payload_many))
+            BindMounts().run(args, Payload(PAYLOAD_MANY))
 
     @classmethod
     def test_invalid_rules_should_be_ignored(cls):
+        """Unparsable rules are ignored
+        """
         args = [
             '.*/.*',
             '%-/foo',
@@ -114,22 +140,26 @@ class BindVolumesTests(unittest.TestCase):
             '+/foo',
         ]
 
-        BindVolumes().run(args, Payload(payload_foo))
+        BindMounts().run(args, Payload(PAYLOAD_FOO))
 
     @classmethod
     def test_directoy_names_starting_with(cls):
+        """Check directory starting with
+        """
         args = [
             '-/.*',
             '+/foo',
         ]
 
-        BindVolumes().run(args, Payload(payload_foo))
+        BindMounts().run(args, Payload(PAYLOAD_FOO))
 
     def test_directoy_names_exact_match(self):
+        """Check directory exact match
+        """
         args = [
             '-/.*',
             '+/foo/',
         ]
 
         with self.assertRaises(UnauthorizedException):
-            BindVolumes().run(args, Payload(payload_foobar))
+            BindMounts().run(args, Payload(PAYLOAD_FOOBAR))

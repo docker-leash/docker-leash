@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+BindMounts
+----------
+'''
 
 import logging
 import os.path
@@ -17,7 +21,7 @@ logging.basicConfig(
 )
 
 
-class BindVolumes(BaseCheck):
+class BindMounts(BaseCheck):
     """A module that checks mount binds from host filesystem"""
 
     def run(self, args, payload):
@@ -87,7 +91,7 @@ class Rules(object):
                     ),
                     rule
                 )]
-                rules+= [rule]
+                rules += [rule]
             except re.error as error:
                 logging.warning('invalid rule: %r (%s)', rule, error)
         self.__rules = result

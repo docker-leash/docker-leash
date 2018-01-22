@@ -1,13 +1,21 @@
 # vim:set ts=4 sw=4 et:
+'''
+BindMountsRulesTests
+---------------------
+'''
 
 import unittest
 
-from docker_leash.checks.bind_volumes import Rules
+from docker_leash.checks.bind_mounts import Rules
 
 
-class BindVolumesRulesTests(unittest.TestCase):
+class BindMountsRulesTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.checks.BindMountsRules`
+    """
 
     def test_init(self):
+        """Check Rules parameter type
+        """
         with self.assertRaises(TypeError):
             Rules(None)
 
@@ -20,6 +28,8 @@ class BindVolumesRulesTests(unittest.TestCase):
         self.assertIsInstance(Rules([]), Rules)
 
     def test_rules_to_str(self):
+        """Validate rules convertion to str
+        """
         args = [
             r'-/.*',
             r'+/foo/',
@@ -31,6 +41,8 @@ class BindVolumesRulesTests(unittest.TestCase):
         self.assertEqual(str(rules), "Rules({!r})".format(args))
 
     def test_invalid_rules_to_str(self):
+        """Validate wrong rules convertion to str
+        """
         args = [
             r'-',
             r'-[]^] [',
