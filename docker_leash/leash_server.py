@@ -18,8 +18,14 @@ sys.dont_write_bytecode = True
 
 __version__ = '0.0.1.dev0'
 
-PROCESSOR = Processor()
-PROCESSOR.load_config()
+def setup_app(application):
+    """Initialize the application
+    """
+    application.config["processor"] = Processor()
+    application.config["processor"].load_config()
+
+
+setup_app(app)
 
 
 @app.route('/')
@@ -142,7 +148,7 @@ def authz_request():
     """
 
     try:
-        PROCESSOR.run(request.data)
+        app.config["processor"].run(request.data or {})
     except InvalidRequestException as error:
         app.logger.error("REQUEST DENIED: %s", error)
         return jsonify({
