@@ -1,8 +1,7 @@
 # vim:set ts=4 sw=4 et:
-
 '''
 ContainerNameTestsFunctionnal
-====
+-----------------------------
 '''
 
 from . import is_success, post
@@ -10,7 +9,7 @@ from .test_base import LeashServerFunctionnalBaseTests
 
 
 class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
-    """Test :class:`docker_leash.checks.ContainerName` using main entrypoint
+    """Functionnal validation of :cls:`docker_leash.checks.ContainerName`
     """
 
     def test_create_authenticated_valid(self):

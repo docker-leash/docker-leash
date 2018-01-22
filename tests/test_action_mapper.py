@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+ActionMapperTests
+=================
+'''
 
 import unittest
 
@@ -6,12 +10,18 @@ from docker_leash.action_mapper import ActionMapper
 
 
 class ActionMapperTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.ActionMapper`
+    """
 
     @classmethod
     def test_init(cls):
+        """Validate ActionMapper creation without error
+        """
         ActionMapper()
 
-    def test_get_action_name_bymethod_and_uri(self):
+    def test_get_action_name_by_method_and_uri(self):
+        """Retrieve action name by method and uri
+        """
         mapper = ActionMapper()
 
         checks = [
@@ -226,10 +236,14 @@ class ActionMapperTests(unittest.TestCase):
             self.assertEqual(check[2], action)
 
     def test_get_action_name_invalid_method(self):
+        """Retrieve action name by an invalid method and uri
+        """
         action = ActionMapper().get_action_name(method='EXOTIC', uri='/_ping')
         self.assertEqual(action, None)
 
     def test_is_action(self):
+        """Validate if an action exists
+        """
         mapper = ActionMapper()
 
         checks = [
@@ -329,6 +343,8 @@ class ActionMapperTests(unittest.TestCase):
         self.assertFalse(mapper.is_action('esotericAction'))
 
     def test_is_action_readonly(self):
+        """validate if an action is readOnly
+        """
         mapper = ActionMapper()
 
         checks = [
@@ -384,6 +400,8 @@ class ActionMapperTests(unittest.TestCase):
         self.assertFalse(mapper.is_readonly('esotericAction'))
 
     def test_action_is_about(self):
+        """Check if an action is about "parent"
+        """
         mapper = ActionMapper()
 
         self.assertTrue(mapper.action_is_about('containersCreate', 'containers'))
@@ -396,6 +414,8 @@ class ActionMapperTests(unittest.TestCase):
         self.assertEqual(mapper.action_is_about('esotericAction', 'containers'), None)
 
     def test_action_is_about_arrays(self):
+        """Check if an action is about "parent" with list
+        """
         mapper = ActionMapper()
 
         self.assertEqual(mapper.action_is_about('volumesCreate', ['containers', 'volumes']), 'volumes')

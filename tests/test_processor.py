@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+ProcessorTests
+==============
+'''
 
 import json
 import unittest
@@ -46,12 +50,18 @@ mocked_body = {
 
 
 class ProcessorTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.Processor`
+    """
 
     @classmethod
     def test_init(cls):
+        """Processor start
+        """
         Processor()
 
     def test_config_is_shared(self):
+        """Processor config should be the same for all instances
+        """
         processor1 = Processor()
         processor1.load_config()
         self.assertNotEqual(processor1.config, None)
@@ -63,11 +73,9 @@ class ProcessorTests(unittest.TestCase):
         # Now config should be the same on first object
         self.assertEqual(processor1.config, processor2.config)
 
-        # TODO
-        # processor2.config = Config(groups_allow, policies)
-        # self.assertEqual(processor1.config, processor2.config)
-
     def test_run_with_no_checks(self):
+        """Run Processor with empty body fail
+        """
         body = {}
 
         processor = Processor()
@@ -75,6 +83,8 @@ class ProcessorTests(unittest.TestCase):
             processor.run(body=body)
 
     def test_override_config(self):
+        """Change processor config once for all
+        """
         processor = Processor()
         self.assertEqual(len(processor.config.groups), 3)
         self.assertEqual(len(processor.config.policies), 4)
@@ -91,11 +101,15 @@ class ProcessorTests(unittest.TestCase):
 
     @classmethod
     def test_run_simple_allow(cls):
+        """Validate Allow
+        """
         processor = Processor()
         processor.config = Config(groups_allow, policies)
         processor.run(body=mocked_body)
 
     def test_run_simple_deny(self):
+        """Validate Deny
+        """
         processor = Processor()
         processor.config = Config(groups_deny, policies)
         with self.assertRaises(UnauthorizedException):
@@ -103,11 +117,15 @@ class ProcessorTests(unittest.TestCase):
 
     @classmethod
     def test_run_simple_allow_as_string(cls):
+        """Validate Allow from string
+        """
         processor = Processor()
         processor.config = Config(groups_allow, policies)
         processor.run(body=json.dumps(mocked_body))
 
     def test_run_simple_deny_as_string(self):
+        """Validate Deny from string
+        """
         processor = Processor()
         processor.config = Config(groups_deny, policies)
         with self.assertRaises(UnauthorizedException):
@@ -115,6 +133,8 @@ class ProcessorTests(unittest.TestCase):
 
     @classmethod
     def test_process_simple_allow(cls):
+        """Validate _process for Allow
+        """
         payload = Payload(mocked_body)
         check = Checks()._structure_convert({"Allow": None})
 
@@ -122,6 +142,8 @@ class ProcessorTests(unittest.TestCase):
         processor._process(payload=payload, check=check)
 
     def test_process_simple_deny(self):
+        """Validate _process for Deny
+        """
         payload = Payload(mocked_body)
         check = Checks()._structure_convert({"Deny": None})
 
@@ -130,6 +152,8 @@ class ProcessorTests(unittest.TestCase):
             processor._process(payload=payload, check=check)
 
     def test_process_unexistent_check_action(self):
+        """Validate _process for unknown action
+        """
         payload = Payload(mocked_body)
         check = Checks()._structure_convert({"SomethingThatIsnotDefied": None})
 

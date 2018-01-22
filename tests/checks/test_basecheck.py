@@ -1,8 +1,7 @@
 # vim:set ts=4 sw=4 et:
-
 '''
 BaseCheckTests
-----
+--------------
 '''
 
 import unittest
@@ -13,7 +12,7 @@ from docker_leash.payload import Payload
 
 
 class BaseCheckTests(unittest.TestCase):
-    """Validate :class:`docker_leash.checks.BaseCheck` features
+    """Validation of :cls:`docker_leash.checks.BindVolumesRules`
     """
 
     def test_init(self):

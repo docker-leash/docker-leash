@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+LeashServerFunctionnalBaseTests
+-------------------------------
+'''
 
 import unittest
 
@@ -6,6 +10,8 @@ from docker_leash.leash_server import app
 
 
 class LeashServerFunctionnalBaseTests(unittest.TestCase):
+    """Base class for functionnal tests
+    """
 
     def setUp(self):
         app.config['DEBUG'] = False

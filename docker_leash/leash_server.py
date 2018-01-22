@@ -1,5 +1,4 @@
 # vim:set ts=4 sw=4 et:
-
 """Leash server plugin for docker.
 
 This module is responsible for dispatching HTTP requests.

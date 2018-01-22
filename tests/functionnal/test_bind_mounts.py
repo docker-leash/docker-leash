@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+BindVolumesTestsFunctionnal
+---------------------------
+'''
 
 import base64
 import json
@@ -11,8 +15,12 @@ from .test_base import LeashServerFunctionnalBaseTests
 
 
 class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
+    """Functionnal validation of :cls:`docker_leash.checks.BindVolumesTests`
+    """
 
     def test_create_authenticated_valid(self):
+        """Post a container create as authenticated
+        """
         request = {
             "Cmd": [
                 "date"
@@ -37,6 +45,8 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertTrue(is_success(response))
 
     def test_create_authenticated_invalid(self):
+        """Post an invalid container create as authenticated
+        """
         request = {
             "Cmd": [
                 "date"
@@ -61,6 +71,8 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_unauthenticated_valid(self):
+        """Post a container create as unauthenticated
+        """
         request = {
             "Cmd": [
                 "date"
@@ -83,6 +95,8 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_unauthenticated_invalid(self):
+        """Post an invalid container create as unauthenticated
+        """
         request = {
             "Cmd": [
                 "date"

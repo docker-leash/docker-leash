@@ -1,8 +1,7 @@
 # vim:set ts=4 sw=4 et:
-
 '''
 ContainerNameTests
-====
+------------------
 '''
 
 import unittest
@@ -43,11 +42,11 @@ payload_username = {
 
 
 class ContainerNameTests(unittest.TestCase):
-    """Validate :class:`docker_leash.checks.ContainerName` without context
+    """Validation of :cls:`docker_leash.checks.ContainerName`
     """
 
     def test_empty_payload(self):
-        """Empty payload should return :exc:`UnauthorizedException`
+        """Empty payload should return :exc:`InvalidRequestException`
         """
         with self.assertRaises(UnauthorizedException):
             ContainerName().run(None, Payload({}))

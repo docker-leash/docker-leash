@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+ConfigTests
+===========
+'''
 
 import unittest
 
@@ -64,13 +68,19 @@ MOCKED_POLICIES = {
 
 
 class ConfigTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.Config`
+    """
 
     def test_init(self):
+        """Empty config should not raise any error
+        """
         config = Config()
         self.assertEqual(config.policies, None)
         self.assertEqual(config.groups, None)
 
     def test_init_with_values(self):
+        """Store and read arbitrary config
+        """
         policies = {"foo": "foo"}
         groups = {"bar": "bar"}
 
@@ -79,6 +89,8 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(config.groups, groups)
 
     def test_config_is_not_shared(self):
+        """Config objects must not share config
+        """
         policies1 = {"foo": "foo"}
         policies2 = {"bar": "bar"}
 
@@ -115,6 +127,8 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(config.groups, z_groups)
 
     def test_get_groups_for_user_none(self):
+        """Anonymous users should fall in "*" members
+        """
         config = Config(groups=MOCKED_GROUPS)
 
         groups = config._get_groups_for_user(None)
@@ -122,6 +136,8 @@ class ConfigTests(unittest.TestCase):
         self.assertTrue('all' in groups)
 
     def test_get_groups_for_user_no_groups_defined(self):
+        """User with no group
+        """
         config = Config(groups=MOCKED_GROUPS)
         config.groups = None
 
@@ -129,6 +145,8 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(len(groups), 0)
 
     def test_get_groups_for_user(self):
+        """Get groups for a user
+        """
         config = Config(groups=MOCKED_GROUPS)
 
         groups = config._get_groups_for_user('rda')

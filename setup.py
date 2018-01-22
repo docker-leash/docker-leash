@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+'''
+setup.py
+========
+'''
 
 # stdlib
 import io

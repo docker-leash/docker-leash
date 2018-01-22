@@ -80,6 +80,8 @@ class BaseCheck(object):
         """
 
         def replace(value, new):
+            """Replace $USER if necessary
+            """
             return re.sub(
                 r'((?<!\\)(?:\\\\)*)\$USER',
                 r'\1' + new,

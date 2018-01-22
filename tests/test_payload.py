@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+PayloadTests
+============
+'''
 
 import unittest
 
@@ -42,14 +46,6 @@ class payloadTests(unittest.TestCase):
         # Now config should be the same on first object
         self.assertNotEqual(payload1.data, payload2.data)
 
-    # def test_decode_empty_body(self):
-    #     payload = Payload()
-    #     decoded = payload._decode_base64(mocked_body)
-    #
-    #     attended_response = {'foo': 'bar'}
-    #
-    #     self.assertEqual(attended_response, decoded["RequestBody"])
-
     def test_decode_RequestBody(self):
         payload = Payload()
         decoded = payload._decode_base64(mocked_body)
@@ -59,6 +55,8 @@ class payloadTests(unittest.TestCase):
         self.assertEqual(attended_response, decoded["RequestBody"])
 
     def test_receive_already_decoded_base64(self):
+        """Already decoded request body
+        """
         body = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",

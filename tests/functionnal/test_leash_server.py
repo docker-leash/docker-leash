@@ -1,4 +1,8 @@
 # vim:set ts=4 sw=4 et:
+'''
+LeashServerTests
+----------------
+'''
 
 import base64
 import json
@@ -11,8 +15,12 @@ from .test_base import LeashServerFunctionnalBaseTests
 
 
 class LeashServerTests(LeashServerFunctionnalBaseTests):
+    """Functionnal validation of :cls:`docker_leash.LeashServer`
+    """
 
     def test_ping(self):
+        """The the ping endpoint
+        """
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/_ping"
@@ -23,6 +31,8 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         self.assertTrue(is_success(response))
 
     def test_list_bad_method(self):
+        """Check a wrong URI/Method combinaison
+        """
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/json"
@@ -33,6 +43,8 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_list_anonymous(self):
+        """Check constainer list as anonymous
+        """
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json"
@@ -43,6 +55,8 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         self.assertTrue(is_success(response))
 
     def test_list_authenticated(self):
+        """Check constainer list as authenticated
+        """
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
@@ -55,6 +69,8 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         self.assertTrue(is_success(response))
 
     def test_create_anonymous(self):
+        """Check create constainer as anonymous
+        """
         request = {
             "Cmd": [
                 "date"
@@ -72,6 +88,8 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         self.assertFalse(is_success(response))
 
     def test_create_authenticated(self):
+        """Check create constainer as authenticated
+        """
         request = {
             "Cmd": [
                 "date"
