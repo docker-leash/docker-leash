@@ -10,7 +10,7 @@ personnal:
 
 restricted:
   containers:
-    BindVolumes:
+    BindMounts:
       - "-/"
       - "+/home/$USER"
       - "+/0"
