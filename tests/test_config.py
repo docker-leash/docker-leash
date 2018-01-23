@@ -560,3 +560,53 @@ class ConfigTests(unittest.TestCase):
         rules = config.get_rules(payload)
         self.assertEqual(len(rules), 1)
         self.assertIn('ReadOnly', rules)
+
+    def test_policyless_allow(self):
+        """The most simple policy
+        """
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv33"
+            },
+        })
+
+        policy_allow = [
+            {
+                "description": "Allow everything.",
+                "hosts": [r"+.*"],
+                "default": "Allow",
+            }
+        ]
+
+        config = Config(policies=policy_allow)
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Allow', rules)
+
+    def test_policyless_deny(self):
+        """The most simple policy
+        """
+        payload = Payload({
+            "User": "jre",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "srv33"
+            },
+        })
+
+        policy_deny = [
+            {
+                "description": "Deny everything.",
+                "hosts": [r"+.*"],
+                "default": "Deny",
+            }
+        ]
+
+        config = Config(policies=policy_deny)
+        rules = config.get_rules(payload)
+        self.assertEqual(len(rules), 1)
+        self.assertIn('Deny', rules)

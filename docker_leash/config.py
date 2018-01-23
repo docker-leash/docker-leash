@@ -74,6 +74,9 @@ class Config(object):
             if not self._match_host(hostname, rule["hosts"]):
                 continue
 
+            if "policies" not in rule:
+                return self._default_rule(rule)
+
             policies = self._get_policy_by_member(username, rule["policies"])
             if policies is None:
                 return self._default_rule(rule)
