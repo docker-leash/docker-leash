@@ -92,8 +92,8 @@ class Config(object):
         """Construct a default rule
 
         :param dict rule: The current parsed rule
-        :return: A :cls:`docker_leash.Check` containing only the default rule
-        :rtype: :cls:`docker_leash.Check`
+        :return: A :class:`docker_leash.Check` containing only the default rule
+        :rtype: :class:`docker_leash.Check`
         """
         checks = Checks()
         checks.add(rule["default"])
