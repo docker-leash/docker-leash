@@ -1,0 +1,24 @@
+---
+
+- description: Admin have full access.
+               Connected users can only manage containers whose name
+               start by user name.
+               Default policy is Deny.
+  hosts:
+    - +.*
+  default: Deny
+  policies:
+    - members:
+        - admins
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - users
+      rules:
+        containers:
+          ContainerName:
+            - "$USER-"
+
+...
