@@ -1,0 +1,28 @@
+---
+
+- description: Admins can do everything.
+               Users from groups are restricted by container name. Or read-only.
+               Anonymous users cannot do anything.
+  hosts:
+    - +.*
+  default: Deny
+  policies:
+    - members:
+        - administrators
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - user_group1
+        - user_group2
+      rules:
+        containers:
+          ContainerName:
+            - ^foo-
+            - ^bar-
+            - ^$USER-
+        any:
+          ReadOnly:
+
+...

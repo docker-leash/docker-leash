@@ -9,13 +9,9 @@ Configure the rules
 The users authorizations are defined on `leash-server` side.
 
 Configurations are stored as a YAML file.
-We have one file to define `groups of users`, and one for the `rules`.
+We have one file to define `groups of users`, and one for the `policies`.
 
-The `rules` permit to attach `checks` on `docker action`.
-
-.. Important::
-   If no matching `docker action` is defined for a specific action,
-   then the default is to **deny** the request.
+The `policies` permit to attach `checks` on `docker action`.
 
 Policies configuration file format
 ++++++++++++++++++++++++++++++++++
@@ -27,37 +23,111 @@ Example configuration file:
 
    ---
 
-   openbar:
-     containers:
-       Allow:
+   - description: Servers are fully accessible to Admins.
+                  Monitoring group can only list containers.
+                  Default policy is Deny.
+     hosts:
+       - +^srv\d\d.*
+     default: Deny
+     policies:
+       - members:
+           - admins
+         rules:
+           any:
+             Allow:
 
-   developper:
-     containers:
-       ContainerName:
-         - "^foo-.*"
-         - "^$USER-.*"
-       BindMount:
-         - "-/"
-         - "+/home/$USER"
-         - "+/0"
-     containersDelete:
-       Deny:
+       - members:
+           - monitoring
+         rules:
+           containersList:
+             Allow:
 
-   public:
-     readonly:
-       Allow:
+
+   - description: Users have access to containers and images starting
+                  by their name.
+                  Admin have full access to the host.
+                  Default policy is ReadOnly.
+     hosts:
+       - +^wks\d\d.*
+     default: ReadOnly
+     policies:
+       - members:
+           - admins
+         rules:
+           any:
+             Allow:
+
+       - members:
+           - users
+         rules:
+           containersLogs:
+             ContainerName:
+               - ^bar-
+               - ^foo-
+               - ^$USER-
+           containers:
+             ContainerName:
+               - ^foo-
+               - ^$USER-
+             BindMounts:
+               - -/
+               - +/home/$USER
+               - +/0
+
+
+   - description: For all other hosts,
+                  Admin have full access to the host.
+                  Deny access to Anonymous users.
+                  Default policy is ReadOnly.
+     hosts:
+       - +.*
+     default: ReadOnly
+     policies:
+       - members:
+           - admins
+         rules:
+           any:
+             Allow:
+       - members:
+           - Anonymous
+         rules:
+           any:
+             Deny:
 
    ...
 
 We can break down the sections as follow.
 
 .. code-block:: yaml
+   :caption: General file format
 
-   <policy name>:
-     <docker action>:
-       <check name>:
-         - <check argument 1>
-         - <check argument 2>
+   - description: <Optionnal: Human description of the ruleset>
+     hosts:
+       - <server name regexp>
+       - ...
+     default: <Default action if no rule match> (Deny, Allow, ReadOnly)
+     policies:
+       - members:
+           - <group name>
+           - ...
+         rules:
+           <action 1>:
+             <check>:
+           <action 2>:
+             <check>:
+               - <arg1>
+               - <arg2>
+               - ...
+           <action 3>:
+             <check>:
+               <arg1>: value
+               <arg1>: value
+               ...: ...
+       - ...:
+           - <group name>
+           - ...
+         rules:
+           ...:
 
 "Docker actions" list
 ---------------------
@@ -70,15 +140,27 @@ As the list is quite long, please refer to the :ref:`docker-actions-list` page.
 The `checks` are some sort of plugin to `leash-server`.
 They permit to verify/filter the access to one or more resources.
 
-+------------+---------------------------------------------+
-| check name | Description                                 |
-+============+=============================================+
-| Allow      | Just say yes                                |
-+------------+---------------------------------------------+
-| Deny       | Just say no                                 |
-+------------+---------------------------------------------+
-| BindMount  | Validate bind mounts                        |
-+------------+---------------------------------------------+
++----------------+---------------------------------------------+
+| check name     | Description                                 |
++================+=============================================+
+| Allow          | Just say yes                                |
++----------------+---------------------------------------------+
+| Deny           | Just say no                                 |
++----------------+---------------------------------------------+
+| ReadOnly       | Allow only read-only actions                |
++----------------+---------------------------------------------+
+| BindMount      | Restrict bind mounts                        |
++----------------+---------------------------------------------+
+| ContainerName  | Restrict by container name                  |
++----------------+---------------------------------------------+
+| ImageName      | Restrict image name                         |
++----------------+---------------------------------------------+
+| VolumeName     | Restrict volume name                        |
++----------------+---------------------------------------------+
+| Privileged     | Check the privileged flag                   |
++----------------+---------------------------------------------+
+| User           | Restrict user                               |
++----------------+---------------------------------------------+
 
 .. Note::
    More checks to come.
@@ -96,24 +178,25 @@ Here is a groups policies configuration sample:
    ---
 
    admins:
-     policies:
-       - openbar
-     members:
-       - rda
-       - mal
+     - rda
+     - mal
 
-   developpers:
-     policies:
-       - restricted
-       - personnal
-     members:
-       - jre
+   users:
+     - jre
+     - lgh
+     - dga
+     - ore
+     - pyr
+
+   monitoring:
+     - xymon_1
+     - xymon_2
+
+   anonymous:
+     - Anonymous
 
    all:
-     policies:
-       - readonly
-     members:
-       - "*"
+     - "*"
 
    ...
 
@@ -122,9 +205,9 @@ We can break down the sections as follow.
 .. code-block:: yaml
 
    <group name>:
-     policies:
-       - <policy name 1>
-       - <policy name 2>
-     members:
-       - <username 1>
-       - <username 2>
+     - <username 1>
+     - <username 2>
+
+.. Note::
+   The `Anonymous` username is a reserved word. It permit to define rules
+   explicitly for non connected users.

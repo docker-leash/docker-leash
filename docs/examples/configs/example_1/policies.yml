@@ -1,0 +1,8 @@
+---
+  
+- description: Everything is allowed.
+  hosts:
+    - +.*
+  default: Allow
+
+...

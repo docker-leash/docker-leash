@@ -1,0 +1,25 @@
+---
+
+- description: Servers are restricted to admin only.
+  hosts:
+    - +^srv\d\d.*
+  default: Deny
+  policies:
+    - members:
+        - administrators
+      rules:
+        any:
+          Allow:
+
+- description: All other hosts are open to group, else deny.
+  hosts:
+    - +.*
+  default: Deny
+  policies:
+    - members:
+        - users
+      rules:
+        any:
+          Allow:
+
+...

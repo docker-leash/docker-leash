@@ -1,0 +1,47 @@
+---
+
+- description: Servers are restricted to admin only.
+  hosts:
+    - +^srv\d\d.*
+  default: Deny
+  policies:
+    - members:
+        - administrators
+      rules:
+        any:
+          Allow:
+
+- description: Workstations are restricted to connected users or admins.
+               Users from `users` group can only manage containers or images,
+               bind mounts are restricted to `/home/$USER/`. All other actions
+               are read-only.
+               All other or unauthenticated users cannot do anything
+               on workstations.
+  hosts:
+    - +^wks\d\d.*
+  default: Deny
+  policies:
+    - members:
+        - administrators
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - users
+      rules:
+        containers:
+          BindMounts:
+            - -/
+            - +/home/$USER
+        images:
+          Allow:
+        all:
+          ReadOnly:
+
+- description: All other hosts are read-only even for admins.
+  hosts:
+    - +.*
+  default: ReadOnly
+
+...

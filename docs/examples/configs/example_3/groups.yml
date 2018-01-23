@@ -1,0 +1,13 @@
+---
+user_group1:
+  - jre
+  - sve
+
+user_group2:
+  - cjo
+  - mgr
+
+administrators:
+  - rda
+  - mal
+...

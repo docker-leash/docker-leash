@@ -1,0 +1,11 @@
+---
+users:
+  - jre
+  - sve
+  - cjo
+  - mgr
+
+administrators:
+  - rda
+  - mal
+...

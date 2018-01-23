@@ -1,0 +1,22 @@
+---
+
+- description: Admins can do everything.
+               Authenticated users are restricted to read-only actions.
+               Anonymous users cannot do anything.
+  hosts:
+    - +.*
+  default: ReadOnly
+  policies:
+    - members:
+        - administrators
+      rules:
+        any:
+          Allow:
+
+    - members:
+        - anonymous
+      rules:
+        any:
+          Deny:
+
+...
