@@ -4,6 +4,7 @@ LeashServerFunctionnalBaseTests
 -------------------------------
 '''
 
+import os
 import unittest
 
 from docker_leash.leash_server import app
@@ -13,9 +14,31 @@ class LeashServerFunctionnalBaseTests(unittest.TestCase):
     """Base class for functionnal tests
     """
 
+    @classmethod
+    def setUpClass(cls):
+        """Define action to be launched once per class
+        """
+        cls.set_conf_files(app)
+        app.config["processor"].load_config()
+
     def setUp(self):
-        app.config['DEBUG'] = False
+        """Define action to be launched once per test
+        """
         self.app = app.test_client()
 
     def tearDown(self):
+        """Define action to be launched once after each test
+        """
         pass
+
+    @staticmethod
+    def set_conf_files(application):
+        """Define config file to read
+
+        Override it in other tests to load different configurations
+
+        :param `Flask` application: The current flask application
+        """
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        application.config['GROUPS_FILE'] = dir_path + "/mocked_configs/groups.yml"
+        application.config['POLICIES_FILE'] = dir_path + "/mocked_configs/policies.yml"
