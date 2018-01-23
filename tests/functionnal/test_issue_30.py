@@ -76,8 +76,8 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
         """Users can manage containers whose name start by user name: create valid
         """
         payload = {
-            "RequestMethod": "GET",
-            "RequestUri": "/v1.32/containers/json?name=cru-bar",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create?name=cru-bar",
             "User": "cru",
             "RequestHeaders": {
                 "Host": "srv01"
@@ -92,8 +92,8 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
         """Users can manage containers whose name start by user name: create invalid
         """
         payload = {
-            "RequestMethod": "GET",
-            "RequestUri": "/v1.32/containers/json?name=foo-bar",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "cru",
             "RequestHeaders": {
                 "Host": "srv01"

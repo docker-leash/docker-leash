@@ -148,7 +148,8 @@ class Config(object):
 
             for group in policy["members"]:
                 if group in self.groups:
-                    if username in self.groups[group]:
+                    if username in self.groups[group] \
+                            or "*" in self.groups[group]:
                         return policy["rules"]
         return None
 
