@@ -6,40 +6,93 @@ PayloadTests
 
 import unittest
 
+from docker_leash.exceptions import InvalidRequestException
 from docker_leash.payload import Payload
 
-mocked_body = {
+MOCKED_MISSING_HEADERS = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
 }
 
-mocked_body_anonymous_1 = {
+MOCKED_MISSING_HOST = {
+    "User": "someone",
+    "RequestMethod": "POST",
+    "RequestUri": "/v1.32/containers/create",
+    "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+    "RequestHeaders": {},
+}
+
+MOCKED_BODY = {
+    "User": "someone",
+    "RequestMethod": "POST",
+    "RequestUri": "/v1.32/containers/create",
+    "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+    "RequestHeaders": {
+        "Host": "other01"
+    },
+}
+
+MOCKED_BODY_2 = {
+    "User": "someone",
+    "RequestMethod": "GET",
+    "RequestUri": "/v1.32/containers/json",
+    "RequestHeaders": {
+        "Host": "other01"
+    },
+}
+
+MOCKED_BODY_ANONYMOUS_1 = {
     "User": "",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
-    "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
+    "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-mocked_body_anonymous_2 = {
+MOCKED_BODY_ANONYMOUS_2 = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
-    "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
+    "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
-class payloadTests(unittest.TestCase):
 
-    @classmethod
-    def test_init(cls):
-        Payload()
+class PayloadTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.Payload`
+    """
+
+    def test_payload_need_headers(self):
+        """Payload minimal check
+        """
+        with self.assertRaises(InvalidRequestException):
+            Payload()
+
+        with self.assertRaises(InvalidRequestException):
+            Payload(payload=MOCKED_MISSING_HEADERS)
+
+        with self.assertRaises(InvalidRequestException):
+            Payload(payload=MOCKED_MISSING_HOST)
+
+    def test_get_host(self):
+        """Get host from headers
+        """
+        payload = Payload(payload=MOCKED_BODY)
+        self.assertEqual(payload.get_host(), 'other01')
 
     def test_payload_is_not_shared(self):
-        payload1 = Payload()
-        self.assertEqual(payload1.data, None)
-        self.assertEqual(payload1.user, None)
+        """Payload object are Immutable
+        """
+        payload1 = Payload(MOCKED_BODY)
+        self.assertNotEqual(payload1.data, None)
+        self.assertNotEqual(payload1.user, None)
 
-        payload2 = Payload(mocked_body)
+        payload2 = Payload(MOCKED_BODY_2)
         self.assertNotEqual(payload2.data, None)
         self.assertNotEqual(payload2.user, None)
 
@@ -47,8 +100,10 @@ class payloadTests(unittest.TestCase):
         self.assertNotEqual(payload1.data, payload2.data)
 
     def test_decode_RequestBody(self):
-        payload = Payload()
-        decoded = payload._decode_base64(mocked_body)
+        """Decode request body
+        """
+        payload = Payload(payload=MOCKED_BODY)
+        decoded = payload._decode_base64(MOCKED_BODY)
 
         attended_response = {'foo': 'bar'}
 
@@ -60,12 +115,18 @@ class payloadTests(unittest.TestCase):
         body = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
+            "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+            "RequestHeaders": {
+                "Host": "other01"
+            },
         }
         body_decoded = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestBody": {"foo": "bar"}
+            "RequestBody": {"foo": "bar"},
+            "RequestHeaders": {
+                "Host": "other01"
+            },
         }
 
         payload = Payload(payload=body)
@@ -77,47 +138,52 @@ class payloadTests(unittest.TestCase):
         self.assertEqual(attended_response, payload.data["RequestBody"])
 
     def test_get_username(self):
-        payload = Payload()
+        """Retrieve username
+        """
+        payload = Payload(payload=MOCKED_BODY)
 
-        username = payload._get_username(mocked_body)
+        username = payload._get_username(MOCKED_BODY)
         self.assertEqual(username, "someone")
 
-        username = payload._get_username(mocked_body_anonymous_1)
+        username = payload._get_username(MOCKED_BODY_ANONYMOUS_1)
         self.assertEqual(username, None)
 
-        username = payload._get_username(mocked_body_anonymous_2)
+        username = payload._get_username(MOCKED_BODY_ANONYMOUS_2)
         self.assertEqual(username, None)
 
         username = payload._get_username(None)
         self.assertEqual(username, None)
 
     def test_get_method(self):
-        payload = Payload()
+        """Retrieve method
+        """
+        payload = Payload(payload=MOCKED_BODY)
 
-        method = payload._get_method(mocked_body)
-        self.assertEqual(method, mocked_body['RequestMethod'])
+        method = payload._get_method(MOCKED_BODY)
+        self.assertEqual(method, MOCKED_BODY['RequestMethod'])
 
-        method = payload._get_method(None)
-        self.assertEqual(method, None)
+        with self.assertRaises(InvalidRequestException):
+            method = payload._get_method(None)
 
     def test_get_uri(self):
-        payload = Payload()
+        """Retrieve uri
+        """
+        payload = Payload(payload=MOCKED_BODY)
 
-        uri = payload._get_uri(mocked_body)
-        self.assertEqual(uri, mocked_body['RequestUri'])
+        uri = payload._get_uri(MOCKED_BODY)
+        self.assertEqual(uri, MOCKED_BODY['RequestUri'])
 
         uri = payload._get_uri(None)
         self.assertEqual(uri, None)
 
     def test_run_store_values(self):
-        payload = Payload(payload=None)
-        self.assertEqual(payload.data, None)
-        self.assertEqual(payload.user, None)
-        self.assertEqual(payload.method, None)
-        self.assertEqual(payload.uri, None)
+        """Check if payload values are really stored
+        """
+        with self.assertRaises(InvalidRequestException):
+            payload = Payload(payload=None)
 
-        payload = Payload(payload=mocked_body)
+        payload = Payload(payload=MOCKED_BODY)
         self.assertNotEqual(payload.data, None)
-        self.assertEqual(payload.user, mocked_body['User'])
-        self.assertEqual(payload.method, mocked_body['RequestMethod'])
-        self.assertEqual(payload.uri, mocked_body['RequestUri'])
+        self.assertEqual(payload.user, MOCKED_BODY['User'])
+        self.assertEqual(payload.method, MOCKED_BODY['RequestMethod'])
+        self.assertEqual(payload.uri, MOCKED_BODY['RequestUri'])

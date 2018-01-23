@@ -42,3 +42,11 @@ class NoSuchCheckModuleException(DockerLeashException):
     Used when a check is configured by not existent or loadable.
     """
     pass
+
+
+class InvalidRequestException(DockerLeashException):
+    """Exception for invalid payload.
+
+    Used when payload is invalid or incomplete.
+    """
+    pass

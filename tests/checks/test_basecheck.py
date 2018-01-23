@@ -29,7 +29,14 @@ class BaseCheckTests(unittest.TestCase):
         """
         base = BaseCheck()
 
-        payload = Payload({"User": "mal"})
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertEqual(result, "mal-loves-me")
 
@@ -42,7 +49,14 @@ class BaseCheckTests(unittest.TestCase):
         result = BaseCheck.replace_user("$USER-is-$USER", payload)
         self.assertEqual(result, "mal-is-mal")
 
-        payload = Payload({"User": "rda"})
+        payload = Payload({
+            "User": "rda",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertEqual(result, "rda-loves-me")
 
@@ -64,7 +78,14 @@ class BaseCheckTests(unittest.TestCase):
             "of-course"
         ]
 
-        payload = Payload({"User": "mal"})
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user(values, payload)
         self.assertListEqual(result, attended)
 
@@ -74,11 +95,24 @@ class BaseCheckTests(unittest.TestCase):
         """
         base = BaseCheck()
 
-        payload = Payload({"User": None})
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
 
-        payload = Payload({})
+        payload = Payload({
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
 
@@ -88,7 +122,14 @@ class BaseCheckTests(unittest.TestCase):
         """
         base = BaseCheck()
 
-        payload = Payload({"User": "mal"})
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
         self.assertEqual(result, r"\$USER-loves-me")
 
@@ -101,7 +142,14 @@ class BaseCheckTests(unittest.TestCase):
         result = BaseCheck.replace_user([r"\\\$USER-loves-me"], payload)
         self.assertEqual(result, [r"\\\$USER-loves-me"])
 
-        payload = Payload({"User": None})
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
         self.assertIsNone(result)
 

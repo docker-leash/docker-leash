@@ -9,7 +9,8 @@ import unittest
 
 from docker_leash.checks_list import Checks
 from docker_leash.config import Config
-from docker_leash.exceptions import (NoSuchCheckModuleException,
+from docker_leash.exceptions import (InvalidRequestException,
+                                     NoSuchCheckModuleException,
                                      UnauthorizedException)
 from docker_leash.payload import Payload
 from docker_leash.processor import Processor
@@ -45,7 +46,10 @@ mocked_body = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
-    "RequestBody": "eyJmb28iOiAiYmFyIn0="  # '{"foo": "bar"}'
+    "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
+    "RequestHeaders": {
+        "Host": "other01"
+    },
 }
 
 
@@ -79,7 +83,20 @@ class ProcessorTests(unittest.TestCase):
         body = {}
 
         processor = Processor()
-        with self.assertRaises(UnauthorizedException):
+        with self.assertRaises(InvalidRequestException):
+            processor.run(body=body)
+
+    def test_run_with_only_host(self):
+        """Run Processor with only headers fail
+        """
+        body = {
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        }
+
+        processor = Processor()
+        with self.assertRaises(InvalidRequestException):
             processor.run(body=body)
 
     def test_override_config(self):

@@ -9,7 +9,8 @@ import sys
 from flask import jsonify, request
 
 from . import app
-from .exceptions import NoSuchCheckModuleException, UnauthorizedException
+from .exceptions import (InvalidRequestException, NoSuchCheckModuleException,
+                         UnauthorizedException)
 from .processor import Processor
 
 sys.dont_write_bytecode = True
@@ -141,7 +142,13 @@ def authz_request():
     """
 
     try:
-        PROCESSOR.run(request.data or {})
+        PROCESSOR.run(request.data)
+    except InvalidRequestException as error:
+        app.logger.error("REQUEST DENIED: %s", error)
+        return jsonify({
+            "Allow": False,
+            "Msg": str(error)
+        })
     except UnauthorizedException as error:
         app.logger.error("REQUEST DENIED: %s", error)
         return jsonify({

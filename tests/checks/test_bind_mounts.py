@@ -7,7 +7,8 @@ BindMountsTests
 import unittest
 
 from docker_leash.checks.bind_mounts import BindMounts
-from docker_leash.exceptions import UnauthorizedException
+from docker_leash.exceptions import (InvalidRequestException,
+                                     UnauthorizedException)
 from docker_leash.payload import Payload
 
 PAYLOAD_MINIMAL = {
@@ -98,8 +99,12 @@ class BindMountsTests(unittest.TestCase):
             '+/foo/bar',
         ]
 
-        BindMounts().run(None, Payload({}))
-        BindMounts().run(args, Payload({}))
+        with self.assertRaises(InvalidRequestException):
+            BindMounts().run(None, Payload({}))
+
+        with self.assertRaises(InvalidRequestException):
+            BindMounts().run(args, Payload({}))
+
         BindMounts().run(args, Payload(PAYLOAD_MINIMAL))
         BindMounts().run(None, Payload(PAYLOAD_MINIMAL))
 

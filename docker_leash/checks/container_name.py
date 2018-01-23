@@ -54,11 +54,6 @@ class ContainerName(BaseCheck):
         :param payload: The payload of the current request.
         :type payload: :class:`docker_leash.payload.Payload`
         """
-
-        if not payload.uri:
-            raise UnauthorizedException(
-                'Container name verification failed: uri not found')
-
         if not args:
             return
 
@@ -74,11 +69,8 @@ class ContainerName(BaseCheck):
         rules = self.replace_user(rules, payload)
 
         for name in query['name']:
-            print "NAME: %s" % name
             for rule in rules:
-                print "RULE: %s" % rule
                 if re.match(rule, name):
-                    print "FOUND!"
                     found = True
 
         if not found:

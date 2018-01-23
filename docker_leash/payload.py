@@ -7,6 +7,8 @@ Payload
 import base64
 import json
 
+from docker_leash.exceptions import InvalidRequestException
+
 from . import app
 
 
@@ -22,6 +24,8 @@ class Payload(object):
     :vartype method: str or None
     :var uri: The request URI.
     :vartype uri: str or None
+    :var headers: The request Headers.
+    :vartype headers: dict or None
 
     :param payload: The paylaod to analyze and store.
     :type payload: dict or None
@@ -40,20 +44,32 @@ class Payload(object):
     #: The request URI
     uri = None
 
+    #: The request Headers
+    headers = None
+
     def __init__(self, payload=None):
         """Initialize the object.
         """
-        if payload:
-            self.data = self._decode_base64(payload)
-            self.user = self._get_username(payload)
-            self.method = self._get_method(payload)
-            self.uri = self._get_uri(payload)
+        if not payload:
+            raise InvalidRequestException("Payload is empty")
+
+        self.headers = self._get_headers(payload)
+        self.data = self._decode_base64(payload)
+        self.user = self._get_username(payload)
+        self.method = self._get_method(payload)
+        self.uri = self._get_uri(payload)
         app.logger.info(
             "PAYLOAD AUTHENTICATED USER=%r URI=%r METHOD=%r",
             self.user,
             self.uri,
             self.method,
         )
+
+    def get_host(self):
+        """Get the hostname
+        """
+        if self.headers and "Host" in self.headers:
+            return self.headers["Host"]
 
     @classmethod
     def _decode_base64(cls, payload):
@@ -99,7 +115,7 @@ class Payload(object):
         if payload and "RequestMethod" in payload and payload["RequestMethod"]:
             return payload["RequestMethod"]
 
-        return None
+        raise InvalidRequestException("Payload is missing RequestMethod")
 
     @classmethod
     def _get_uri(cls, payload):
@@ -113,3 +129,16 @@ class Payload(object):
             return payload["RequestUri"]
 
         return None
+
+    @classmethod
+    def _get_headers(cls, payload):
+        """Extract the `Headers` from the paylaod.
+
+        :param dict payload: The payload to extract URI.
+        :return: The Headers.
+        :rtype: dict or None
+        """
+        if payload and "RequestHeaders" in payload and payload["RequestHeaders"]:
+            return payload["RequestHeaders"]
+
+        raise InvalidRequestException("Headers missing from payload")

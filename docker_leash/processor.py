@@ -29,7 +29,7 @@ class Processor(object):
     def load_config(self):
         """Load rules from defined files in the global configuration."""
         with open(app.config['GROUPS_FILE']) as groups_file, \
-             open(app.config['POLICIES_FILE']) as policies_file:
+                open(app.config['POLICIES_FILE']) as policies_file:
             groups = yaml.safe_load(groups_file)
             policies = yaml.safe_load(policies_file)
 

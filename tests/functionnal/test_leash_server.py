@@ -6,7 +6,6 @@ LeashServerTests
 
 import base64
 import json
-import unittest
 
 from docker_leash.leash_server import app
 
@@ -23,7 +22,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         """
         payload = {
             "RequestMethod": "GET",
-            "RequestUri": "/_ping"
+            "RequestUri": "/_ping",
+            "RequestHeaders": {
+                "Host": "wks01"
+            }
         }
 
         response = post(self.app, payload)
@@ -35,7 +37,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         """
         payload = {
             "RequestMethod": "POST",
-            "RequestUri": "/v1.32/containers/json"
+            "RequestUri": "/v1.32/containers/json",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
         }
 
         response = post(self.app, payload)
@@ -47,7 +52,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         """
         payload = {
             "RequestMethod": "GET",
-            "RequestUri": "/v1.32/containers/json"
+            "RequestUri": "/v1.32/containers/json",
+            "RequestHeaders": {
+                "Host": "wks01"
+            }
         }
 
         response = post(self.app, payload)
@@ -61,7 +69,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "UserAuthNMethod": "TLS"
+            "UserAuthNMethod": "TLS",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
         }
 
         response = post(self.app, payload)
@@ -80,7 +91,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestBody": base64.b64encode(json.dumps(request)),
             "RequestMethod": "POST",
-            "RequestUri": "/v1.32/containers/create"
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
         }
 
         response = post(self.app, payload)
@@ -101,7 +115,10 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "mal",
-            "UserAuthNMethod": "TLS"
+            "UserAuthNMethod": "TLS",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
         }
 
         response = post(self.app, payload)
