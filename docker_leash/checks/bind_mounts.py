@@ -54,9 +54,17 @@ class BindMounts(BaseCheck):
                 not payload.data["RequestBody"]["HostConfig"]["Binds"]:
             return
 
-        values = [value.split(':')[0] for value in payload.data["RequestBody"]["HostConfig"]["Binds"]]
+        volumes = [value.split(':')[0] for value in payload.data["RequestBody"]["HostConfig"]["Binds"]]
 
-        Proto()._check_path(values, args)
+        c_rules = Rules(args)
+        denied = [
+            volume
+            for volume in volumes
+            if not c_rules.match(volume)
+        ]
+
+        if not c_rules or denied:
+            raise UnauthorizedException('unauthorized volumes: %s' % denied)
 
 
 class Rules(object):
@@ -108,39 +116,3 @@ class Rules(object):
             if __debug__:
                 logger.debug('rule %r: %s: allow=%s', rule, result, allow)
         return result
-
-
-class Proto(object):
-
-    @staticmethod
-    def _check_path(volumes, rules, user=None):
-        """
-        Validate `volumes` against defined rules.
-        Raise :exc:`UnauthorizedException` when one volume doesn't respect the rules.
-
-        Rules examples:
-
-        .. code-block:: yaml
-
-            rules:
-              - -/
-              - -/etc
-              - +/0
-              - -/home
-              - +/home/$USER
-              - +/home/devdata
-
-        :param list volumes: list of path to check
-        :param list rules: list of rules to check
-        :param user: username or None
-        :type user: str or bool
-        """
-        c_rules = Rules(rules)
-        denied = [
-            volume
-            for volume in volumes
-            if not c_rules.match(volume)
-        ]
-
-        if not c_rules or denied:
-            raise UnauthorizedException('unauthorized volumes: %s' % denied)
