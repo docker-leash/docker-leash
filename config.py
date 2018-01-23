@@ -4,7 +4,7 @@ Config
 ++++++
 '''
 
-DEBUG = True
+DEBUG = False
 
 GROUPS_FILE = "groups.yml"
 POLICIES_FILE = "policies.yml"
