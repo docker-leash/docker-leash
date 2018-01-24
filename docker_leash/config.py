@@ -164,22 +164,21 @@ class Config(object):
         :rtype: `docker_leash.Checks`
         """
         checks = Checks()
+        parent_action = ActionMapper().action_is_about(action, actions.keys())
 
         # Look for "normal" Actions
         if action in actions.keys():
             for check, args in actions[action].iteritems():
                 checks.add({check: args})
 
+        # Look for "parents" Actions
+        elif parent_action:
+            for check, args in actions[parent_action].iteritems():
+                checks.add({check: args})
+
         # Look for "any" Actions
         elif "any" in actions.keys():
             for check, args in actions["any"].iteritems():
                 checks.add({check: args})
-
-        else:
-            # Look for "parents" Actions
-            parent = ActionMapper().action_is_about(action, actions.keys())
-            if parent:
-                for check, args in actions[parent].iteritems():
-                    checks.add({check: args})
 
         return checks
