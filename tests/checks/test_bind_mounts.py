@@ -84,6 +84,22 @@ PAYLOAD_MANY = {
     },
 }
 
+PAYLOAD_USER = {
+    "User": "someone",
+    "RequestMethod": "POST",
+    "RequestUri": "/v1.32/containers/create",
+    "RequestBody": {
+        "HostConfig": {
+            "Binds": [
+                '/home/someone',
+            ]
+        }
+    },
+    "RequestHeaders": {
+        "Host": "other01"
+    },
+}
+
 
 class BindMountsTests(unittest.TestCase):
     """Validation of :cls:`docker_leash.checks.BindMounts`
@@ -168,3 +184,14 @@ class BindMountsTests(unittest.TestCase):
 
         with self.assertRaises(UnauthorizedException):
             BindMounts().run(args, Payload(PAYLOAD_FOOBAR))
+
+    @classmethod
+    def test_directoy_names_containing_user(cls):
+        """Check directory containing user
+        """
+        args = [
+            '-/.*',
+            '+/home/$USER',
+        ]
+
+        BindMounts().run(args, Payload(PAYLOAD_USER))

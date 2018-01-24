@@ -55,8 +55,9 @@ class BindMounts(BaseCheck):
             return
 
         volumes = [value.split(':')[0] for value in payload.data["RequestBody"]["HostConfig"]["Binds"]]
+        volumes = self.replace_user(volumes, payload)
 
-        c_rules = Rules(args)
+        c_rules = Rules(self.replace_user(args, payload))
         denied = [
             volume
             for volume in volumes
