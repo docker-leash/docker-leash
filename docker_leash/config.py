@@ -143,13 +143,11 @@ class Config(object):
         """
         for policy in policies:
 
-            if username is None and "Anonymous" in policy["members"]:
-                return policy["rules"]
-
             for group in policy["members"]:
                 if group in self.groups:
                     if username in self.groups[group] \
-                            or "*" in self.groups[group]:
+                            or "*" in self.groups[group] \
+                            or (username is None and "Anonymous" in self.groups[group]):
                         return policy["rules"]
         return None
 

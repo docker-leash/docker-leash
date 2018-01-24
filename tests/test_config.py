@@ -15,6 +15,7 @@ MOCKED_GROUPS = {
     "admins": ["rda", "mal"],
     "users": ["jre", "lgh", "dga", "ore", "pyr"],
     "monitoring": ["xymon_1", "xymon_2"],
+    "anonymous": ["Anonymous"],
     "all": ["*"],
 }
 
@@ -104,7 +105,7 @@ MOCKED_POLICIES = [
                 }
             },
             {
-                "members": ["Anonymous"],
+                "members": ["anonymous"],
                 "rules": {
                     "any": {
                         "Deny": None
@@ -177,17 +178,21 @@ class ConfigTests(unittest.TestCase):
         policies = [
             {
                 "members": ["admins"],
-                "rules": "administrators"
+                "rules": "_administrators"
             },
             {
-                "members": ["Anonymous"],
-                "rules": "anonymous"
+                "members": ["anonymous"],
+                "rules": "_anonymous"
             },
         ]
-        config = Config(groups={"admins": ["rda", "mal"]})
+        groups = {
+            "admins": ["rda", "mal"],
+            "anonymous": ["Anonymous"],
+        }
+        config = Config(groups=groups)
 
-        self.assertEqual(config._get_policy_by_member(None, policies), "anonymous")
-        self.assertEqual(config._get_policy_by_member("mal", policies), "administrators")
+        self.assertEqual(config._get_policy_by_member(None, policies), "_anonymous")
+        self.assertEqual(config._get_policy_by_member("mal", policies), "_administrators")
         self.assertEqual(config._get_policy_by_member("jre", policies), None)
 
     def test_match_host(self):
@@ -236,7 +241,7 @@ class ConfigTests(unittest.TestCase):
 
         actions["any"] = {"imagesCreate": "Allow"}
         self.assertEqual(len(Config._match_rules("containersLogs", actions)), 1)
-        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 1)
+        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 2)
         self.assertEqual(len(Config._match_rules("imagesCreate", actions)), 1)
         self.assertEqual(len(Config._match_rules("imagesList", actions)), 1)
 
