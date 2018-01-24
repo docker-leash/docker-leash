@@ -20,9 +20,11 @@ class Processor(object):
     the triplet `User`, `RequestMethod` and `RequestUri`.
     """
 
-    # Mutable properties
     #: The currently loaded rules.
-    config = Config()
+    config = None
+
+    def __init__(self):
+        self.config = Config()
 
     def load_config(self):
         """Load rules from defined files in the global configuration."""

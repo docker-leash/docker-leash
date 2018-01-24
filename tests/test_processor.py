@@ -72,8 +72,8 @@ class ProcessorTests(unittest.TestCase):
         """
         Processor()
 
-    def test_config_is_shared(self):
-        """Processor config should be the same for all instances
+    def test_config_is_not_shared(self):
+        """Processor config should not be the same for all instances
         """
         processor1 = Processor()
         processor1.load_config()
@@ -84,7 +84,7 @@ class ProcessorTests(unittest.TestCase):
         self.assertNotEqual(processor2.config, None)
 
         # Now config should be the same on first object
-        self.assertEqual(processor1.config, processor2.config)
+        self.assertNotEqual(processor1.config, processor2.config)
 
     def test_run_with_no_checks(self):
         """Run Processor with empty body fail
@@ -112,8 +112,8 @@ class ProcessorTests(unittest.TestCase):
         """Change processor config once for all
         """
         processor = Processor()
-        self.assertEqual(len(processor.config.groups), 4)
-        self.assertEqual(len(processor.config.policies), 3)
+        self.assertIsNone(processor.config.groups)
+        self.assertIsNone(processor.config.policies)
 
         processor.config = Config(GROUPS, POLICIES_ALLOW)
         self.assertEqual(len(processor.config.groups), 1)
