@@ -1,3 +1,6 @@
+# Install dependencies from setup.py
+-e .
+
 # build
 Sphinx
 sphinxcontrib.httpdomain
