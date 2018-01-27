@@ -5,6 +5,7 @@ Processor
 '''
 
 import json
+import os
 
 import yaml
 
@@ -27,11 +28,44 @@ class Processor(object):
         self.config = Config()
 
     def load_config(self):
-        """Load rules from defined files in the global configuration."""
-        with open(app.config['GROUPS_FILE']) as groups_file, \
-                open(app.config['POLICIES_FILE']) as policies_file:
-            groups = yaml.safe_load(groups_file)
-            policies = yaml.safe_load(policies_file)
+        """Load rules from defined files in the global configuration.
+
+        Look for path in that order: path in config file, `/etc/docker-leash/`,
+        `/config/` and docker-leash module directory.
+        """
+
+        groups_files = [
+            app.config['GROUPS_FILE'],
+            '/etc/docker-leash/groups.yml',
+            '/config/groups.yml',
+            os.path.abspath(
+                os.path.dirname(os.path.abspath(__file__)) + '/../groups.yml'
+            ),
+        ]
+        policies_files = [
+            app.config['POLICIES_FILE'],
+            '/etc/docker-leash/policies.yml',
+            '/config/policies.yml',
+            os.path.abspath(
+                os.path.dirname(os.path.abspath(__file__)) + '/../policies.yml'
+            ),
+        ]
+
+        groups = None
+        for groups_file in groups_files:
+            if os.path.isfile(groups_file):
+                app.logger.info("Found groups config at: %s", groups_file)
+                with open(groups_file) as groups_yml:
+                    groups = yaml.safe_load(groups_yml)
+                    break
+
+        policies = None
+        for policies_file in policies_files:
+            if os.path.isfile(policies_file):
+                app.logger.info("Found policies config at: %s", policies_file)
+                with open(policies_file) as policies_yml:
+                    policies = yaml.safe_load(policies_yml)
+                    break
 
         self.config.update(groups, policies)
 
