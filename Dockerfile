@@ -1,16 +1,9 @@
 # vim:set ft=dockerfile ts=1 sw=1 ai et:
-FROM fedora:26
+FROM python:2
 
-COPY requirements.txt /srv/docker-leash/
-RUN dnf makecache \
-    && dnf install -y \
-        gcc \
-        redhat-rpm-config \
-        python-devel \
-    && dnf clean all \
-    && pip install -r /srv/docker-leash/requirements.txt
+RUN pip install --no-cache-dir gunicorn
 
 COPY . /srv/docker-leash
+RUN pip install --no-cache-dir -e /srv/docker-leash/
 
-WORKDIR /srv/docker-leash
-CMD ["gunicorn", "--workers=5", "--bind=[::]:80", "--chdir=/srv/docker-leash", "docker_leash.leash_server:app"]
+CMD ["gunicorn", "--workers=5", "--bind=[::]:80", "docker_leash.leash_server:app"]

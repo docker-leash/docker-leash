@@ -11,6 +11,7 @@ cache:
 python:
   - 2.7
 install:
+  - pip install --no-cache-dir -e .
   - pip install -r requirements.dev.txt
 env:
   - DEBUG=false
