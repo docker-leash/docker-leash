@@ -18,9 +18,8 @@ def query_parameter(payload, parameter_name="name"):
     query = parse_qs(urlsplit(payload.uri).query)
 
     if parameter_name not in query:
-        raise UnauthorizedException(
-            'Container name not found in parameters'
-        )
+        return ""
+
     return query[parameter_name][0]
 
 

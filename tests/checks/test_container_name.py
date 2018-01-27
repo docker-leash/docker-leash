@@ -77,8 +77,9 @@ class ContainerNameTests(unittest.TestCase):
         # This case could be interresting in the future...
         # ContainerName().run("^hard-.*", Payload(PAYLOAD))
 
+        ContainerName().run(".*", Payload(PAYLOAD))
         with self.assertRaises(UnauthorizedException):
-            ContainerName().run(".*", Payload(PAYLOAD))
+            ContainerName().run(".+", Payload(PAYLOAD))
 
     @staticmethod
     def test_basics():
@@ -88,6 +89,8 @@ class ContainerNameTests(unittest.TestCase):
         ContainerName().run(None, Payload(PAYLOAD_FOOBAR))
         ContainerName().run(".*", Payload(PAYLOAD_FOOBAR))
         ContainerName().run(".*", Payload(PAYLOAD_SOMETHING))
+        ContainerName().run(".+", Payload(PAYLOAD_FOOBAR))
+        ContainerName().run(".+", Payload(PAYLOAD_SOMETHING))
         ContainerName().run("", Payload(PAYLOAD_FOOBAR))
         ContainerName().run("", Payload(PAYLOAD_SOMETHING))
 
