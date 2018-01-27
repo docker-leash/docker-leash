@@ -79,23 +79,25 @@ class BaseCheck(object):
         :rtype: string or list or None
         """
 
-        def replace(value, new):
+        def replace(value, user):
             """Replace $USER if necessary
             """
-            return re.sub(
-                r'((?<!\\)(?:\\\\)*)\$USER',
-                r'\1' + new,
-                value
-            )
+            if re.search(r'((?<!\\)(?:\\\\)*)\$USER', value):
+                if not user:
+                    return None
+                return re.sub(
+                    r'((?<!\\)(?:\\\\)*)\$USER',
+                    r'\1' + user,
+                    value
+                )
+            return value
 
         if isinstance(value, str):
-            if payload.user is None:
-                return None
             return replace(value, payload.user)
 
         result = []
         for val in value:
-            if payload.user is None:
-                continue
-            result.append(replace(val, payload.user))
+            replaced = replace(val, payload.user)
+            if replaced is not None:
+                result.append(replaced)
         return result

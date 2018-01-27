@@ -113,8 +113,22 @@ class BaseCheckTests(unittest.TestCase):
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
 
-        replace when '$' is escaped
-    def test_user_replace_user_with_escape_list(self):
+    def test_replace_user_as_anonymous_list(self):
+        """Check that `replace_user` remove items containing $USER: list
+        """
+        base = BaseCheck()
+
+        payload = Payload({
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
+        result = BaseCheck.replace_user(["$USER-loves-me", "sure"], payload)
+        self.assertListEqual(result, ["sure"])
+
+    def test_user_replace_user_with_escape_str(self):
         """Check that `replace_user` don't replace when '$' is escaped: str
         """
         base = BaseCheck()
@@ -127,8 +141,29 @@ class BaseCheckTests(unittest.TestCase):
                 "Host": "other01"
             }
         })
+
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
         self.assertEqual(result, r"\$USER-loves-me")
+
+        result = BaseCheck.replace_user(r"\\$USER-loves-me", payload)
+        self.assertEqual(result, r"\\mal-loves-me")
+
+        result = BaseCheck.replace_user(r"\\\$USER-loves-me", payload)
+        self.assertEqual(result, r"\\\$USER-loves-me")
+
+    def test_user_replace_user_with_escape_list(self):
+        """Check that `replace_user` don't replace when '$' is escaped: list
+        """
+        base = BaseCheck()
+
+        payload = Payload({
+            "User": "mal",
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
 
         result = BaseCheck.replace_user([r"\$USER-loves-me"], payload)
         self.assertEqual(result, [r"\$USER-loves-me"])
@@ -139,6 +174,11 @@ class BaseCheckTests(unittest.TestCase):
         result = BaseCheck.replace_user([r"\\\$USER-loves-me"], payload)
         self.assertEqual(result, [r"\\\$USER-loves-me"])
 
+    def test_anonymous_replace_user_with_escape_str(self):
+        """Check that `replace_user` don't replace when '$' is escaped: str
+        """
+        base = BaseCheck()
+
         payload = Payload({
             "User": None,
             "RequestMethod": "POST",
@@ -147,8 +187,35 @@ class BaseCheckTests(unittest.TestCase):
                 "Host": "other01"
             }
         })
+
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
-        self.assertIsNone(result)
+        self.assertEqual(result, r"\$USER-loves-me")
+
+        result = BaseCheck.replace_user(r"\\$USER-loves-me", payload)
+        self.assertEqual(result, None)
+
+        result = BaseCheck.replace_user(r"\\\$USER-loves-me", payload)
+        self.assertEqual(result, r"\\\$USER-loves-me")
+
+    def test_anonymous_replace_user_with_escape_list(self):
+        """Check that `replace_user` don't replace when '$' is escaped: list
+        """
+        base = BaseCheck()
+
+        payload = Payload({
+            "User": None,
+            "RequestMethod": "POST",
+            "RequestUri": "/v1.32/containers/create",
+            "RequestHeaders": {
+                "Host": "other01"
+            }
+        })
 
         result = BaseCheck.replace_user([r"\$USER-loves-me"], payload)
+        self.assertEqual(result, [r"\$USER-loves-me"])
+
+        result = BaseCheck.replace_user([r"\\$USER-loves-me"], payload)
         self.assertEqual(result, [])
+
+        result = BaseCheck.replace_user([r"\\\$USER-loves-me"], payload)
+        self.assertEqual(result, [r"\\\$USER-loves-me"])
