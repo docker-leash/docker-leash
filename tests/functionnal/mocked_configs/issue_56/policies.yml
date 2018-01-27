@@ -1,0 +1,17 @@
+---
+
+- description: Everyone have access to only containers where
+               name starting starting with "foo-".
+               Everyone should have readonly to all other actions.
+  hosts:
+    - +.*
+  default: ReadOnly
+  policies:
+    - members:
+        - all
+      rules:
+        containers:
+          ContainerName:
+            - "^foo-"
+
+...
