@@ -24,8 +24,7 @@ class BaseCheckTests(unittest.TestCase):
             base.run(Config(), {})
 
     def test_replace_user_string(self):
-        """Check that :meth:`docker_leash.checks.BaseCheck.replace_user` can
-        replace user on `string`
+        """Check that `replace_user` can eplace user on str
         """
         base = BaseCheck()
 
@@ -61,8 +60,7 @@ class BaseCheckTests(unittest.TestCase):
         self.assertEqual(result, "rda-loves-me")
 
     def test_replace_user_list(self):
-        """Check that :meth:`docker_leash.checks.BaseCheck.replace_user` can
-        replace user on `list`
+        """Check that `replace_user` can replace user on `list`
         """
         base = BaseCheck()
         values = [
@@ -90,8 +88,7 @@ class BaseCheckTests(unittest.TestCase):
         self.assertListEqual(result, attended)
 
     def test_replace_user_as_anonymous(self):
-        """Check that :meth:`docker_leash.checks.BaseCheck.replace_user` returns
-        `None` when connected as anonymous
+        """Check that `replace_user` remove items containing $USER: str
         """
         base = BaseCheck()
 
@@ -116,9 +113,9 @@ class BaseCheckTests(unittest.TestCase):
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
 
-    def test_replace_user_with_escape(self):
-        """Check that :meth:`docker_leash.checks.BaseCheck.replace_user` don't
         replace when '$' is escaped
+    def test_user_replace_user_with_escape_list(self):
+        """Check that `replace_user` don't replace when '$' is escaped: str
         """
         base = BaseCheck()
 
