@@ -87,8 +87,8 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/containers/ff7291fe9e13b4b417/archive?path=/etc', 'containersGetFilesystemArchive'),
             ('PUT', '/v1.35/containers/ff7291fe9e13b4b417/archive', 'containersExtractArchiveToDirectory'),
             ('PUT', '/v1.35/containers/ff7291fe9e13b4b417/archive?path=/etc', 'containersExtractArchiveToDirectory'),
-            ('POST', '/v1.35/containers/ff7291fe9e13b4b417/prune', 'containersPrune'),
-            ('POST', '/v1.35/containers/ff7291fe9e13b4b417/prune?filters=until=10m', 'containersPrune'),
+            ('POST', '/v1.35/containers/prune', 'containersPrune'),
+            ('POST', '/v1.35/containers/prune?filters=until=10m', 'containersPrune'),
 
             # Images
             ('GET', '/v1.35/images/json', 'imagesList'),

@@ -81,7 +81,7 @@ class ActionMapper(object):
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/unpause$': 'containersUnpause',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/attach(\?.*)?(#.*)?$': 'containersAttach',
             r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/wait(\?.*)?(#.*)?$': 'containersWait',
-            r'^/v\d.\d{2}/containers/[a-zA-Z0-9_-]+/prune(\?.*)?(#.*)?$': 'containersPrune',
+            r'^/v\d.\d{2}/containers/prune(\?.*)?(#.*)?$': 'containersPrune',
             r'^/v\d.\d{2}/build(\?.*)?(#.*)?$': 'imagesBuild',
             r'^/v\d.\d{2}/build/prune$': 'imagesDeleteBuilderCache',
             r'^/v\d.\d{2}/images/create(\?.*)?(#.*)?$': 'imagesCreate',
