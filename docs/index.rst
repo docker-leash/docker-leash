@@ -23,6 +23,7 @@ Welcome to Docker Leash Server's documentation!
    :caption: Contents:
 
    install/index
+   install/manage-ca
    examples
    modules
    api_documentation

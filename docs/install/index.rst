@@ -1,10 +1,15 @@
-Installation and configuration
-##############################
+Installation
+############
 
 .. toctree::
-   :caption: Contents:
 
-   installation
+   server-installation
+   client-installation
+
+Configuration
+#############
+
+.. toctree::
+
    configuration
-   
    docker-actions-list

@@ -1,10 +1,3 @@
-Configuration
-#############
-
-.. contents:: Table of Contents
-
-Configure the rules
-===================
 
 The users authorizations are defined on `leash-server` side.
 
@@ -14,7 +7,7 @@ We have one file to define `groups of users`, and one for the `policies`.
 The `policies` permit to attach `checks` on `docker action`.
 
 Policies configuration file format
-++++++++++++++++++++++++++++++++++
+==================================
 
 Example configuration file:
 
