@@ -137,3 +137,5 @@ Alternatively, you can build a child image including your configuration.
    The current `command` launched from the image doesn't include TLS options,
    and listen by default on port `80`. Indeed, the bind mount of `/certs`, is
    optionnal.
+
+Next, :doc:`client-installation`.

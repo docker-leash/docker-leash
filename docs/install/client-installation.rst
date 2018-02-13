@@ -1,204 +1,137 @@
+.. _client-installation-label:
+
 Client Installation (collar)
 ############################
 
-The server can be launched from a `virtualenv` or a `docker container`.
+On `docker daemon` side, deploy the `docker collar plugin`.
 
-Even if it is not mandatory, we recommend to run the service over TLS,
-`gunicorn` can do it since version 17.0. Alternativelly, you can use any reverse
-proxy you are used to.
+.. toctree::
+   :maxdepth: 4
 
-Also, `Flask` ship an internal webserver, it should be
-avoided on production, just use a dedicated WSGI HTTP Server like `gunicorn` or
-`wsgi`.
+Build the plugin yourself
+=========================
 
-.. contents:: Table of Contents
-
-Install the server
-==================
-
-The server is the central point of authorization and configuration.
-Run it on a server reachable by your clients (docker daemon).
-For a better availability, don't hesitate to scale your deployment.
-
-Using virtualenv
-++++++++++++++++
+The plugin construction is managed using a `makefile`.
 
 .. code-block:: console
-   :caption: Install Docker Leash in a `virtualenv`
+   :caption: building the client image
 
-   $ virtualenv venv
-   $ source ./venv/bin/activate
-   $ pip install docker-leash
-   $ pip install -r requirements.txt
+   $ make rootfs
+   $ make create
 
-Running the service
--------------------
+Installing from registry
+========================
 
-Using flask internal webserver
-''''''''''''''''''''''''''''''
+We provide prebuilt `docker plugin image` directly available on the
+`docker hub <https://hub.docker.com/r/dockerleash/leash-client/>`_.
 
 .. code-block:: console
-   :caption: Launch Docker Leash using Flask internal server.
+   :caption: building the client image
 
-   $ export FLASK_APP=docker_leash.leash_server.py
-   $ python -m flask run --host 0.0.0.0 --port 80
-    * Running on http://[::]:80/
-
-Using gunicorn
-''''''''''''''
-
-.. code-block:: console
-   :caption: Launch Docker Leash with gunicorn.
-
-   $ gunicorn --workers=5 --bind=[::]:80 --reload \
-     docker_leash.leash_server:app
-
-If you choose to support TLS directly with `gunicorn`, just add options
-`certfile`, `keyfile`, `ciphers` and change port listen port to `443`:
-
-.. code-block:: console
-   :caption: Launch gunicorn with TLS support.
-
-   $ gunicorn --workers=5 --bind=[::]:443 --reload \
-     --certfile=/certs/server.crt --keyfile=/certs/server.key \
-     --ciphers=TLSv1.2 \
-     docker_leash.leash_server:app
-
-Using Docker container
-++++++++++++++++++++++
-
-.. Warning::
-   Of course, the `docker-leash` server could be deployed as a Docker container,
-   but be careful to don't brick yourself by running the container
-   on the same host as the one you want to secure.
-
-We publish ready to use container images on Docker Hub,
-please have a look at our `docker repository <https://hub.docker.com/r/dockerleash/leash-server/>`_.
-
-Building the image
-------------------
-
-You may want to build the image yourself.
-
-.. code-block:: console
-   :caption: Build docker image from sources.
-
-   $ git clone https://github.com/docker-leash/leash-server.git
-   $ cd leash-server
-   $ docker build -t leash-server .
-
-Running the service
--------------------
-
-You can simply launch the service using `docker cli` or `docker-compose`.
-Don't forget to mount the configuration over the respective files.
-
-.. code-block:: console
-   :caption: Launch `docker-leash` using `docker`.
-
-   $ docker run \
-     -d \
-     -p 443:443 \
-     -v /path/to/your/certs/:/certs:ro \
-     -v /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro \
-     -v /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro \
-     --certfile=/certs/server.crt --keyfile=/certs/server.key \
-     --ciphers=TLSv1.2 \
-     dockerleash/leash-server:latest \
-     gunicorn --workers=5 --bind=[::]:443 app.leash_server:app
-
-.. code-block:: yaml
-   :caption: docker-compose.yml
-
-   version: '2'
-
-   services:
-     leashserver:
-       image: dockerleash/leash-server:latest
-       command: gunicorn --workers=5 --bind=[::]:443 --chdir=/srv/docker-leash \
-         --certfile=/certs/server.crt --keyfile=/certs/server.key \
-         --ciphers=TLSv1.2 \
-         docker_leash.leash_server:app
-       volumes:
-         - /path/to/your/certs/:/certs:ro
-         - /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro
-         - /path/to/your/conf/policies.yml:/srv/docker-leash/policies.yml:ro
-       ports:
-         - "443:443"
-       restart: always
-
-Alternatively, you can build a child image including your configuration.
-
-.. code-block:: dockerfile
-   :caption: Your personnal `Dockerfile`
-
-   FROM dockerleash/leash-server:latest
-   COPY configuration/*.yml /srv/docker-leash/
-   COPY certs/* /certs/
-
-.. note::
-   The current `command` launched from the image doesn't include TLS options,
-   and listen by default on port `80`. Indeed, the bind mount of `/certs`, is
-   optionnal.
-
-Configure docker leash client (Your docker daemon)
-==================================================
-
-On `docker daemon` side (the client in our case), the plugin configuration
-consist of a simple `.json` file. Copy our sample file located in `plugin/leash.json`
-to `/etc/docker/plugins/leash.json` or `/usr/lib/docker/plugins/leash.json`.
+   $ docker plugin install dockerleash/leash-client
 
 Configure the plugin
-++++++++++++++++++++
+====================
 
-The `leash.json` file need to be configured according to your local environment.
+The `colar` need to be configured according to your local environment.
 
-.. code-block:: json
-   :caption: /etc/docker/plugins/leash.json
+.. Note::
+   Plugin need to be disabled to be configured.
 
-   {
-     "Name": "leash",
-     "Addr": "https://leash-server.organization.yours",
-     "TLSConfig": {
-       "InsecureSkipVerify": false,
-       "CAFile": "/etc/pki/CA/certs/ca.used.to.sign.docker-leash.crt"
-     }
-   }
+Variables:
 
-Replace the `Addr` field with the full url of your `leash server` instance.
+* LEASH_URL mandatory
+* LEASH_CA_CERT /certs/ca.pem
+* LEASH_CONNECT_TIMEOUT 10
 
-If you secured the server part with `TLS` using a self-signed certificate,
-declare the `CA` in the `CAFile` field.
+* DOCKER_CA_CERT /certs/ca.pem
+* DOCKER_KEY_FILE /certs/key.pem
+* DOCKER_URL https://127.0.0.1:2376
+* DOCKER_CONNECT_TIMEOUT 10
 
-Even if - on a security point of view - this is not recommended, you can also
-choose to not verify the authenticity of the connection, by setting field
-`InsecureSkipVerify` to `true`.
+* DEBUG default false
 
-.. code-block:: json
-   :caption: /etc/docker/plugins/leash.json
+Mounts:
 
-   {
-     "Name": "leash",
-     "Addr": "https://leash-server.organization.yours",
-     "TLSConfig": {
-       "InsecureSkipVerify": true,
-     }
-   }
+* certs /certs/ /etc/docker/plugins/collar.d/
+
+.. code-block:: console
+   :caption: Define leash server url
+
+   docker plugin collar:next LEASH_URL=https://your-leash-server
+
 
 Load the plugin on docker daemon start
-++++++++++++++++++++++++++++++++++++++
+======================================
 
-The `docker daemon` need to start the plugin on boot. You have many
-possibilities depending on how you launch the docker daemon (ex: `systemd`), but
-the simplest way seems to configure it directly in the `/etc/docker/daemon.json`.
+The `docker daemon` need to start the plugin on boot.
 
-Add the `authorization-plugins` and the `tcp socket` (`"0.0.0.0:2376"`) entry as:
+.. code-block:: console
+   :caption: Enable the collar
+
+   docker plugin enable collar:next
+
+
+Activate the collar
+===================
+
+Edit the `docker daemon` configuration.
 
 .. code-block:: json
    :caption: /etc/docker/daemon.json
 
    {
-	   "authorization-plugins": ["leash"],
+	   "authorization-plugins": ["collar:next"]
+   }
+
+
+User authentication
+===================
+
+By default, access to the docker daemon is restricted by the permissions set on
+the unix socket (generally `unix:///var/run/docker.sock`). If your planned
+policies don't need to know users identity (only anonymous rules), then you can
+skip jump to `Need Authentication`_ section.
+
+Anonymous is sufficient
+=======================
+
+.. code-block:: json
+   :caption: /etc/docker/daemon.json
+
+   {
+     "authorization-plugins": ["leash"],
+     "hosts": ["unix:///var/run/docker.sock"]
+   }
+
+
+Need Authentication
+===================
+
+If your planned rules rely on user authentication, then the `docker daemon` need
+to have TLS authentication enabled.
+
+.. Note::
+   It is only possible to authenticate using SSL certificate only when using TCP
+   socket. When connecting to unix socket, users will be threated as anonymous.
+
+You have many possibilities depending on how you launch the docker daemon
+(ex: `systemd`, `upstart`…), but the simplest way seems to configure it directly in the
+`/etc/docker/daemon.json`.
+
+Add the `tcp socket` (`"0.0.0.0:2376"`) to the `daemon.json` file.
+
+Use your favorite `SSL Certificate` provider to secure the traffic over the tcp
+socket. Set fields `tlscert` and `tlskey` to the path of your files.
+
+The `tlscacert`, is responsible for authenticating your clients certificates.
+We recommend to manage your own :abbr:`CA (Certificate Authority)`, see `Users authentication via TLS`_.
+
+.. code-block:: json
+   :caption: /etc/docker/daemon.json
+
+   {
+	   "authorization-plugins": ["collar:next"],
 	   "hosts": ["unix:///var/run/docker.sock", "0.0.0.0:2376"],
 	   "tls": true,
 	   "tlsverify": true,
@@ -207,14 +140,11 @@ Add the `authorization-plugins` and the `tcp socket` (`"0.0.0.0:2376"`) entry as
 	   "tlskey": "/etc/pki/tls/private/full.name.of.your.host.key"
    }
 
-Use your favorite `SSL Certificate` provider to encrypt traffic over the tcp
-socket. Set fields `tlscert` and `tlskey` to the path of your files.
-
-The `tlscacert`, is responsible for authenticating your clients certificates.
-We recommend to manage your own :abbr:`CA (Certificate Authority)`, see `Users authentication via TLS`_.
-
 .. Note::
-   On Ubuntu: You may encounter error "`unable to configure the Docker daemon with file /etc/docker/daemon.json: the following directives are specified both as a flag and in the configuration file: hosts: (from flag: [fd://], from file: [unix:///var/run/docker.sock 0.0.0.0:2376])`."
+   On Ubuntu: You may encounter error "`unable to configure the Docker daemon
+   with file /etc/docker/daemon.json: the following directives are specified both
+   as a flag and in the configuration file: hosts: (from flag: [fd://],
+   from file: [unix:///var/run/docker.sock 0.0.0.0:2376])`."
    In such case, override systemd script:
 
       $ systemctl edit docker
@@ -223,22 +153,9 @@ We recommend to manage your own :abbr:`CA (Certificate Authority)`, see `Users a
       | ExecStart=
       | ExecStart=/usr/bin/dockerd
 
-By default, access to the docker daemon is restricted by the permissions set on
-the unix socket (generally `unix:///var/run/docker.sock`). If your planned
-policies don't need to know users identity (only anonymous rules), then you can
-skip the TLS configuration.
-
-.. code-block:: json
-   :caption: /etc/docker/daemon.json
-
-   {
-	   "authorization-plugins": ["leash"],
-	   "hosts": ["unix:///var/run/docker.sock"]
-   }
-
 
 Users authentication via TLS
-++++++++++++++++++++++++++++
+============================
 
 For advanced features, users need to authenticate with the `docker daemon`. The
 current way is use `clients certificates`.
