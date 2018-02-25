@@ -138,4 +138,5 @@ Alternatively, you can build a child image including your configuration.
    and listen by default on port `80`. Indeed, the bind mount of `/certs`, is
    optionnal.
 
-Next, :doc:`client-installation`.
+Next, read :doc:`client-installation` if your planned rules don't rely on
+`clients hostname` or `images/containers names` else :doc:`collar-installation`.

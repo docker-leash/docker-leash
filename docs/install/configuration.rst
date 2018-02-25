@@ -1,4 +1,7 @@
 
+Configuration
+#############
+
 The users authorizations are defined on `leash-server` side.
 
 Configurations are stored as a YAML file.
@@ -204,3 +207,6 @@ We can break down the sections as follow.
 .. Note::
    The `Anonymous` username is a reserved word. It permit to define rules
    explicitly for non connected users.
+
+
+You're done! If you need, you can now discover some :doc:`../examples`.
