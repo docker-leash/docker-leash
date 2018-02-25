@@ -6,6 +6,7 @@ This module is responsible for dispatching HTTP requests.
 
 import sys
 
+import logging
 from flask import jsonify, request
 
 from . import app
@@ -23,6 +24,11 @@ def setup_app(application):
     """
     application.config["processor"] = Processor()
     application.config["processor"].load_config()
+
+    if application.config["DEBUG"]:
+        application.logger.setLevel(logging.DEBUG)
+    else:
+        application.logger.setLevel(logging.ERROR)
 
 
 setup_app(app)
@@ -150,13 +156,13 @@ def authz_request():
     try:
         app.config["processor"].run(request.data)
     except InvalidRequestException as error:
-        app.logger.error("REQUEST DENIED: %s", error)
+        app.logger.warning("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     except UnauthorizedException as error:
-        app.logger.error("REQUEST DENIED: %s", error)
+        app.logger.info("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
