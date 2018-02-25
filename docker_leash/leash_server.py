@@ -148,7 +148,7 @@ def authz_request():
     """
 
     try:
-        app.config["processor"].run(request.data or {})
+        app.config["processor"].run(request.data)
     except InvalidRequestException as error:
         app.logger.error("REQUEST DENIED: %s", error)
         return jsonify({

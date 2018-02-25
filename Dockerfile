@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir gunicorn
 COPY . /srv/docker-leash
 RUN pip install --no-cache-dir -e /srv/docker-leash/
 
-CMD ["gunicorn", "--workers=5", "--bind=[::]:80", "docker_leash.leash_server:app"]
+CMD ["gunicorn", "--workers=5", "--bind=[::]:80", "docker_leash.wsgi:app"]

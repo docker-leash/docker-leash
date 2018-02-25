@@ -47,6 +47,9 @@ class Payload(object):
     #: The request Headers
     headers = None
 
+    #: The request Headers
+    host = ""
+
     def __init__(self, payload=None):
         """Initialize the object.
 
@@ -56,10 +59,12 @@ class Payload(object):
             raise InvalidRequestException("Payload is empty")
 
         self.headers = self._get_headers(payload)
+        print self.headers
         self.data = self._decode_base64(payload)
         self.user = self._get_username(payload)
         self.method = self._get_method(payload)
         self.uri = self._get_uri(payload)
+        self.host = self._get_host(payload)
         app.logger.info(
             "PAYLOAD AUTHENTICATED USER=%r URI=%r METHOD=%r",
             self.user,
@@ -70,8 +75,18 @@ class Payload(object):
     def get_host(self):
         """Get the hostname
         """
+        return self.host
+
+    def _get_host(self, payload):
+        """Get the hostname
+        """
+        if "Host" in payload:
+            return payload["Host"]
+
         if self.headers and "Host" in self.headers:
             return self.headers["Host"]
+
+        return ""
 
     @classmethod
     def _decode_base64(cls, payload):
@@ -142,7 +157,7 @@ class Payload(object):
         :rtype: dict or None
         :raises InvalidRequestException: if the payload is missing Headers.
         """
-        if payload and "RequestHeaders" in payload and payload["RequestHeaders"]:
+        if payload and "RequestHeaders" in payload:
             return payload["RequestHeaders"]
 
         raise InvalidRequestException("Headers missing from payload")

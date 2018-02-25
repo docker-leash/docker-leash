@@ -29,18 +29,16 @@ MOCKED_BODY = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
+    "RequestHeaders": {},
+    "Host": "other01",
 }
 
 MOCKED_BODY_2 = {
     "User": "someone",
     "RequestMethod": "GET",
     "RequestUri": "/v1.32/containers/json",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
+    "RequestHeaders": {},
+    "Host": "other01",
 }
 
 MOCKED_BODY_ANONYMOUS_1 = {
@@ -48,18 +46,16 @@ MOCKED_BODY_ANONYMOUS_1 = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
+    "RequestHeaders": {},
+    "Host": "other01",
 }
 
 MOCKED_BODY_ANONYMOUS_2 = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
+    "RequestHeaders": {},
+    "Host": "other01",
 }
 
 
@@ -76,12 +72,12 @@ class PayloadTests(unittest.TestCase):
         with self.assertRaises(InvalidRequestException):
             Payload(payload=MOCKED_MISSING_HEADERS)
 
-        with self.assertRaises(InvalidRequestException):
-            Payload(payload=MOCKED_MISSING_HOST)
-
     def test_get_host(self):
         """Get host from headers
         """
+        payload = Payload(payload=MOCKED_MISSING_HOST)
+        self.assertEqual(payload.get_host(), '')
+
         payload = Payload(payload=MOCKED_BODY)
         self.assertEqual(payload.get_host(), 'other01')
 
