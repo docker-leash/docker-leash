@@ -16,8 +16,7 @@ Example usage
 
    ---
 
-   - description: Allow action only the container don't require
-                  `privileged` flag.
+   - description: Allow action only if the container has `privileged` flag off.
      hosts:
        - +.*
      default: Allow
