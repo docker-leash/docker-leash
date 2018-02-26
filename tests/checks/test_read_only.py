@@ -16,18 +16,12 @@ MOCKED_GET_BODY = {
     "User": "someone",
     "RequestMethod": "GET",
     "RequestUri": "/v1.32/containers/json",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 MOCKED_HEAD_BODY = {
     "User": "someone",
     "RequestMethod": "HEAD",
     "RequestUri": "/v1.32/containers/abc123/archive",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 MOCKED_POST_BODY = {
@@ -35,9 +29,6 @@ MOCKED_POST_BODY = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 MOCKED_DELETE_BODY = {
@@ -45,9 +36,6 @@ MOCKED_DELETE_BODY = {
     "RequestMethod": "DELETE",
     "RequestUri": "/v1.32/containers/abc123",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 MOCKED_PUT_BODY = {
@@ -55,9 +43,6 @@ MOCKED_PUT_BODY = {
     "RequestMethod": "PUT",
     "RequestUri": "/v1.32/containers/abc123/archive",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 

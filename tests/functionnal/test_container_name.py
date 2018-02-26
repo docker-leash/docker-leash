@@ -20,9 +20,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "jre",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -37,9 +35,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create?name=foobar",
             "User": "jre",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -52,9 +48,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -67,9 +61,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -84,9 +76,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create",
             "User": "jre",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -99,9 +89,7 @@ class ContainerNameTestsFunctionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)

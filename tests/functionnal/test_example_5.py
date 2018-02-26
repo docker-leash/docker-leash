@@ -32,9 +32,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -48,9 +46,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -64,9 +60,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -79,9 +73,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -95,9 +87,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -111,9 +101,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -127,9 +115,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -143,9 +129,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/abc123",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -159,9 +143,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/abc123",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -175,9 +157,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/images/json",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -191,9 +171,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/images/json",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -215,9 +193,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -239,9 +215,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -263,9 +237,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -279,9 +251,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/volumes",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -294,9 +264,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/volumes",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -309,9 +277,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -325,9 +291,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -341,9 +305,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -357,9 +319,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -372,9 +332,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -388,9 +346,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/images/create",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -404,9 +360,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/images/create",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -420,9 +374,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/images/create",
             "User": "vol",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -435,9 +387,7 @@ class ValidateExample5Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/images/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)

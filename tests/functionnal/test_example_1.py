@@ -31,9 +31,7 @@ class ValidateExample1Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -47,9 +45,7 @@ class ValidateExample1Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -63,9 +59,7 @@ class ValidateExample1Functionnal(LeashServerFunctionnalBaseTests):
             "RequestBody": base64.b64encode(json.dumps({})),
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -80,9 +74,7 @@ class ValidateExample1Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)

@@ -31,9 +31,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -47,9 +45,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=blabla",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -63,9 +59,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/foo-bar/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -79,9 +73,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/blabla/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -95,9 +87,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -111,9 +101,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=blabla",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -127,9 +115,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/foo-bar/json",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -143,9 +129,7 @@ class Issue56Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/blabla/json",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)

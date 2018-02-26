@@ -29,9 +29,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -45,9 +43,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -61,9 +57,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/abc123",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -77,9 +71,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -93,9 +85,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=jre-bar",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -109,9 +99,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=something",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01"
         }
 
         response = post(self.app, payload)
@@ -125,9 +113,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/build/something",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -141,9 +127,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/images/json",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -157,9 +141,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/images/abc123",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -173,9 +155,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/abc123",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -189,9 +169,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/foo-bar",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -205,9 +183,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/jre-bar",
             "User": "jre",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -220,9 +196,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -235,9 +209,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -250,9 +222,7 @@ class ValidateExample3Functionnal(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/abc123",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)

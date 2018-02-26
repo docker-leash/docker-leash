@@ -56,9 +56,7 @@ mocked_body = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {
-        "Host": "other01"
-    },
+    "Host": "other01",
 }
 
 
@@ -99,9 +97,7 @@ class ProcessorTests(unittest.TestCase):
         """Run Processor with only headers fail
         """
         body = {
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         processor = Processor()

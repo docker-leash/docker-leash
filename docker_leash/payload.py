@@ -59,7 +59,6 @@ class Payload(object):
             raise InvalidRequestException("Payload is empty")
 
         self.headers = self._get_headers(payload)
-        print self.headers
         self.data = self._decode_base64(payload)
         self.user = self._get_username(payload)
         self.method = self._get_method(payload)
@@ -77,14 +76,16 @@ class Payload(object):
         """
         return self.host
 
+    def get_headers(self):
+        """Get the headers
+        """
+        return self.headers
+
     def _get_host(self, payload):
         """Get the hostname
         """
         if "Host" in payload:
             return payload["Host"]
-
-        if self.headers and "Host" in self.headers:
-            return self.headers["Host"]
 
         return ""
 
@@ -154,10 +155,9 @@ class Payload(object):
 
         :param dict payload: The payload to extract URI.
         :return: The Headers.
-        :rtype: dict or None
-        :raises InvalidRequestException: if the payload is missing Headers.
+        :rtype: dict
         """
         if payload and "RequestHeaders" in payload:
             return payload["RequestHeaders"]
 
-        raise InvalidRequestException("Headers missing from payload")
+        return {}

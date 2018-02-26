@@ -20,9 +20,6 @@ PAYLOAD_MINIMAL = {
             "Binds": []
         }
     },
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_FOO = {
@@ -38,9 +35,6 @@ PAYLOAD_FOO = {
             ]
         }
     },
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_FOOBAR = {
@@ -54,9 +48,6 @@ PAYLOAD_FOOBAR = {
                 '/foobar',
             ]
         }
-    },
-    "RequestHeaders": {
-        "Host": "other01"
     },
 }
 
@@ -79,9 +70,6 @@ PAYLOAD_MANY = {
             ]
         }
     },
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_USER = {
@@ -94,9 +82,6 @@ PAYLOAD_USER = {
                 '/home/someone',
             ]
         }
-    },
-    "RequestHeaders": {
-        "Host": "other01"
     },
 }
 

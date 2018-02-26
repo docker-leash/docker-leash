@@ -254,9 +254,7 @@ class ConfigTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv01"
-            },
+            "Host": "srv01",
         })
 
         rules = config.get_rules(payload)
@@ -272,9 +270,7 @@ class ConfigTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -290,9 +286,7 @@ class ConfigTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
+            "Host": "other01",
         })
 
         rules = config.get_rules(payload)
@@ -308,9 +302,7 @@ class ConfigTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv01"
-            },
+            "Host": "srv01",
         })
 
         rules = config.get_rules(payload)
@@ -326,9 +318,7 @@ class ConfigTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -344,9 +334,7 @@ class ConfigTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
+            "Host": "other01",
         })
 
         rules = config.get_rules(payload)
@@ -362,9 +350,7 @@ class ConfigTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv33"
-            },
+            "Host": "srv33",
         })
 
         rules = config.get_rules(payload)
@@ -380,9 +366,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv01"
-            },
+            "Host": "srv01",
         })
 
         rules = config.get_rules(payload)
@@ -398,9 +382,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -418,9 +400,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/123/logs",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
         expected = {
             "ContainerName": [
@@ -443,9 +423,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/images/create",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
         expected = {
             "ImagesName": [
@@ -467,9 +445,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/images/json",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -485,9 +461,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/images/abc123",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -503,9 +477,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/images/abc123",
-            "RequestHeaders": {
-                "Host": "wks01"
-            },
+            "Host": "wks01",
         })
 
         rules = config.get_rules(payload)
@@ -521,9 +493,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/images/json",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
+            "Host": "other01",
         })
 
         rules = config.get_rules(payload)
@@ -539,9 +509,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/images/abc123",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
+            "Host": "other01",
         })
 
         rules = config.get_rules(payload)
@@ -557,9 +525,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv33"
-            },
+            "Host": "srv33",
         })
 
         rules = config.get_rules(payload)
@@ -573,9 +539,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv33"
-            },
+            "Host": "srv33",
         })
 
         policy_allow = [
@@ -598,9 +562,7 @@ class ConfigTests(unittest.TestCase):
             "User": "jre",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "srv33"
-            },
+            "Host": "srv33",
         })
 
         policy_deny = [

@@ -16,45 +16,30 @@ PAYLOAD = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_FOOBAR = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create?name=foo-bar",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_SOMETHING = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create?name=hard-biture",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_USER = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create?name=someone-love-me",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 PAYLOAD_USERNAME = {
     "User": "someone",
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create?name=someoneNAME-love-me",
-    "RequestHeaders": {
-        "Host": "other01"
-    },
 }
 
 
@@ -169,9 +154,6 @@ class ContainerNameTests(unittest.TestCase):
             "User": "someone",
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/someone-love-me",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
         }
         self.assertEqual(path_parameter(Payload(payload)), "someone-love-me")
 
@@ -183,9 +165,6 @@ class ContainerNameTests(unittest.TestCase):
             "User": "someone",
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/",
-            "RequestHeaders": {
-                "Host": "other01"
-            },
         }
         with self.assertRaises(UnauthorizedException):
             self.assertEqual(path_parameter(Payload(payload)), "someone-love-me")

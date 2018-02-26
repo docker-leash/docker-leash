@@ -28,9 +28,7 @@ class BasicTests(LeashServerFunctionnalBaseTests):
         """Validate the most basic Auth Request
         """
         payload = {
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
         response = post(self.app, payload)
         self.assertEqual(response.status_code, 200)

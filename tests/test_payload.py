@@ -21,7 +21,6 @@ MOCKED_MISSING_HOST = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {},
 }
 
 MOCKED_BODY = {
@@ -29,15 +28,14 @@ MOCKED_BODY = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {},
     "Host": "other01",
+    "RequestHeaders": {},
 }
 
 MOCKED_BODY_2 = {
     "User": "someone",
     "RequestMethod": "GET",
     "RequestUri": "/v1.32/containers/json",
-    "RequestHeaders": {},
     "Host": "other01",
 }
 
@@ -46,7 +44,6 @@ MOCKED_BODY_ANONYMOUS_1 = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {},
     "Host": "other01",
 }
 
@@ -54,7 +51,6 @@ MOCKED_BODY_ANONYMOUS_2 = {
     "RequestMethod": "POST",
     "RequestUri": "/v1.32/containers/create",
     "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-    "RequestHeaders": {},
     "Host": "other01",
 }
 
@@ -63,14 +59,14 @@ class PayloadTests(unittest.TestCase):
     """Validation of :cls:`docker_leash.Payload`
     """
 
-    def test_payload_need_headers(self):
+    def test_payload_headers(self):
         """Payload minimal check
         """
         with self.assertRaises(InvalidRequestException):
             Payload()
 
-        with self.assertRaises(InvalidRequestException):
-            Payload(payload=MOCKED_MISSING_HEADERS)
+        payload = Payload(payload=MOCKED_MISSING_HEADERS)
+        self.assertEqual(payload.get_headers(), {})
 
     def test_get_host(self):
         """Get host from headers
@@ -112,17 +108,11 @@ class PayloadTests(unittest.TestCase):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "RequestBody": "eyJmb28iOiAiYmFyIn0=",  # '{"foo": "bar"}'
-            "RequestHeaders": {
-                "Host": "other01"
-            },
         }
         body_decoded = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "RequestBody": {"foo": "bar"},
-            "RequestHeaders": {
-                "Host": "other01"
-            },
         }
 
         payload = Payload(payload=body)

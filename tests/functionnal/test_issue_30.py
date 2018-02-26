@@ -31,9 +31,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -47,9 +45,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
             "User": "mal",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -63,9 +59,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
             "User": "cru",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -79,9 +73,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=cru-bar",
             "User": "cru",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -95,9 +87,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "cru",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -111,9 +101,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/cru-bar",
             "User": "cru",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)
@@ -128,9 +116,7 @@ class Issue30Functionnal(LeashServerFunctionnalBaseTests):
             "RequestMethod": "DELETE",
             "RequestUri": "/v1.32/containers/foo-bar",
             "User": "cru",
-            "RequestHeaders": {
-                "Host": "srv01"
-            }
+            "Host": "srv01",
         }
 
         response = post(self.app, payload)

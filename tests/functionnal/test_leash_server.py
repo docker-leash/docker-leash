@@ -23,9 +23,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/_ping",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -38,9 +36,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -53,9 +49,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
         payload = {
             "RequestMethod": "GET",
             "RequestUri": "/v1.32/containers/json",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -70,9 +64,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/json",
             "User": "mal",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -92,9 +84,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
             "RequestBody": base64.b64encode(json.dumps(request)),
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)
@@ -116,9 +106,7 @@ class LeashServerTests(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create",
             "User": "mal",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "other01",
         }
 
         response = post(self.app, payload)

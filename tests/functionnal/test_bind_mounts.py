@@ -37,9 +37,7 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "jre",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -66,9 +64,7 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
             "User": "jre",
             "UserAuthNMethod": "TLS",
-            "RequestHeaders": {
-                "Host": "wks01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -93,9 +89,7 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestBody": base64.b64encode(json.dumps(request)),
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)
@@ -120,9 +114,7 @@ class BindVolumesTestsFunctionnal(LeashServerFunctionnalBaseTests):
             "RequestBody": base64.b64encode(json.dumps(request)),
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create?name=foo-bar",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
+            "Host": "wks01",
         }
 
         response = post(self.app, payload)

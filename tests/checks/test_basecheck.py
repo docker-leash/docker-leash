@@ -32,9 +32,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertEqual(result, "mal-loves-me")
@@ -52,9 +49,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": "rda",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertEqual(result, "rda-loves-me")
@@ -80,9 +74,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user(values, payload)
         self.assertListEqual(result, attended)
@@ -96,9 +87,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
@@ -106,9 +94,6 @@ class BaseCheckTests(unittest.TestCase):
         payload = Payload({
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user("$USER-loves-me", payload)
         self.assertIsNone(result)
@@ -121,9 +106,6 @@ class BaseCheckTests(unittest.TestCase):
         payload = Payload({
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
         result = BaseCheck.replace_user(["$USER-loves-me", "sure"], payload)
         self.assertListEqual(result, ["sure"])
@@ -137,9 +119,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
 
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
@@ -160,9 +139,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": "mal",
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
 
         result = BaseCheck.replace_user([r"\$USER-loves-me"], payload)
@@ -183,9 +159,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
 
         result = BaseCheck.replace_user(r"\$USER-loves-me", payload)
@@ -206,9 +179,6 @@ class BaseCheckTests(unittest.TestCase):
             "User": None,
             "RequestMethod": "POST",
             "RequestUri": "/v1.32/containers/create",
-            "RequestHeaders": {
-                "Host": "other01"
-            }
         })
 
         result = BaseCheck.replace_user([r"\$USER-loves-me"], payload)
