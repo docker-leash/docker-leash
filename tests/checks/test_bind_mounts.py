@@ -180,3 +180,13 @@ class BindMountsTests(unittest.TestCase):
         ]
 
         BindMounts().run(args, Payload(PAYLOAD_USER))
+
+    def test_directoy_names_not_explicitly_listed(self):
+        """Check directory exact match
+        """
+        args = [
+            '+/something-else/',
+        ]
+
+        with self.assertRaises(UnauthorizedException):
+            BindMounts().run(args, Payload(PAYLOAD_FOOBAR))
