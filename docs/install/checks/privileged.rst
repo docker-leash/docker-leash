@@ -1,0 +1,31 @@
+.. _privileged-label:
+
+Privileged
+==========
+
+Allow the request if the container don't require `privileged` flag.
+
+Volumes name check is a list or regular expressions.
+
+Example usage
+=============
+
+.. code-block:: yaml
+   :caption: groups.yml
+   :emphasize-lines: 13
+
+   ---
+
+   - description: Allow action only the container don't require
+                  `privileged` flag.
+     hosts:
+       - +.*
+     default: Allow
+     policies:
+       - members:
+           - all
+         rules:
+           containers:
+             Privileged:
+
+   ...

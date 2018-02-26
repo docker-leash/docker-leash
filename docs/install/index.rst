@@ -14,4 +14,14 @@ Configuration
 .. toctree::
 
    configuration
-   docker-actions-list
+   actions/index
+   checks/index
+
+
+.. create a fake doctree as we'll display the links ourself.
+
+.. toctree::
+   :hidden:
+   :glob:
+
+   checks/*

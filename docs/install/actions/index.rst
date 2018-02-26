@@ -1,4 +1,4 @@
-.. _docker-actions-list:
+.. _actions-index-label:
 
 Docker actions list
 ###################
@@ -6,15 +6,20 @@ Docker actions list
 Docker action names are a mapping to the internal actions from the
 `Docker API <https://docs.docker.com/engine/api/version-history/>`__.
 
-Containers actions
-++++++++++++++++++
+.. create a fake doctree as we'll display the links ourself.
+
+.. toctree::
+   :hidden:
+   :glob:
+
+   *
 
 +--------------------------------------+-------------------------------------+
 | action name                          | API description                     |
 +======================================+=====================================+
-| containersList                       | List containers                     |
+| :doc:`containers-list`               | List containers                     |
 +--------------------------------------+-------------------------------------+
-| containersCreate                     | Create containers                   |
+| :doc:`containers-create`             | Create containers                   |
 +--------------------------------------+-------------------------------------+
 | containersInspect                    | Inspect container                   |
 +--------------------------------------+-------------------------------------+
@@ -41,7 +46,7 @@ Containers actions
 +--------------------------------------+-------------------------------------+
 | containersKill                       | Kill a container                    |
 +--------------------------------------+-------------------------------------+
-| containersUpdate                     | Update a container                  |
+| :doc:`containers-update`             | Update a container                  |
 +--------------------------------------+-------------------------------------+
 | containersRename                     | Rename a container                  |
 +--------------------------------------+-------------------------------------+

@@ -128,40 +128,9 @@ We can break down the sections as follow.
 "Docker actions" list
 ---------------------
 
-As the list is quite long, please refer to the :ref:`docker-actions-list` page.
+As the list is quite long, please refer to the :doc:`actions/index` page.
 
-"Checks" list
--------------
-
-The `checks` are some sort of plugin to `leash-server`.
-They permit to verify/filter the access to one or more resources.
-
-+----------------+---------------------------------------------+
-| check name     | Description                                 |
-+================+=============================================+
-| Allow          | Just say yes                                |
-+----------------+---------------------------------------------+
-| Deny           | Just say no                                 |
-+----------------+---------------------------------------------+
-| ReadOnly       | Allow only read-only actions                |
-+----------------+---------------------------------------------+
-| BindMount      | Restrict bind mounts                        |
-+----------------+---------------------------------------------+
-| ContainerName  | Restrict by container name                  |
-+----------------+---------------------------------------------+
-| ImageName      | Restrict image name                         |
-+----------------+---------------------------------------------+
-| VolumeName     | Restrict volume name                        |
-+----------------+---------------------------------------------+
-| Privileged     | Check the privileged flag                   |
-+----------------+---------------------------------------------+
-| User           | Restrict user                               |
-+----------------+---------------------------------------------+
-
-.. Note::
-   More checks to come.
-   See the `related issues in our repository
-   <https://github.com/docker-leash/leash-server/issues?q=is%3Aopen+is%3Aissue+label%3Amodule>`__.
+.. include:: checks/index.rst
 
 Groups configuration file format
 ================================
