@@ -24,7 +24,7 @@ class BaseCheckTests(unittest.TestCase):
             base.run(Config(), {})
 
     def test_replace_user_string(self):
-        """Check that `replace_user` can eplace user on str
+        """Check that `replace_user` can replace $USER by username
         """
         base = BaseCheck()
 
