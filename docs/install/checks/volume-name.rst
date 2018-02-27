@@ -11,7 +11,7 @@ Example usage
 =============
 
 .. code-block:: yaml
-   :caption: groups.yml
+   :caption: policies.yml
    :emphasize-lines: 12-15
 
    ---

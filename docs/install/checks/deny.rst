@@ -9,7 +9,7 @@ Example usage
 =============
 
 .. code-block:: yaml
-   :caption: groups.yml
+   :caption: policies.yml
    :emphasize-lines: 12
 
    ---
@@ -32,7 +32,7 @@ Example usage
    written as follow.
 
 .. code-block:: yaml
-   :caption: groups.yml
+   :caption: policies.yml
    :emphasize-lines: 6
 
    ---
