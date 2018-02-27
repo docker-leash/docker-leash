@@ -13,3 +13,4 @@ Examples are accessible in the `examples/configs/example_xx/` directories.
    ../examples/configs/example_3/README
    ../examples/configs/example_4/README
    ../examples/configs/example_5/README
+   ../examples/configs/example_6/README

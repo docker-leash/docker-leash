@@ -3,35 +3,22 @@
 User
 ====
 
-Allow the request if the container will user as `user`.
-
-For references, see the
-`docker run documentation <https://docs.docker.com/engine/reference/run/#user>`_.
+Allow the request if the container will `run as` specified user.
 
 Volumes name check is a list of regular expressions. If one rule is valid, then
 the request is validated.
 
-Example usage
-=============
+Related documentation
+=====================
 
-.. code-block:: yaml
-   :caption: groups.yml
-   :emphasize-lines: 13-16
+* `docker run documentation <https://docs.docker.com/engine/reference/run/#user>`_
 
-   ---
+Examples
+========
 
-   - description: Allow action if not running as `root` or running as `$USER` or
-                  `someone`.
-     hosts:
-       - +.*
-     default: Allow
-     policies:
-       - members:
-           - all
-         rules:
-           containers:
-             User:
-               - "+^$USER$"
-               - "+^someone$"
-               - "-^root$"
-   ...
+:ref:`example6-label`
+
+.. literalinclude:: ../../examples/configs/example_6/policies.yml
+   :caption: policies.yml
+   :language: yaml
+   :emphasize-lines: 12-14

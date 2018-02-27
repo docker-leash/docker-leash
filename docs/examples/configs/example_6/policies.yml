@@ -1,0 +1,16 @@
+---
+
+- description: Run as user override.
+  hosts:
+    - +.*
+  default: Allow
+  policies:
+    - members:
+        - all
+      rules:
+        any:
+          User:
+            - ^nobody$
+            - ^$USER$
+
+...
