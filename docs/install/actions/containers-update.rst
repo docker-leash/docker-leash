@@ -5,7 +5,7 @@ ContainersUpdate
 
 `Docker engine API documentation <https://docs.docker.com/engine/api/v1.35/#operation/ContainerUpdate>`_
 
-Payload example
+Sample response
 ===============
 
 .. literalinclude:: ../../examples/sample_payload/containers_update.json

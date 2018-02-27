@@ -88,6 +88,9 @@ Images
 | imagesList                           | Returns a list of images on the     |
 |                                      | server.                             |
 +--------------------------------------+-------------------------------------+
+| :doc:`images-build`                  | Build an image from a tar archive   |
+|                                      | with a Dockerfile in it.            |
++--------------------------------------+-------------------------------------+
 | :doc:`images-inspect`                | Return low-level information about  |
 |                                      | an image.                           |
 +--------------------------------------+-------------------------------------+

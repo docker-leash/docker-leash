@@ -5,7 +5,7 @@ ContainersList
 
 `Docker engine API documentation <https://docs.docker.com/engine/api/v1.35/#operation/ContainerList>`_
 
-Payload example
+Sample response
 ===============
 
 .. literalinclude:: ../../examples/sample_payload/containers_list.json
