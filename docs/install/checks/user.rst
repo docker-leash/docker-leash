@@ -8,7 +8,8 @@ Allow the request if the container will user as `user`.
 For references, see the
 `docker run documentation <https://docs.docker.com/engine/reference/run/#user>`_.
 
-Volumes name check is a list or regular expressions.
+Volumes name check is a list of regular expressions. If one rule is valid, then
+the request is validated.
 
 Example usage
 =============
