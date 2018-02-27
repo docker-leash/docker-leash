@@ -14,6 +14,9 @@ Docker action names are a mapping to the internal actions from the
 
    *
 
+Containers
+----------
+
 +--------------------------------------+-------------------------------------+
 | action name                          | API description                     |
 +======================================+=====================================+
@@ -74,4 +77,17 @@ Docker action names are a mapping to the internal actions from the
 |                                      | in a container                      |
 +--------------------------------------+-------------------------------------+
 | containersPrune                      | Delete stopped containers           |
++--------------------------------------+-------------------------------------+
+
+Images
+------
+
++--------------------------------------+-------------------------------------+
+| action name                          | API description                     |
++======================================+=====================================+
+| imagesList                           | Returns a list of images on the     |
+|                                      | server.                             |
++--------------------------------------+-------------------------------------+
+| :doc:`images-inspect`                | Return low-level information about  |
+|                                      | an image.                           |
 +--------------------------------------+-------------------------------------+
