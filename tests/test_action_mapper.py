@@ -100,6 +100,7 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/images/85f05633ddc1c5/json', 'imagesInspect'),
             ('GET', '/v1.35/images/85f05633ddc1c5/history', 'imagesHistory'),
             ('POST', '/v1.35/images/85f05633ddc1c5/push', 'imagesPush'),
+            ('POST', '/v1.35/images//v1.35/images/registry.example.net/traefik/push?tag=alpine/push', 'imagesPush'),
             ('POST', '/v1.35/images/85f05633ddc1c5/tag', 'imagesTag'),
             ('POST', '/v1.35/images/85f05633ddc1c5/tag?tag=latest', 'imagesTag'),
             ('DELETE', '/v1.35/images/85f05633ddc1c5', 'imagesRemove'),
@@ -124,6 +125,7 @@ class ActionMapperTests(unittest.TestCase):
             ('DELETE', '/v1.35/images/linuxserver/smokeping?force=true', 'imagesRemove'),
             ('GET', '/v1.35/images/linuxserver/smokeping/get', 'imagesExport'),
             ('GET', '/v1.35/images/linuxserver/smokeping:latest/json', 'imagesInspect'),
+            ('GET', '/v1.35/images/traefik:alpine/json', 'imagesInspect'),
             ('GET', '/v1.35/images/linuxserver/smokeping:latest/history', 'imagesHistory'),
             ('POST', '/v1.35/images/linuxserver/smokeping:latest/push', 'imagesPush'),
             ('POST', '/v1.35/images/linuxserver/smokeping:latest/tag', 'imagesTag'),
@@ -139,6 +141,12 @@ class ActionMapperTests(unittest.TestCase):
             ('DELETE', '/v1.35/images/linuxserver/sha256:8dd6c1a7e66717ccb8fd01a4254205a717752b4d69007742a4d4d66ab41fa2b7', 'imagesRemove'),
             ('DELETE', '/v1.35/images/linuxserver/sha256:8dd6c1a7e66717ccb8fd01a4254205a717752b4d69007742a4d4d66ab41fa2b7?force=true', 'imagesRemove'),
             ('GET', '/v1.35/images/linuxserver/sha256:8dd6c1a7e66717ccb8fd01a4254205a717752b4d69007742a4d4d66ab41fa2b7/get', 'imagesExport'),
+            ('GET', '/v1.35/images/registry.example.net/traefik:alpine/json', 'imagesInspect'),
+            ('GET', '/v1.35/images/registry.example.net/traefik:alpine/history', 'imagesHistory'),
+            ('POST', '/v1.35/images/registry.example.net/traefik:alpine/tag', 'imagesTag'),
+            ('DELETE', '/v1.35/images/registry.example.net/traefik:alpine', 'imagesRemove'),
+            ('GET', '/v1.35/images/registry.example.net/traefik:alpine/get', 'imagesExport'),
+            ('DELETE', '/v1.35/images/alpine:latest', 'imagesRemove'),
 
             # Networks
             ('GET', '/v1.35/networks', 'networksList'),
