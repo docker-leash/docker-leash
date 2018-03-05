@@ -6,7 +6,7 @@ ActionMapper
 
 import re
 
-from exceptions import InvalidRequestException
+from .exceptions import InvalidRequestException
 
 
 class ActionMapper(object):
