@@ -7,6 +7,10 @@ Allow the request if the image name respect the rules.
 
 Images name check is a list or regular expressions.
 
+.. Note::
+   The `docker prune` commands are not restricted by
+   this module.
+
 Example usage
 =============
 

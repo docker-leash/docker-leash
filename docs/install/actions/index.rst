@@ -91,6 +91,15 @@ Images
 | :doc:`images-build`                  | Build an image from a tar archive   |
 |                                      | with a Dockerfile in it.            |
 +--------------------------------------+-------------------------------------+
+| :doc:`images-create`                 | Create an image by either pulling it|
+|                                      | from a registry or importing it.    |
++--------------------------------------+-------------------------------------+
+| :doc:`images-delete`                 | Remove an image, along with any     |
+|                                      | untagged parent images that were.   |
+|                                      | referenced by that image.           |
++--------------------------------------+-------------------------------------+
 | :doc:`images-inspect`                | Return low-level information about  |
 |                                      | an image.                           |
++--------------------------------------+-------------------------------------+
+| :doc:`images-commit`                 | Create a new image from a container.|
 +--------------------------------------+-------------------------------------+

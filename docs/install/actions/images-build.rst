@@ -9,4 +9,5 @@ Sample request payload
 ======================
 
 .. literalinclude:: ../../examples/sample_payload/images_build.json
+   :caption: POST  /build
    :language: json
