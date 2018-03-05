@@ -7,6 +7,7 @@ ActionMapperTests
 import unittest
 
 from docker_leash.action_mapper import ActionMapper
+from docker_leash.exceptions import InvalidRequestException
 
 
 class ActionMapperTests(unittest.TestCase):
@@ -264,8 +265,12 @@ class ActionMapperTests(unittest.TestCase):
             ('GET', '/v1.35/distribution/85f05633ddc1c5/json', 'distributionImageInfo'),
         ]
         for check in checks:
-            action = mapper.get_action_name(method=check[0], uri=check[1])
-            self.assertEqual(check[2], action)
+            if check[2] is not None:
+                action = mapper.get_action_name(method=check[0], uri=check[1])
+                self.assertEqual(check[2], action)
+            else:
+                with self.assertRaises(InvalidRequestException):
+                    action = mapper.get_action_name(method=check[0], uri=check[1])
 
     def test_get_action_name_invalid_method(self):
         """Retrieve action name by an invalid method and uri

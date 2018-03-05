@@ -6,6 +6,8 @@ ActionMapper
 
 import re
 
+from exceptions import InvalidRequestException
+
 
 class ActionMapper(object):
     """The :class:`ActionMapper` class is responsible for mapping
@@ -251,7 +253,9 @@ class ActionMapper(object):
         :rtype: str or None
         """
         if not method or not uri:
-            return None
+            raise InvalidRequestException(
+                'Method (%s) or URI not found: %s' % (method, uri)
+            )
 
         if method not in self._MAP:
             return None
@@ -260,7 +264,9 @@ class ActionMapper(object):
             if re.match(reg, uri):
                 return name
 
-        return None
+        raise InvalidRequestException(
+            'Failed to find action for that METHOD (%s) URI: %s' % (method, uri)
+        )
 
     def is_action(self, action=None):
         """Check if an action is recognized.
