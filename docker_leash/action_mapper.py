@@ -268,15 +268,6 @@ class ActionMapper(object):
             'Failed to find action for that METHOD (%s) URI: %s' % (method, uri)
         )
 
-    def is_action(self, action=None):
-        """Check if an action is recognized.
-
-        :param str action: The action name to check
-        :return: True if the action is recognized
-        :rtype: bool
-        """
-        return action in self._actions.keys()
-
     def is_readonly(self, action=None):
         """Check if an action is recognized.
 
