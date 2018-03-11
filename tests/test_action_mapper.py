@@ -1,15 +1,15 @@
 # vim:set ts=4 sw=4 et:
 '''
-ActionMapperTests
-=================
+ActionTests
+===========
 '''
 
 import unittest
 
-from docker_leash.action_mapper import ActionMapper
+from docker_leash.action_mapper import Action
 from docker_leash.exceptions import InvalidRequestException
 
-testdata_get_action_name_by_method_and_uri = [
+data_get_action_name_by_method_and_query = [
     (None, None, None),
     ('', '', None),
 
@@ -35,8 +35,7 @@ testdata_get_action_name_by_method_and_uri = [
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/json', 'containersInspect'),
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/json?size=5', 'containersInspect'),
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/top', 'containersListProcess'),
-    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/top?ps_args=aux',
-     'containersListProcess'),
+    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/top?ps_args=aux', 'containersListProcess'),
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/logs', 'containersLogs'),
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/logs?timestamps=true', 'containersLogs'),
     ('GET', '/v1.32/containers/ff7291fe9e13b4b417/changes', 'containersChanges'),
@@ -55,23 +54,19 @@ testdata_get_action_name_by_method_and_uri = [
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/kill?signal=SIGKILL', 'containersKill'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/update', 'containersUpdate'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/rename', 'containersRename'),
-    ('POST', '/v1.32/containers/ff7291fe9e13b4b417/rename?name=hello_world',
-     'containersRename'),
+    ('POST', '/v1.32/containers/ff7291fe9e13b4b417/rename?name=hello_world', 'containersRename'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/pause', 'containersPause'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/unpause', 'containersUnpause'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/attach', 'containersAttach'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/attach?logs=true', 'containersAttach'),
-    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/attach/ws',
-     'containersAttachWebsocket'),
-    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/attach/ws?logs=true',
-     'containersAttachWebsocket'),
+    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/attach/ws', 'containersAttachWebsocket'),
+    ('GET', '/v1.32/containers/ff7291fe9e13b4b417/attach/ws?logs=true', 'containersAttachWebsocket'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/wait', 'containersWait'),
     ('POST', '/v1.32/containers/ff7291fe9e13b4b417/wait?condition=removed', 'containersWait'),
     ('DELETE', '/v1.32/containers/ff7291fe9e13b4b417', 'containersRemove'),
     ('DELETE', '/v1.35/containers/ff7291fe9e13b4b417', 'containersRemove'),
     ('DELETE', '/v1.35/containers/ff7291fe9e13b4b417?v=true', 'containersRemove'),
-    ('HEAD', '/v1.35/containers/ff7291fe9e13b4b417/archive',
-     'containersGetInfoAboutFiles'),
+    ('HEAD', '/v1.35/containers/ff7291fe9e13b4b417/archive', 'containersGetInfoAboutFiles'),
     ('HEAD', '/v1.35/containers/ff7291fe9e13b4b417/archive?path=/etc',
      'containersGetInfoAboutFiles'),
     ('GET', '/v1.35/containers/ff7291fe9e13b4b417/archive',
@@ -261,143 +256,38 @@ testdata_get_action_name_by_method_and_uri = [
 ]
 
 
-class ActionMapperTests(unittest.TestCase):
-    """Validation of :cls:`docker_leash.ActionMapper`
+class ActionTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.Action`
     """
 
-    @classmethod
-    def test_init(cls):
-        """Validate ActionMapper creation without error
-        """
-        ActionMapper()
-
     def test_get_action_name_invalid_method(self):
-        """Retrieve action name by an invalid method and uri
+        """Retrieve action name by an invalid method and query
         """
-        action = ActionMapper().get_action_name(method='EXOTIC', uri='/_ping')
-        self.assertEqual(action, None)
-
-    def test_is_action_readonly(self):
-        """validate if an action is readOnly
-        """
-        mapper = ActionMapper()
-
-        checks = [
-            'containersList',
-            'containersInspect',
-            'containersListProcess',
-            'containersLogs',
-            'containersChanges',
-            'containersExport',
-            'containersStats',
-            'containersAttachWebsocket',
-            'containersGetInfoAboutFiles',
-            'containersGetFilesystemArchive',
-            'imagesList',
-            'imagesInspect',
-            'imagesHistory',
-            'imagesSearch',
-            'imagesExport',
-            'imagesExportMultiple',
-            'networksList',
-            'networksInspect',
-            'volumesList',
-            'volumesInspect',
-            'execInspect',
-            'swarmInspect',
-            'swarmUnlockKey',
-            'nodesList',
-            'nodesInspect',
-            'servicesList',
-            'servicesInspect',
-            'servicesLogs',
-            'tasksList',
-            'tasksInspect',
-            'secretsList',
-            'secretsInspect',
-            'configsList',
-            'configsInspect',
-            'pluginsList',
-            'pluginsPrivileges',
-            'pluginsInspect',
-            'systemPing',
-            'systemRegistryAuth',
-            'systemInfo',
-            'systemVersion',
-            'systemEvents',
-            'systemEvents',
-            'systemDataUsage',
-            'containersGetInfoAboutFiles',
-        ]
-        for check in checks:
-            self.assertTrue(mapper.is_readonly(check))
-
-        self.assertFalse(mapper.is_readonly('containersCreate'))
-        self.assertFalse(mapper.is_readonly('containersDelete'))
-        self.assertFalse(mapper.is_readonly(
-            'containersExtractArchiveToDirectory'))
-        self.assertFalse(mapper.is_readonly('esotericAction'))
-
-    def test_action_is_about(self):
-        """Check if an action is about "parent"
-        """
-        mapper = ActionMapper()
-
-        self.assertTrue(mapper.action_is_about(
-            'containersCreate', 'containers'))
-        self.assertFalse(mapper.action_is_about('containersCreate', 'volumes'))
-        self.assertTrue(mapper.action_is_about('containersList', 'containers'))
-        self.assertFalse(mapper.action_is_about('containersList', 'images'))
-        self.assertTrue(mapper.action_is_about('esotericAction', 'esoteric'))
-        self.assertFalse(mapper.action_is_about(
-            'esotericAction', 'containers'))
-        self.assertFalse(mapper.action_is_about('esotericAction', 'volumes'))
-        self.assertEqual(mapper.action_is_about(
-            'esotericAction', 'containers'), None)
-
-    def test_action_is_about_arrays(self):
-        """Check if an action is about "parent" with list
-        """
-        mapper = ActionMapper()
-
-        self.assertEqual(mapper.action_is_about(
-            'volumesCreate', ['containers', 'volumes']), 'volumes')
-        self.assertTrue(mapper.action_is_about(
-            'volumesCreate', ['containers', 'volumes']))
-        self.assertEqual(mapper.action_is_about('containersCreate', [
-                         'containers', 'volumes']), 'containers')
-        self.assertTrue(mapper.action_is_about(
-            'containersCreate', ['containers', 'volumes']))
-        self.assertEqual(mapper.action_is_about(
-            'containersCreate', ['containers']), 'containers')
-        self.assertTrue(mapper.action_is_about(
-            'containersCreate', ['containers']))
-        self.assertTrue(mapper.action_is_about(
-            'containersCreate', 'containers'))
-        self.assertEqual(mapper.action_is_about(
-            'containersCreate', 'containers'), 'containers')
-        self.assertEqual(mapper.action_is_about(
-            'volumesCreate', 'volumes'), 'volumes')
-        self.assertTrue(mapper.action_is_about('volumesCreate', 'volumes'))
+        with self.assertRaises(InvalidRequestException):
+            action = Action(method='EXOTIC', query='/_ping')
 
 
-def check_get_action_name_by_method_and_uri(row):
-    mapper = ActionMapper()
+def create_get_action_name_by_method_and_query(method, query, expect):
+    if expect is None:
+        def do_test(self):
+            with self.assertRaises(InvalidRequestException):
+                action = Action(method=method, query=query)
+    else:
+        def do_test(self):
+            action = Action(method=method, query=query)
+            self.assertEqual(
+                expect,
+                action.name,
+                'expected: {!r}, got: {!r}'.format(expect, action.name)
+            )
+    return do_test
 
-    if row[2] is None:
-        try:
-            name = mapper.get_action_name(method=row[0], uri=row[1])
-        except InvalidRequestException:
-            return True
-        raise AssertionError('should be InvalidRequestException')
 
-    try:
-        name = mapper.get_action_name(method=row[0], uri=row[1])
-    except BaseException as err:
-        raise AssertionError('should not happen: %s' % (err,))
-    assert name == row[2]
-
-
-def test_get_action_name_by_method_and_uri():
-    for i, check in enumerate(testdata_get_action_name_by_method_and_uri):
-        yield check_get_action_name_by_method_and_uri, check
+for i, check in enumerate(data_get_action_name_by_method_and_query):
+    func = create_get_action_name_by_method_and_query(*check)
+    func.__name__ = 'test_get_action_name_by_method_and_query_{:03d}'.format(
+        i,
+    )
+    setattr(ActionTests, func.__name__, func)
+    # nosetests compatibility workaround
+    del func

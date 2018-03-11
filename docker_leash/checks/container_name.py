@@ -7,7 +7,7 @@ ContainerName
 import re
 from urlparse import parse_qs, urlsplit
 
-from ..action_mapper import ActionMapper
+from ..action_mapper import Action
 from ..exceptions import UnauthorizedException
 from .base import BaseCheck
 
@@ -143,8 +143,5 @@ class ContainerName(BaseCheck):
         :return: The container name
         :rtype: str or None
         """
-        action = ActionMapper().get_action_name(method=payload.method, uri=payload.uri)
-        if action not in FUNCTION_MAP:
-            return None
-
-        return FUNCTION_MAP[action](payload)
+        action = Action(method=payload.method, query=payload.uri)
+        return FUNCTION_MAP.get(action.name, lambda _: None)(payload)
