@@ -6,7 +6,7 @@ Config
 
 import re
 
-from .action_mapper import ActionMapper
+from .action_mapper import Action
 from .checks_list import Checks
 from .exceptions import ConfigurationException
 
@@ -67,7 +67,7 @@ class Config(object):
         :rtype: list
         """
         username = payload.user
-        action = ActionMapper().get_action_name(method=payload.method, uri=payload.uri)
+        action = Action(method=payload.method, query=payload.uri)
         hostname = payload.get_host()
 
         for rule in self.policies:
@@ -158,26 +158,28 @@ class Config(object):
         First match for exact comparison, then for the "any" keyword,
         and finally for "parents" action name.
 
-        :param str action: The current action
+        :param docker_leash.action_mapper.Action action: The current action
         :param dict actions: The actions from the policies
         :return: The filtered actions list
         :rtype: `~docker_leash.checks_list.Checks`
         """
+        assert isinstance(action, Action), 'expected Action, got {!r}'.format(action)
         checks = Checks()
-        parent_action = ActionMapper().action_is_about(action, actions.keys())
+        action_name = action.name
+        parent_action = action.namespace_name
 
         # Look for "normal" Actions
-        if action in actions.keys():
-            for check, args in actions[action].iteritems():
+        if action_name in actions:
+            for check, args in actions[action_name].iteritems():
                 checks.add({check: args})
 
         # Look for "parents" Actions
-        elif parent_action:
+        elif parent_action in actions:
             for check, args in actions[parent_action].iteritems():
                 checks.add({check: args})
 
         # Look for "any" Actions
-        elif "any" in actions.keys():
+        elif "any" in actions:
             for check, args in actions["any"].iteritems():
                 checks.add({check: args})
 

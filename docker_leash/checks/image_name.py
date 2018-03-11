@@ -12,7 +12,7 @@ except ImportError:
     # python2
     from urlparse import parse_qs, urlsplit
 
-from ..action_mapper import ActionMapper
+from ..action_mapper import Action
 from ..exceptions import (ConfigurationException, InvalidRequestException,
                           UnauthorizedException)
 from .base import BaseCheck
@@ -146,7 +146,7 @@ def get_action_name(payload, action_name=None):
     :rtype: str or None
     """
     if action_name is None:
-        action_name = ActionMapper().get_action_name(method=payload.method, uri=payload.uri)
+        action_name = Action(method=payload.method, query=payload.uri).name
         if action_name not in FUNCTION_MAP:
             return None
     return action_name

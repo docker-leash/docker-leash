@@ -198,52 +198,8 @@ class ConfigTests(unittest.TestCase):
     def test_match_host(self):
         """Verify host matcher
         """
-        hosts = [r"+^srv\d\d.*", r"-^srv3\d.*", r"+^srv38.*"]
-        self.assertTrue(Config._match_host("srv01", hosts))
-        self.assertTrue(Config._match_host("srv02", hosts))
-        self.assertFalse(Config._match_host("srv36", hosts))
-        self.assertTrue(Config._match_host("srv38", hosts))
-        self.assertFalse(Config._match_host("wks01", hosts))
-        self.assertFalse(Config._match_host("wks02", hosts))
-        self.assertFalse(Config._match_host("other01", hosts))
-
-        hosts = [r"+^wks\d\d.*"]
-        self.assertFalse(Config._match_host("srv01", hosts))
-        self.assertFalse(Config._match_host("srv02", hosts))
-        self.assertFalse(Config._match_host("srv36", hosts))
-        self.assertTrue(Config._match_host("wks01", hosts))
-        self.assertTrue(Config._match_host("wks02", hosts))
-        self.assertFalse(Config._match_host("other01", hosts))
-
-        hosts = [r"+.*"]
-        self.assertTrue(Config._match_host("srv01", hosts))
-        self.assertTrue(Config._match_host("srv02", hosts))
-        self.assertTrue(Config._match_host("srv36", hosts))
-        self.assertTrue(Config._match_host("wks01", hosts))
-        self.assertTrue(Config._match_host("wks02", hosts))
-        self.assertTrue(Config._match_host("other01", hosts))
-
         with self.assertRaises(ConfigurationException):
             self.assertTrue(Config._match_host("srv01", [r".*"]))
-
-    def test_match_rules(self):
-        """Verify rules matcher
-        """
-
-        actions = {
-            "containersLogs": {"ContainerName": "Allow"},
-            "containers": {"ContainerName": "Allow", "ImagesName": "Allow"},
-        }
-        self.assertEqual(len(Config._match_rules("containersLogs", actions)), 1)
-        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 2)
-        self.assertEqual(len(Config._match_rules("imagesCreate", actions)), 0)
-        self.assertEqual(len(Config._match_rules("imagesList", actions)), 0)
-
-        actions["any"] = {"imagesCreate": "Allow"}
-        self.assertEqual(len(Config._match_rules("containersLogs", actions)), 1)
-        self.assertEqual(len(Config._match_rules("containersCreate", actions)), 2)
-        self.assertEqual(len(Config._match_rules("imagesCreate", actions)), 1)
-        self.assertEqual(len(Config._match_rules("imagesList", actions)), 1)
 
     def test_get_rules_for_anonymous_1(self):
         """An anonymous user cannot create containers on server
@@ -577,3 +533,117 @@ class ConfigTests(unittest.TestCase):
         rules = config.get_rules(payload)
         self.assertEqual(len(rules), 1)
         self.assertIn('Deny', rules)
+
+
+#####
+
+
+data_match_rules = (
+    (
+        {
+            "containersLogs": {"ContainerName": "Allow"},
+            "containers": {"ContainerName": "Allow", "ImagesName": "Allow"},
+        },
+        (
+            ("GET", "/containers/test-data/logs", 1),
+            ("POST", "/images/create", 0),
+            ("POST", "/containers/create", 2),
+            ("GET", "/images/json", 0),
+        ),
+    ),
+    (
+        {
+            "containersLogs": {"ContainerName": "Allow"},
+            "containers": {"ContainerName": "Allow", "ImagesName": "Allow"},
+            "any": {"imagesCreate": "Allow"},
+        },
+        (
+            ("GET", "/containers/test-data/logs", 1),
+            ("POST", "/containers/create", 2),
+            ("POST", "/images/create", 1),
+            ("GET", "/images/json", 1),
+        ),
+    ),
+)
+
+
+def create_match_rules(actions, method, query, expect):
+    def do_test(self):
+        """Verify rules matcher
+        """
+        result = len(Config._match_rules(action_name, actions))
+        self.assertEqual(
+            result,
+            expected,
+            'expected: {!r}, got: {!r}'.format(expect, result)
+        )
+    return do_test
+
+
+i = 0
+for actions, checks in data_match_rules:
+    for check in checks:
+        func = create_match_rules(actions, *check)
+        func.__name__ = 'create_match_rules_{:02d}'.format(i)
+        setattr(ConfigTests, func.__name__, func)
+        i += 1
+del func
+
+data_match_host = (
+    (
+        [r"+^srv\d\d.*", r"-^srv3\d.*", r"+^srv38.*"],
+        (
+            ("srv01", True),
+            ("srv02", True),
+            ("srv36", False),
+            ("srv38", True),
+            ("wks01", False),
+            ("wks02", False),
+            ("other01", False),
+        ),
+    ),
+    (
+        [r"+^wks\d\d.*"],
+        (
+            ("srv01", False),
+            ("srv02", False),
+            ("srv36", False),
+            ("wks01", True),
+            ("wks02", True),
+            ("other01", False),
+        ),
+    ),
+    (
+        [r"+.*"],
+        (
+            ("srv01", True),
+            ("srv02", True),
+            ("srv36", True),
+            ("wks01", True),
+            ("wks02", True),
+            ("other01", True),
+        ),
+    ),
+)
+
+
+def create_match_host(hosts, host, expect):
+    def do_test(self):
+        """Verify host matcher
+        """
+        getattr(self, 'assert{}'.format(expect))(
+            Config._match_host(host, hosts)
+        )
+    return do_test
+
+
+i = 0
+for hosts, checks in data_match_host:
+    for check in checks:
+        func = create_match_host(hosts, *check)
+        func.__name__ = 'create_match_host_{:02d}'.format(i)
+        setattr(ConfigTests, func.__name__, func)
+        i += 1
+
+# nosetests compatibility workaround
+del func

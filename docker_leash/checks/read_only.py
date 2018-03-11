@@ -4,7 +4,7 @@ ReadOnly
 --------
 '''
 
-from ..action_mapper import ActionMapper
+from ..action_mapper import Action
 from ..exceptions import UnauthorizedException
 from .base import BaseCheck
 
@@ -24,9 +24,8 @@ class ReadOnly(BaseCheck):
         :param docker_leash.payload.Payload payload: payload of the current
                                                      request
         """
-        mapper = ActionMapper()
-        action = mapper.get_action_name(method=payload.method, uri=payload.uri)
-        if mapper.is_readonly(action):
+        mapper = Action(method=payload.method, query=payload.uri)
+        if mapper.is_readonly():
             return
 
         raise UnauthorizedException("Operations are restricted to read-only.")
