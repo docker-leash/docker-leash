@@ -44,7 +44,7 @@ class Router(object):
         :param str method: one of :attr:`_actions`
         :param str pattern: regular expression
         :param str action: action name
-        :raise: ValueError
+        :raise: KeyError, ValueError
         '''
         try:
             namespace = self.__r_namespace.match(action).group(1)

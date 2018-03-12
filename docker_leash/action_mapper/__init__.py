@@ -84,7 +84,7 @@ class Action(object):
             result = self._r_parse.match(self.query).groupdict()
         except AttributeError:
             raise InvalidRequestException(
-                'unable to parse: {}'.format(self.query)
+                'unable to parse query: {}'.format(self.query)
             )
 
         self.version = result['version']

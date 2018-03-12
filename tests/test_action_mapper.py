@@ -7,7 +7,10 @@ ActionTests
 import unittest
 
 from docker_leash.action_mapper import Action
+from docker_leash.action_mapper.router import Router
 from docker_leash.exceptions import InvalidRequestException
+
+from . import utils
 
 data_get_action_name_by_method_and_query = [
     (None, None, None),
@@ -257,37 +260,74 @@ data_get_action_name_by_method_and_query = [
 
 
 class ActionTests(unittest.TestCase):
-    """Validation of :cls:`docker_leash.Action`
+    """Validation of :cls:`docker_leash.action_mapper.Action`
     """
+    pass
 
-    def test_get_action_name_invalid_method(self):
-        """Retrieve action name by an invalid method and query
-        """
-        with self.assertRaises(InvalidRequestException):
-            action = Action(method='EXOTIC', query='/_ping')
+
+class RouterTests(unittest.TestCase):
+    """Validation of :cls:`docker_leash.action_mapper.router.Router`
+    """
+    def test_repr(self):
+        '''check object representation
+        (mainly for code-coverage)
+        '''
+        self.assertEqual(
+            repr(Router()),
+            '<Router: DELETE: 0, GET: 0, HEAD: 0, POST: 0, PUT: 0>',
+        )
 
 
 def create_get_action_name_by_method_and_query(method, query, expect):
-    if expect is None:
-        def do_test(self):
-            with self.assertRaises(InvalidRequestException):
-                action = Action(method=method, query=query)
-    else:
-        def do_test(self):
-            action = Action(method=method, query=query)
-            self.assertEqual(
-                expect,
-                action.name,
-                'expected: {!r}, got: {!r}'.format(expect, action.name)
-            )
+    def do_test(self):
+        action = Action(method=method, query=query)
+        self.assertEqual(
+            expect,
+            action.name,
+            'expected: {!r}, got: {!r}'.format(expect, action.name)
+        )
     return do_test
 
 
+data_get_action_name_invalid_method = (
+    ('EXOTIC', '/_ping'),
+    ('GET', 'totally-invalid'),
+    ('GET', '/no-match')
+)
+
+for i, check in enumerate(data_get_action_name_invalid_method):
+    func = utils.create_assertRaises(InvalidRequestException, Action, *check)
+    func.__name__ = 'test_get_action_name_invalid_method_{}'.format(
+        i,
+    )
+    func.__doc__ = "Retrieve action name by an invalid method and query"
+    setattr(ActionTests, func.__name__, func)
+
 for i, check in enumerate(data_get_action_name_by_method_and_query):
-    func = create_get_action_name_by_method_and_query(*check)
+    if check[-1] is None:
+        func = utils.create_assertRaises(InvalidRequestException, Action, *check[:-1])
+    else:
+        func = create_get_action_name_by_method_and_query(*check)
     func.__name__ = 'test_get_action_name_by_method_and_query_{:03d}'.format(
         i,
     )
     setattr(ActionTests, func.__name__, func)
-    # nosetests compatibility workaround
-    del func
+
+
+data_invalid_routes = (
+    (ValueError, 'GET', '.', 'missingcaps'),
+    (ValueError, 'GET', '.', 'INVALIDNAME1'),
+    (ValueError, 'GET', '.', 'invalid-name2'),
+    (KeyError, 'EXOTIC', '.', 'invalidMethod'),
+    (ValueError, 'GET', r'(.', 'invalidRegex'),
+)
+
+for i, args in enumerate(data_invalid_routes):
+    router = Router()
+    func = utils.create_assertRaises(args[0], router.register, *args[1:])
+    func.__name__ = 'test_invalid_routes_{}'.format(i)
+    setattr(RouterTests, func.__name__, func)
+
+
+# nosetests compatibility workaround
+del func
