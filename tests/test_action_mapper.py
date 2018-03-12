@@ -262,7 +262,15 @@ data_get_action_name_by_method_and_query = [
 class ActionTests(unittest.TestCase):
     """Validation of :cls:`docker_leash.action_mapper.Action`
     """
-    pass
+
+    def test_repr(self):
+        '''check object representation
+        (mainly for code-coverage)
+        '''
+        self.assertEqual(
+            repr(Action('GET', '/_ping')),
+            "Action('GET', '/_ping')",
+        )
 
 
 class RouterTests(unittest.TestCase):

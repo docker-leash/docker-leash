@@ -102,3 +102,9 @@ class Action(object):
             )
         self.namespace_name = result.namespace
         self.name = result.name
+
+    def __repr__(self):
+        return 'Action({!r}, {!r})'.format(
+            self.method,
+            self.query,
+        )
