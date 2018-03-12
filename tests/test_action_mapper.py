@@ -6,7 +6,7 @@ ActionTests
 
 import unittest
 
-from docker_leash.action_mapper import Action
+from docker_leash.action_mapper import (Action, Namespace)
 from docker_leash.action_mapper.router import Router
 from docker_leash.exceptions import InvalidRequestException
 
@@ -271,6 +271,33 @@ class ActionTests(unittest.TestCase):
             repr(Action('GET', '/_ping')),
             "Action('GET', '/_ping')",
         )
+
+    def test_namespace_register_codecov(self):
+        '''code coverage for a usecase not yet widespread
+        '''
+        @Action.namespace_register
+        class Mock(Namespace):
+            '''mock'''
+            pass
+        self.assertIn('mock', Action._namespace_map)
+
+    def test_namespace_images(self):
+        '''example for Namespace usage
+        '''
+        action = Action(
+            'GET',
+            "/v1.35/images/get?names=registry.example.net%2Ftraefik%3Aalpine&names=mariadb"
+        )
+        self.assertEqual(
+            action.namespace.names(),
+            ['registry.example.net/traefik:alpine', 'mariadb'],
+        )
+        # mainly for code coverage of the caching part
+        self.assertIsInstance(
+            action.namespace,
+            Namespace,
+        )
+
 
 
 class RouterTests(unittest.TestCase):

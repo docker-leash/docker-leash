@@ -28,6 +28,7 @@ class Action(object):
     version = None
     querystring = None
 
+    _namespace_map = {}
     __namespace = None
     _r_parse = re.compile(
         r'''
@@ -65,14 +66,17 @@ class Action(object):
 
     @property
     def namespace(self):
+        '''Initialize and return a Namespace object when required
+
+        :rtype: Namespace instance
+        '''
         if self.__namespace:
             return self.__namespace
 
-        raise NotImplementedError  # TODO: init namespace
-        '''
-        Something like:
-        self.__namespace = Container(action=self)
-        '''
+        self.__namespace = self._namespace_map.get(
+            self.namespace_name,
+            Namespace,
+        )(self)
 
         return self.__namespace
 
@@ -108,3 +112,53 @@ class Action(object):
             self.method,
             self.query,
         )
+
+    @classmethod
+    def namespace_register(cls, arg):
+        '''A decorator to register Namespace
+        for a given namespace name
+
+        If no namespace name is provided,
+        it will be derivated from the class name.
+
+        :param Action cls:
+        :param arg:
+        :type arg: str or Namespace instance
+        '''
+        def register(obj):
+            '''internal function for the decorator
+            '''
+            assert arg not in cls._namespace_map
+            cls._namespace_map[arg] = obj
+            return obj
+
+        if hasattr(arg, '__bases__'):
+            arg, obj = arg.__name__.lower(), arg
+            return register(obj)
+
+        return register
+
+
+class Namespace(object):
+    '''Generic namespace
+
+    :var action: link to (parent) action
+    '''
+    action = None
+
+    def __init__(self, action):
+        '''Initialize the object
+        '''
+        assert isinstance(action, Action)
+        self.action = action
+
+
+@Action.namespace_register('images')
+class Image(Namespace):
+    '''Proof of concept for Namespace subclasses
+    '''
+    def names(self):
+        '''
+        :rtype: list or None
+        '''
+        return self.action.querystring.get('names')
