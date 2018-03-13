@@ -13,7 +13,7 @@ class Allow(BaseCheck):
     def run(self, args, payload):
         """Run the module checks.
 
-        Saying *yes* is easy: just dont raise any exception ;^)
+        Saying *yes* is easy: just do not raise any exception ;^)
 
         :param args: The module arguments from the config
         :type args: list or dict or str or None

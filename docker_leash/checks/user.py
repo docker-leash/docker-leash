@@ -52,7 +52,7 @@ class User(BaseCheck):
         """
         if not args:
             raise ConfigurationException(
-                'Incomple "User" module configuration'
+                'Incomplete "User" module configuration'
             )
 
         name = self._get_name(payload)

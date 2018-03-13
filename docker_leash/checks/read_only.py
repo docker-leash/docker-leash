@@ -16,7 +16,7 @@ class ReadOnly(BaseCheck):
     def run(self, args, payload):
         """Run the module checks.
 
-        If the current action is not a `GET` or `HEAD` request (ie read-only),
+        If the current action is not a `GET` or `HEAD` request (i.e.: read-only),
         then :exc:`docker_leash.exceptions.UnauthorizedException` is raised.
 
         :param args: The module arguments from the config

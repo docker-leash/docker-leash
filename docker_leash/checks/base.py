@@ -18,13 +18,13 @@ class BaseCheck(object):
         the current payload.
         It is autonomous in how the checks are implemented.
 
-        If the requested action shoudl be forbiddenm then the module must raise
+        If the requested action should be forbidden then the module must raise
         an :exc:`docker_leash.exceptions.UnauthorizedException`.
 
         .. Warning::
-           This function *must* be overrided in each check modules.
+           This function *must* be overridden in each check modules.
 
-        :param args: The module arguments from the config
+        :param args: The module arguments, from the configuration
         :type args: list or dict or str or None
         :param docker_leash.payload.Payload payload: payload of the current request
         """
@@ -34,11 +34,11 @@ class BaseCheck(object):
 
     @staticmethod
     def replace_user(value, payload):
-        """A helper function to replace $USER in string
+        r"""A helper function to replace $USER in string
 
         If exact match is found, the replace is done by the value of the current
         connected user. If no user defined, then it return `None`. If '$' is
-        preceded by a '\\' (backslash), then no substritituion is done.
+        preceded by a ``\`` (backslash), then no substitution is done.
 
         .. code-block:: pycon
 
