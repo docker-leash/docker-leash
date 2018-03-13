@@ -97,7 +97,7 @@ class Processor(object):
         """Instanciate the requested action and launch
         :meth:`docker_leash.checks.base.BaseCheck.run`
 
-        :param Paylod payload: The request payload object.
+        :param Payload payload: The request payload object.
         :param str check: The check name to run.
         :raises UnauthorizedException: if the check denied the request.
         :raises NoSuchCheckModuleException: if the check doesn't exists.

@@ -193,7 +193,7 @@ def authz_response():
 
     In contrast to :func:`authz_response`, this endpoint is called after
     the action has been processed by the docker daemon.
-    The request payload contains additionnal fields representing the response
+    The request payload contains additional fields representing the response
     from the daemon.
 
     .. seealso::

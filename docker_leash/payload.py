@@ -27,7 +27,7 @@ class Payload(object):
     :var headers: The request Headers.
     :vartype headers: dict or None
 
-    :param payload: The paylaod to analyze and store.
+    :param payload: The payload to analyze and store.
     :type payload: dict or None
     """
 
@@ -109,7 +109,7 @@ class Payload(object):
 
     @classmethod
     def _get_username(cls, payload):
-        """Extract the `User` from the paylaod.
+        """Extract the `User` from the payload.
 
         If the user is not connected (i.e.: `anonymous`), the value is an empty string.
 
@@ -124,7 +124,7 @@ class Payload(object):
 
     @classmethod
     def _get_method(cls, payload):
-        """Extract the `Method` from the paylaod.
+        """Extract the `Method` from the payload.
 
         :param dict payload: The payload to extract method.
         :return: The method name.
@@ -138,7 +138,7 @@ class Payload(object):
 
     @classmethod
     def _get_uri(cls, payload):
-        """Extract the `URI` from the paylaod.
+        """Extract the `URI` from the payload.
 
         :param dict payload: The payload to extract URI.
         :return: The URI.
@@ -151,7 +151,7 @@ class Payload(object):
 
     @classmethod
     def _get_headers(cls, payload):
-        """Extract the `Headers` from the paylaod.
+        """Extract the `Headers` from the payload.
 
         :param dict payload: The payload to extract URI.
         :return: The Headers.

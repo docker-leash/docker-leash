@@ -13,7 +13,7 @@ from .exceptions import ConfigurationException
 
 class Config(object):
     """The :class:`Config` class is responsible for storing application groups
-    and polcies read from the datastore.
+    and policies read from the datastore.
 
     It has some handy functions to extract values from the configuration.
     It can respond to questions such as:
@@ -92,8 +92,8 @@ class Config(object):
         """Construct a default rule
 
         :param dict rule: The current parsed rule
-        :return: A :class:`docker_leash.Check` containing only the default rule
-        :rtype: :class:`docker_leash.Check`
+        :return: A :class:`~docker_leash.checks_list.Checks_list.Checks` containing only the default rule
+        :rtype: :class:`~docker_leash.checks_list.Checks_list.Checks`
         """
         checks = Checks()
         checks.add(rule["default"])
@@ -129,7 +129,7 @@ class Config(object):
         return match
 
     def _get_policy_by_member(self, username, policies):
-        """Extract the policies for a username.
+        """Extract the policies for a user name.
 
         Return the concerned policies:
           * If the user match in a group
@@ -155,13 +155,13 @@ class Config(object):
     def _match_rules(action, actions):
         """Extract the checks for an action.
 
-        First match for exact comparaison, then for the "any" keyword,
+        First match for exact comparison, then for the "any" keyword,
         and finally for "parents" action name.
 
         :param str action: The current action
         :param dict actions: The actions from the policies
         :return: The filtered actions list
-        :rtype: `docker_leash.Checks`
+        :rtype: `~docker_leash.checks_list.Checks`
         """
         checks = Checks()
         parent_action = ActionMapper().action_is_about(action, actions.keys())

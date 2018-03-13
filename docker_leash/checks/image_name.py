@@ -226,7 +226,7 @@ class ImageName(BaseCheck):
         :rtype: str or None
         """
         def call(function, payload):
-            """Called function is optionnal
+            """Called function is optional
             """
             if isinstance(function, tuple):
                 function_name = function[0]
