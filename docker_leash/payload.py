@@ -81,7 +81,8 @@ class Payload(object):
         """
         return self.headers
 
-    def _get_host(self, payload):
+    @staticmethod
+    def _get_host(payload):
         """Get the hostname
         """
         if "Host" in payload:
@@ -89,8 +90,8 @@ class Payload(object):
 
         return ""
 
-    @classmethod
-    def _decode_base64(cls, payload):
+    @staticmethod
+    def _decode_base64(payload):
         """Decode some parts of the payload from base64 to dict.
 
         :param dict payload: The payload to fully base64 decode.
@@ -107,8 +108,8 @@ class Payload(object):
             )
         return data
 
-    @classmethod
-    def _get_username(cls, payload):
+    @staticmethod
+    def _get_username(payload):
         """Extract the `User` from the payload.
 
         If the user is not connected (i.e.: `anonymous`), the value is an empty string.
@@ -122,8 +123,8 @@ class Payload(object):
 
         return None
 
-    @classmethod
-    def _get_method(cls, payload):
+    @staticmethod
+    def _get_method(payload):
         """Extract the `Method` from the payload.
 
         :param dict payload: The payload to extract method.
@@ -136,8 +137,8 @@ class Payload(object):
 
         raise InvalidRequestException("Payload is missing RequestMethod")
 
-    @classmethod
-    def _get_uri(cls, payload):
+    @staticmethod
+    def _get_uri(payload):
         """Extract the `URI` from the payload.
 
         :param dict payload: The payload to extract URI.
@@ -149,8 +150,8 @@ class Payload(object):
 
         return None
 
-    @classmethod
-    def _get_headers(cls, payload):
+    @staticmethod
+    def _get_headers(payload):
         """Extract the `Headers` from the payload.
 
         :param dict payload: The payload to extract URI.

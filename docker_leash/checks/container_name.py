@@ -58,7 +58,6 @@ FUNCTION_MAP = {
     'containersUnpause': path_parameter,
     'containersAttach': path_parameter,
     'containersWait': path_parameter,
-    'containersPrune': path_parameter,
     'containersExtractArchiveToDirectory': path_parameter,
     'containersGetInfoAboutFiles': path_parameter,
     'containersPrune': path_parameter,  # TODO it use filter, should be parsed
