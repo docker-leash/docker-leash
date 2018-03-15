@@ -3,7 +3,7 @@
 """
 
 
-class DockerLeashException(BaseException):
+class DockerLeashException(Exception):
     """Base for all Leash Server Errors."""
 
     def __init__(self, value=None):
