@@ -4,7 +4,6 @@
 This module is responsible for dispatching HTTP requests.
 """
 
-import sys
 import logging
 
 from flask import jsonify, request
@@ -13,8 +12,6 @@ from . import application
 from .exceptions import (InvalidRequestException, NoSuchCheckModuleException,
                          UnauthorizedException)
 from .processor import Processor
-
-sys.dont_write_bytecode = True
 
 
 def setup_app(application):
