@@ -11,14 +11,8 @@ import re
 from ..exceptions import UnauthorizedException
 from .base import BaseCheck
 
-logger = logging.getLogger()
 
-logging.basicConfig(
-    format='%(levelname)s: %(message)s',
-    datefmt='%F %T',
-    level=logging.INFO,
-    #    level=logging.DEBUG,
-)
+log = logging.getLogger(__name__)  # pylint: disable=C0103
 
 
 class BindMounts(BaseCheck):
@@ -86,14 +80,14 @@ class Rules(object):
 
     def compile(self):
         if isinstance(self.rules, str):
-            logging.warning('invalid rule: %r', self.rules)
+            log.warning('invalid rule: %r', self.rules)
             raise TypeError('Rules must be a list')
 
         result = []
         rules = []
         for rule in self.rules:
             if not rule or rule[0] not in set('+-') or not rule[1:]:
-                logging.warning('invalid rule: %r', rule)
+                log.warning('invalid rule: %r', rule)
                 continue
             try:
                 result += [(
@@ -105,7 +99,7 @@ class Rules(object):
                 )]
                 rules += [rule]
             except re.error as error:
-                logging.warning('invalid rule: %r (%s)', rule, error)
+                log.warning('invalid rule: %r (%s)', rule, error)
         self.__rules = result
         self.rules = rules
 
@@ -118,5 +112,5 @@ class Rules(object):
             if match:
                 result = allowed
             if __debug__:
-                logger.debug('rule %r: %s: allow=%s', rule, result, allow)
+                log.debug('rule %r: %s: allow=%s', rule, result, allow)
         return result

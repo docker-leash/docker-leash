@@ -5,6 +5,7 @@ This module is responsible for dispatching HTTP requests.
 """
 
 import sys
+import logging
 
 from flask import jsonify, request
 
@@ -21,6 +22,13 @@ def setup_app(application):
     """
     application.config["processor"] = Processor()
     application.config["processor"].load_config()
+
+    logging.basicConfig(
+        format='%(levelname)s: %(message)s',
+        datefmt='%F %T',
+        level=logging.INFO,
+    )
+
 
 
 setup_app(app)
