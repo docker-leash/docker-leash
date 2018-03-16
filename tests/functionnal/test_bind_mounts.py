@@ -7,8 +7,6 @@ BindVolumesTestsFunctionnal
 import base64
 import json
 
-from docker_leash.leash_server import app
-
 from . import is_success, post
 from .test_base import LeashServerFunctionnalBaseTests
 

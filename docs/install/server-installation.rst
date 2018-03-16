@@ -48,7 +48,7 @@ Using gunicorn
    :caption: Launch Docker Leash with gunicorn.
 
    $ gunicorn --workers=5 --bind=[::]:80 --reload \
-     docker_leash.leash_server:app
+     docker_leash.leash_server:application
 
 If you choose to support TLS directly with `gunicorn`, just add options
 `certfile`, `keyfile`, `ciphers` and change port listen port to `443`:
@@ -59,7 +59,7 @@ If you choose to support TLS directly with `gunicorn`, just add options
    $ gunicorn --workers=5 --bind=[::]:443 --reload \
      --certfile=/certs/server.crt --keyfile=/certs/server.key \
      --ciphers=TLSv1.2 \
-     docker_leash.leash_server:app
+     docker_leash.leash_server:application
 
 Using Docker container
 ++++++++++++++++++++++
@@ -102,7 +102,7 @@ Don't forget to mount the configuration over the respective files.
      --certfile=/certs/server.crt --keyfile=/certs/server.key \
      --ciphers=TLSv1.2 \
      dockerleash/leash-server:latest \
-     gunicorn --workers=5 --bind=[::]:443 app.leash_server:app
+     gunicorn --workers=5 --bind=[::]:443 app.leash_server:application
 
 .. code-block:: yaml
    :caption: docker-compose.yml
@@ -115,7 +115,7 @@ Don't forget to mount the configuration over the respective files.
        command: gunicorn --workers=5 --bind=[::]:443 --chdir=/srv/docker-leash \
          --certfile=/certs/server.crt --keyfile=/certs/server.key \
          --ciphers=TLSv1.2 \
-         docker_leash.leash_server:app
+         docker_leash.leash_server:application
        volumes:
          - /path/to/your/certs/:/certs:ro
          - /path/to/your/conf/groups.yml:/srv/docker-leash/groups.yml:ro
