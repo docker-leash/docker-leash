@@ -16,8 +16,6 @@ from .processor import Processor
 sys.dont_write_bytecode = True
 
 
-__version__ = '0.0.1.dev0'
-
 def setup_app(application):
     """Initialize the application
     """

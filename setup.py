@@ -12,7 +12,7 @@ import re
 from setuptools import setup
 
 version = None
-with io.open('docker_leash/leash_server.py', 'rt', encoding='utf8') as fobj:
+with io.open('docker_leash/__init__.py', 'rt', encoding='utf8') as fobj:
     version = re.search(
         r'''__version__\s*=\s*(?P<q>["'])(.*)(?P=q)''',
         fobj.read(),
