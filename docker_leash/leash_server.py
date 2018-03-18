@@ -4,19 +4,15 @@
 This module is responsible for dispatching HTTP requests.
 """
 
-import sys
+import logging
 
 from flask import jsonify, request
 
-from . import app
+from . import application
 from .exceptions import (InvalidRequestException, NoSuchCheckModuleException,
                          UnauthorizedException)
 from .processor import Processor
 
-sys.dont_write_bytecode = True
-
-
-__version__ = '0.0.1.dev0'
 
 def setup_app(application):
     """Initialize the application
@@ -24,17 +20,24 @@ def setup_app(application):
     application.config["processor"] = Processor()
     application.config["processor"].load_config()
 
+    logging.basicConfig(
+        format='%(levelname)s: %(message)s',
+        datefmt='%F %T',
+        level=logging.INFO,
+    )
 
-setup_app(app)
 
 
-@app.route('/')
+setup_app(application)
+
+
+@application.route('/')
 def index():
     """Main entry point. it respond to the `GET` method for the `/` uri."""
     return "Docker Leash Plugin"
 
 
-@app.route("/Plugin.Activate", methods=['POST'])
+@application.route("/Plugin.Activate", methods=['POST'])
 def activate():
     """Return implemented event system.
 
@@ -73,7 +76,7 @@ def activate():
     return jsonify({'Implements': ['authz']})
 
 
-@app.route("/AuthZPlugin.AuthZReq", methods=['POST'])
+@application.route("/AuthZPlugin.AuthZReq", methods=['POST'])
 def authz_request():
     """Process a request for authorization.
 
@@ -148,40 +151,40 @@ def authz_request():
     """
 
     try:
-        app.config["processor"].run(request.data)
+        application.config["processor"].run(request.data)
     except InvalidRequestException as error:
-        app.logger.error("REQUEST DENIED: %s", error)
+        application.logger.error("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     except UnauthorizedException as error:
-        app.logger.error("REQUEST DENIED: %s", error)
+        application.logger.error("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     except NoSuchCheckModuleException as error:  # pragma: no cover
-        app.logger.critical("REQUEST DENIED: %s", error)
+        application.logger.critical("REQUEST DENIED: %s", error)
         return jsonify({
             "Allow": False,
             "Msg": str(error)
         })
     # except BaseException as error: # pragma: no cover
-    #     app.logger.critical("REQUEST DENIED: %s", error)
+    #     application.logger.critical("REQUEST DENIED: %s", error)
     #     return jsonify({
     #         "Allow": False,
     #         "Msg": str(error)
     #     })
 
-    app.logger.info("REQUEST ALLOWED")
+    application.logger.info("REQUEST ALLOWED")
     return jsonify({
         "Allow": True,
         "Msg": "The authorization succeeded."
     })
 
 
-@app.route("/AuthZPlugin.AuthZRes", methods=['POST'])
+@application.route("/AuthZPlugin.AuthZRes", methods=['POST'])
 def authz_response():
     """Process a response for authorization.
 

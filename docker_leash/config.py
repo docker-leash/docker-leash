@@ -92,7 +92,7 @@ class Config(object):
         """Construct a default rule
 
         :param dict rule: The current parsed rule
-        :return: A :class:`~docker_leash.checks_list.Checks_list.Checks` containing only the default rule
+        :return: only the default rule
         :rtype: :class:`~docker_leash.checks_list.Checks_list.Checks`
         """
         checks = Checks()

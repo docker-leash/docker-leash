@@ -11,35 +11,35 @@ import re
 # dependencies
 from setuptools import setup
 
-version = None
-with io.open('docker_leash/leash_server.py', 'rt', encoding='utf8') as fobj:
-    version = re.search(
+VERSION = None
+with io.open('docker_leash/__init__.py', 'rt', encoding='utf8') as fobj:
+    VERSION = re.search(
         r'''__version__\s*=\s*(?P<q>["'])(.*)(?P=q)''',
         fobj.read(),
         re.M,
     ).group(2)
 
-_github_path = 'docker-leash/leash-server'
+GITHUB_PATH = 'docker-leash/leash-server'
 
 with io.open('README.rst', 'rt', encoding='utf8') as fobj:
     README = fobj.read()
     a, b = README.index('Introduction'), README.index('.. ')
-    long_description = README[a:b].lstrip()
+    LONG_DESCRIPTION = README[a:b].lstrip()
 
 
 setup(
     name='docker-leash',
-    version=version,
+    version=VERSION,
     author='Mathieu Alorent',
     author_email='docker-leash@kumy.net',
     description='Docker authorization plugin',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     license='MIT',
     keywords=['docker', 'authz', 'authorization'],
-    url='https://github.com/{}'.format(_github_path),
+    url='https://github.com/{}'.format(GITHUB_PATH),
     download_url='https://api.github.com/repos/{}/tarball/{}'.format(
-        _github_path,
-        version or ''
+        GITHUB_PATH,
+        VERSION or ''
     ),
     classifiers=[
         'Development Status :: 1 - Planning',

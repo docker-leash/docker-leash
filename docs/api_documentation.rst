@@ -10,5 +10,5 @@ Summary
 API Details
 -----------
 
-.. autoflask:: docker_leash.leash_server:app
+.. autoflask:: docker_leash.leash_server:application
   :undoc-static:

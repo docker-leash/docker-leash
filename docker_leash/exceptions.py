@@ -3,15 +3,15 @@
 """
 
 
-class DockerLeashException(BaseException):
+class DockerLeashException(Exception):
     """Base for all Leash Server Errors."""
 
-    def __init__(self, value=None):
+    def __init__(self, message=None):
         """Construct the exception
 
         :param str value: The human readable cause of the deny.
         """
-        self.value = value
+        Exception.__init__(self, message)
 
     def json(self):
         """Format the exception as dict object.
@@ -21,11 +21,11 @@ class DockerLeashException(BaseException):
         """
         return {
             "Allow": False,
-            "Msg": self.value
+            "Msg": self.message,
         }
 
     def __str__(self):
-        return self.value
+        return self.message
 
 
 class UnauthorizedException(DockerLeashException):

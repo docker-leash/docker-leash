@@ -7,7 +7,7 @@ LeashServerFunctionnalBaseTests
 import os
 import unittest
 
-from docker_leash.leash_server import app
+from docker_leash.leash_server import application
 
 
 class LeashServerFunctionnalBaseTests(unittest.TestCase):
@@ -18,13 +18,13 @@ class LeashServerFunctionnalBaseTests(unittest.TestCase):
     def setUpClass(cls):
         """Define action to be launched once per class
         """
-        cls.set_conf_files(app)
-        app.config["processor"].load_config()
+        cls.set_conf_files(application)
+        application.config["processor"].load_config()
 
     def setUp(self):
         """Define action to be launched once per test
         """
-        self.app = app.test_client()
+        self.app = application.test_client()
 
     def tearDown(self):
         """Define action to be launched once after each test

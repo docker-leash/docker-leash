@@ -9,7 +9,7 @@ import json
 
 from docker_leash.exceptions import InvalidRequestException
 
-from . import app
+from . import application
 
 
 class Payload(object):
@@ -64,7 +64,7 @@ class Payload(object):
         self.method = self._get_method(payload)
         self.uri = self._get_uri(payload)
         self.host = self._get_host(payload)
-        app.logger.info(
+        application.logger.info(
             "PAYLOAD AUTHENTICATED USER=%r URI=%r METHOD=%r",
             self.user,
             self.uri,

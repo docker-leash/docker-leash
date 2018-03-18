@@ -9,7 +9,7 @@ import os
 
 import yaml
 
-from . import app, checks
+from . import application, checks
 from .config import Config
 from .exceptions import NoSuchCheckModuleException
 from .payload import Payload
@@ -35,7 +35,7 @@ class Processor(object):
         """
 
         groups_files = [
-            app.config['GROUPS_FILE'],
+            application.config['GROUPS_FILE'],
             '/etc/docker-leash/groups.yml',
             '/config/groups.yml',
             os.path.abspath(
@@ -43,7 +43,7 @@ class Processor(object):
             ),
         ]
         policies_files = [
-            app.config['POLICIES_FILE'],
+            application.config['POLICIES_FILE'],
             '/etc/docker-leash/policies.yml',
             '/config/policies.yml',
             os.path.abspath(
@@ -54,7 +54,7 @@ class Processor(object):
         groups = None
         for groups_file in groups_files:
             if os.path.isfile(groups_file):
-                app.logger.info("Found groups config at: %s", groups_file)
+                application.logger.info("Found groups config at: %s", groups_file)
                 with open(groups_file) as groups_yml:
                     groups = yaml.safe_load(groups_yml)
                     break
@@ -62,7 +62,7 @@ class Processor(object):
         policies = None
         for policies_file in policies_files:
             if os.path.isfile(policies_file):
-                app.logger.info("Found policies config at: %s", policies_file)
+                application.logger.info("Found policies config at: %s", policies_file)
                 with open(policies_file) as policies_yml:
                     policies = yaml.safe_load(policies_yml)
                     break

@@ -8,7 +8,7 @@ import unittest
 
 from docker_leash.config import Config
 from docker_leash.exceptions import ConfigurationException
-from docker_leash.leash_server import app
+from docker_leash.leash_server import application
 from docker_leash.payload import Payload
 
 MOCKED_GROUPS = {
@@ -122,7 +122,7 @@ class ConfigTests(unittest.TestCase):
     """
 
     def setUp(self):
-        app.config['DEBUG'] = False
+        application.config['DEBUG'] = False
 
     def test_init(self):
         """Empty config should not raise any error
