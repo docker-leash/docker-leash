@@ -26,6 +26,7 @@ routes.register(
     r'/containers/[a-zA-Z0-9_-]+/archive$',
     'containersGetFilesystemArchive',
 )
+routes.register('GET', r'/containers/.*/checkpoints$', 'getContainerCheckpoints')
 
 routes.register('POST', r'/containers/create$', 'containersCreate')
 routes.register('POST', r'/containers/[a-zA-Z0-9_-]+/resize$', 'containersResizeTTY')
@@ -40,8 +41,10 @@ routes.register('POST', r'/containers/[a-zA-Z0-9_-]+/unpause$', 'containersUnpau
 routes.register('POST', r'/containers/[a-zA-Z0-9_-]+/attach$', 'containersAttach')
 routes.register('POST', r'/containers/[a-zA-Z0-9_-]+/wait$', 'containersWait')
 routes.register('POST', r'/containers/prune$', 'containersPrune')
+routes.register('POST', r'/containers/.*/checkpoints$', 'postContainerCheckpoint')
 
 routes.register('DELETE', r'/containers/[a-zA-Z0-9_-]+$', 'containersRemove')
+routes.register('DELETE', r'/containers/.*/checkpoints/.*$', 'deleteContainerCheckpoint')
 
 routes.register(
     'HEAD',
