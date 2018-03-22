@@ -82,6 +82,9 @@ data_get_action_name_by_method_and_query = [
      'containersExtractArchiveToDirectory'),
     ('POST', '/v1.35/containers/prune', 'containersPrune'),
     ('POST', '/v1.35/containers/prune?filters=until=10m', 'containersPrune'),
+    ('GET', '/v1.35/containers/ff7291fe9e13b4b417/checkpoints', 'getContainerCheckpoints'),
+    ('POST', '/v1.35/containers/ff7291fe9e13b4b417/checkpoints', 'postContainerCheckpoint'),
+    ('DELETE', '/v1.35/containers/ff7291fe9e13b4b417/checkpoints/something', 'deleteContainerCheckpoint'),
 
     # Images
     ('GET', '/v1.35/images/json', 'imagesList'),
