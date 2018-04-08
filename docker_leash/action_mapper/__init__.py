@@ -106,6 +106,7 @@ class Action(object):
             )
         self.namespace_name = result.namespace
         self.name = result.name
+        self.match = result.match
 
     def __repr__(self):
         return 'Action({!r}, {!r})'.format(
@@ -157,8 +158,36 @@ class Namespace(object):
 class Image(Namespace):
     '''Proof of concept for Namespace subclasses
     '''
+
     def names(self):
         '''
         :rtype: list or None
         '''
         return self.action.querystring.get('names')
+
+
+@Action.namespace_register('containers')
+class Container(Namespace):
+    '''Proof of concept for Namespace subclasses
+    '''
+
+    def names(self):
+        '''
+        :rtype: list or None
+        '''
+        # Those actions may contain name in querystring
+        actions = [
+            'containersCreate',
+            'containersRename',
+        ]
+        names = []
+        if self.action.match:
+            names.append(self.action.match[0])
+        if self.action.querystring:
+            names.extend(self.action.querystring.get('name'))
+
+        if not names and self.action.name in actions:
+            # if no name provided at all for an action that may contain name
+            # then declare an empty string
+            names.append('')
+        return names
