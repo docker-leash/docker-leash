@@ -155,7 +155,7 @@ class Namespace(object):
 
 
 @Action.namespace_register('images')
-class Image(Namespace):
+class Image(Namespace):  # pylint: disable=too-few-public-methods
     '''Proof of concept for Namespace subclasses
     '''
 
@@ -167,7 +167,7 @@ class Image(Namespace):
 
 
 @Action.namespace_register('containers')
-class Container(Namespace):
+class Container(Namespace):  # pylint: disable=too-few-public-methods
     '''Proof of concept for Namespace subclasses
     '''
 
