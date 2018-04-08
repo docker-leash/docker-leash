@@ -6,8 +6,7 @@ ContainerNameTests
 
 import unittest
 
-from docker_leash.checks.container_name import (ContainerName, path_parameter,
-                                                query_parameter)
+from docker_leash.checks.container_name import ContainerName
 from docker_leash.exceptions import (InvalidRequestException,
                                      UnauthorizedException)
 from docker_leash.payload import Payload
@@ -140,31 +139,3 @@ class ContainerNameTests(unittest.TestCase):
 
         with self.assertRaises(UnauthorizedException):
             ContainerName().run(r"^\$USER-.*", Payload(PAYLOAD_USERNAME))
-
-    def test_query_parameter(self):
-        """Check query_parameter
-        """
-        self.assertEqual(query_parameter(Payload(PAYLOAD_USER)), "someone-love-me")
-
-    def test_path_parameter(self):
-        """Check path_parameter
-        """
-
-        payload = {
-            "User": "someone",
-            "RequestMethod": "DELETE",
-            "RequestUri": "/v1.32/containers/someone-love-me",
-        }
-        self.assertEqual(path_parameter(Payload(payload)), "someone-love-me")
-
-    def test_bad_path_parameter(self):
-        """Check path_parameter with invalid uri
-        """
-
-        payload = {
-            "User": "someone",
-            "RequestMethod": "DELETE",
-            "RequestUri": "/v1.32/containers/",
-        }
-        with self.assertRaises(UnauthorizedException):
-            self.assertEqual(path_parameter(Payload(payload)), "someone-love-me")

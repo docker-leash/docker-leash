@@ -8,7 +8,7 @@ import collections
 import re
 
 Field = collections.namedtuple('Field', ('namespace', 'regex'))
-Result = collections.namedtuple('Result', ('namespace', 'name'))
+Result = collections.namedtuple('Result', ('namespace', 'name', 'match'))
 
 
 class Router(object):
@@ -79,8 +79,9 @@ class Router(object):
         :raise: ValueError
         '''
         for name, (namespace, regex) in self.__data[method].items():
-            if regex.match(path):
-                return Result(namespace, name)
+            match = regex.match(path)
+            if match:
+                return Result(namespace, name, match.groups())
         raise ValueError(
             'no match for: {}: {}'.format(
                 method,
